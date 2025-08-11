@@ -432,7 +432,6 @@ let currentLevel = 0;
 let selected = ""; // Stores the current word formed by clicked/dragged letters
 let foundWords = new Set();
 let hintsUsed = 0;
-let gemsEarned = 0; // New variable to track gems earned
 
 // Dragging related variables
 let isDragging = false;
@@ -901,7 +900,7 @@ function checkWord() {
 
     if(foundWords.size === levels[currentLevel].words.length) {
       // Award gems for completing the level
-      gemsEarned += 500; 
+      awardGems(500); 
       setTimeout(showReward, 500); // Small delay before showing reward
     }
   } else {
@@ -910,6 +909,16 @@ function checkWord() {
     clearActiveLetters(); // Clear selection on incorrect guess
   }
 }
+
+// New function to award gems and store them in localStorage
+function awardGems(amount) {
+    // Get current gems from local storage or set to 0 if none exist
+    let currentGems = parseInt(localStorage.getItem('cricketWordCityGems')) || 0;
+    currentGems += amount;
+    localStorage.setItem('cricketWordCityGems', currentGems);
+    resultBox.textContent = `🎉 Level Complete! You earned ${amount} gems! Total gems: ${currentGems}`;
+}
+
 
 function clearActiveLetters(playSound = true) { // Optional parameter to control sound
   const letters = circle.querySelectorAll(".letter.active");
@@ -975,8 +984,11 @@ btnNext.addEventListener("click", () => {
     currentLevel++;
     startLevel(currentLevel);
   } else {
-    // Redirect to main page with gems earned in the URL
-    window.location.href = `index.html?gems=${gemsEarned}`;
+    const totalGems = localStorage.getItem('cricketWordCityGems') || 0;
+    alert(`🎉 You completed all levels and earned a total of ${totalGems} gems! Congrats! 🎉`);
+    // Redirect to main page and reset the gems in local storage
+    localStorage.removeItem('cricketWordCityGems');
+    window.location.href = `index.html`;
   }
 });
 
