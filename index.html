@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cricket Manager</title>
+    <title>Cricket Manager Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -12,14 +12,46 @@
         <h1>Cricket Manager</h1>
         <div class="user-stats">
             <span class="diamond-icon">💎</span>
-            <span id="diamond-count">500</span>
+            <span id="diamond-count">1000</span>
         </div>
     </header>
 
-    <main class="game-container">
-        <h2>Welcome!</h2>
-        <p>Use your Diamonds to get new players for your team.</p>
-        <button id="open-pack-button" class="action-button">Open Player Pack (50 💎)</button>
+    <nav class="game-nav">
+        <button class="nav-button active" data-page="my-team">MY TEAM</button>
+        <button class="nav-button" data-page="earn-diamonds">EARN DIAMONDS</button>
+        <button class="nav-button" data-page="market">MARKET</button>
+    </nav>
+
+    <main id="main-content" class="game-container">
+        <div id="my-team-page" class="page active-page">
+            <h2>My Team</h2>
+            <div id="my-team-grid" class="player-grid">
+                </div>
+        </div>
+
+        <div id="earn-diamonds-page" class="page">
+            <h2>Earn Diamonds</h2>
+            <div class="challenges-list">
+                <div class="challenge-item">
+                    <h3>Challenge 1: Win a Match</h3>
+                    <p>Description of the challenge goes here.</p>
+                    <button class="claim-reward-button">Claim 500 💎</button>
+                </div>
+                <div class="challenge-item">
+                    <h3>Challenge 2: Score a Century</h3>
+                    <p>Description of the challenge goes here.</p>
+                    <button class="claim-reward-button">Claim 1000 💎</button>
+                </div>
+                </div>
+        </div>
+
+        <div id="market-page" class="page">
+            <h2>Market</h2>
+            <p class="market-intro">Select a team pack to open. Each pack costs 1000 💎.</p>
+            <div id="pack-grid" class="pack-grid">
+                </div>
+        </div>
+
     </main>
 
     <div id="card-modal" class="modal">
@@ -28,9 +60,11 @@
             <h3 class="modal-title">You've Unlocked:</h3>
             <div id="player-card-container">
                 </div>
+            <button id="collect-button" class="action-button">Collect Player</button>
         </div>
     </div>
 
+    <script src="players.json"></script>
     <script src="script.js"></script>
 </body>
 </html>
