@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="game-header">
+        <h1>Cricket Manager</h1>
+        <div class="user-stats">
+            <span class="diamond-icon">💎</span>
+            <span id="diamond-count">500</span>
+        </div>
+    </header>
+
+    <main class="game-container">
+        <h2>Welcome!</h2>
+        <p>Use your Diamonds to get new players for your team.</p>
+        <button id="open-pack-button" class="action-button">Open Player Pack (50 💎)</button>
+    </main>
+
+    <div id="card-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h3 class="modal-title">You've Unlocked:</h3>
+            <div id="player-card-container">
+                </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
