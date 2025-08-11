@@ -258,7 +258,7 @@
     }
 
     /* --- Buttons --- */
-    button {
+    button, #back-button-level-select, #back-button-game {
       padding: 12px 28px;
       font-size: 18px;
       background: linear-gradient(135deg, #ffcc00, #ffaa00);
@@ -271,7 +271,9 @@
       transition: transform 0.2s ease, box-shadow 0.3s ease;
       user-select: none;
     }
-    button:hover:not(:disabled) {
+    button:hover:not(:disabled),
+    #back-button-level-select:hover,
+    #back-button-game:hover {
       transform: scale(1.05);
       box-shadow: 0 0 30px #ffcc00dd;
     }
@@ -282,7 +284,7 @@
       color: #bbb;
       filter: grayscale(70%); /* Make disabled buttons clearly look disabled */
     }
-    /* New button style for "Clear" and "Submit" (Submit button removed from HTML now) */
+    /* New button style for "Clear" */
     #btn-clear {
         background: linear-gradient(135deg, #dc3545, #bd2130);
         box-shadow: 0 0 14px #dc3545aa;
@@ -290,7 +292,6 @@
     #btn-clear:hover:not(:disabled) {
         box-shadow: 0 0 30px #dc3545dd;
     }
-
 
     /* --- Modal --- */
     .modal {
@@ -347,6 +348,32 @@
       overflow: visible;
     }
 
+    /* --- New reward message container --- */
+    #reward-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 20px 30px;
+      border-radius: 15px;
+      border: 3px solid #ffcc00;
+      box-shadow: 0 0 25px #ffcc00;
+      text-align: center;
+      z-index: 10001;
+      font-size: 22px;
+      font-weight: bold;
+      animation: fadeInOut 3s forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); }
+    }
   </style>
 </head>
 <body>
@@ -355,7 +382,9 @@
     <img src="https://i.postimg.cc/NgDHSMY7/Picsart-25-07-24-20-15-56-995.png" alt="Splash" />
   </div>
 
-  <div id="level-select" aria-label="Level selection screen" role="list"></div>
+  <div id="level-select" aria-label="Level selection screen" role="list">
+    <button id="back-button-level-select" onclick="window.location.href='index.html'">Back</button>
+  </div>
 
   <div id="game" role="main" aria-live="polite" aria-atomic="true" aria-label="Game screen">
     <h1>🏏 Cricket Word City</h1>
@@ -373,6 +402,10 @@
     <button id="btn-clear" aria-label="Clear selected word">Clear 🗑️</button>
     <button id="btn-next" disabled aria-label="Next level">Next Level ▶️</button>
     <div id="result" aria-live="polite" aria-atomic="true"></div>
+    
+    <button id="back-button-game" onclick="window.location.href='index.html'">Back</button>
+
+    <div id="reward-message" aria-live="polite" aria-atomic="true"></div>
 
     <div id="rewardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
       <div class="modal-content">
@@ -452,6 +485,7 @@ const resultBox = document.getElementById("result");
 const btnHint = document.getElementById("btn-hint");
 const btnClear = document.getElementById("btn-clear");
 const btnNext = document.getElementById("btn-next");
+const rewardMessage = document.getElementById("reward-message");
 let btnShuffle; // This will be assigned dynamically after re-rendering
 const rewardModal = document.getElementById("rewardModal");
 const previewImage = document.getElementById("preview-image");
@@ -626,6 +660,12 @@ function showLevelSelect(){
     }
     levelSelect.appendChild(lvl);
   }
+  // Add back button to level select screen
+  const backBtn = document.createElement("button");
+  backBtn.id = "back-button-level-select";
+  backBtn.textContent = "Back to Main Page";
+  backBtn.onclick = () => window.location.href = 'index.html';
+  levelSelect.appendChild(backBtn);
 }
 
 // --- Start Level ---
@@ -895,128 +935,4 @@ function checkWord() {
     resultBox.textContent = `Great! 👍 You found: ${upperWord}`;
     btnNext.disabled = foundWords.size !== levels[currentLevel].words.length;
 
-    // Clear selected word after successful guess
-    clearActiveLetters(false); // No sound on successful clear
-
-    if(foundWords.size === levels[currentLevel].words.length) {
-      // Award gems for completing the level
-      awardGems(500); 
-      setTimeout(showReward, 500); // Small delay before showing reward
-    }
-  } else {
-    resultBox.textContent = `❌ "${selected}" is incorrect or already found. Try again!`;
-    soundError.play().catch(() => {});
-    clearActiveLetters(); // Clear selection on incorrect guess
-  }
-}
-
-// New function to award gems and store them in localStorage
-function awardGems(amount) {
-    // Get current gems from local storage or set to 0 if none exist
-    let currentGems = parseInt(localStorage.getItem('cricketWordCityGems')) || 0;
-    currentGems += amount;
-    localStorage.setItem('cricketWordCityGems', currentGems);
-    resultBox.textContent = `🎉 Level Complete! You earned ${amount} gems! Total gems: ${currentGems}`;
-}
-
-
-function clearActiveLetters(playSound = true) { // Optional parameter to control sound
-  const letters = circle.querySelectorAll(".letter.active");
-  letters.forEach(l => l.classList.remove("active"));
-  selected = "";
-  selectedLetterElements = []; // Clear the array of selected elements too
-  updateSelectedWord();
-  // Don't clear resultBox here, let checkWord or other events manage it
-  if(playSound) {
-      soundError.play().catch(() => {}); // Play clear sound only if specified
-  }
-}
-
-
-// --- Update pillboxes ---
-function updatePills(){
-  const pills = pillboxes.children;
-  levels[currentLevel].words.forEach((w, i) => {
-    if(foundWords.has(w)) {
-      pills[i].textContent = w;
-      // Add a class that triggers the animation
-      pills[i].classList.add("completed");
-    }
-  });
-}
-
-// --- Show reward modal ---
-function showReward(){
-  previewImage.src = imageUrls[currentLevel];
-  previewText.textContent = levelDescriptions[currentLevel];
-  rewardModal.style.display = "block";
-
-  // Launch fireworks multiple times for a richer display
-  for(let i = 0; i < 5; i++) {
-    setTimeout(launchFireworks, i * 300); // Launch fireworks with a slight delay
-  }
-  animateFireworks();
-}
-
-function closeRewardModal(){
-  rewardModal.style.display = "none";
-}
-
-// --- Buttons ---
-btnHint.addEventListener("click", () => {
-  if (hintsUsed >= hints.length) { // Check against available hints from data
-    hintBox.textContent = "No more hints for this level. 🤔";
-    soundError.play().catch(() => {});
-    return;
-  }
-  hintBox.textContent = "Hint: " + hints[hintsUsed];
-  hintsUsed++;
-});
-
-// Clear button is still useful
-btnClear.addEventListener("click", clearActiveLetters);
-
-// btnShuffle listener is now inside shuffleLetters()
-
-btnNext.addEventListener("click", () => {
-  localStorage.setItem("cricketWordCity_level_" + currentLevel, "completed");
-  if(currentLevel + 1 < levels.length){
-    currentLevel++;
-    startLevel(currentLevel);
-  } else {
-    const totalGems = localStorage.getItem('cricketWordCityGems') || 0;
-    alert(`🎉 You completed all levels and earned a total of ${totalGems} gems! Congrats! 🎉`);
-    // Redirect to main page and reset the gems in local storage
-    localStorage.removeItem('cricketWordCityGems');
-    window.location.href = `index.html`;
-  }
-});
-
-// --- Reset game ---
-function resetGame(){
-  foundWords.clear();
-  selected = "";
-  updateSelectedWord();
-  hintBox.textContent = "";
-  resultBox.textContent = "";
-  clearActiveLetters(false); // Ensure letters are cleared visually, no sound on reset
-  btnNext.disabled = true;
-  // Clear the drag canvas in case any lines were left
-  if (dragCtx) {
-    dragCtx.clearRect(0, 0, dragCanvas.width, dragCanvas.height);
-  }
-  // Remove .completed class from all pills
-  const pills = pillboxes.querySelectorAll(".pill");
-  pills.forEach(pill => pill.classList.remove("completed"));
-}
-
-// --- Initialize ---
-let hints = [];
-function initializeGame() {
-  showLevelSelect();  // always show level select on load
-}
-
-  </script>
-
-</body>
-</html>
+    // Clear selected word
