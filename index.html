@@ -31,17 +31,35 @@
 
         <div id="earn-diamonds-page" class="page">
             <h2>Earn Diamonds</h2>
-            <div class="challenges-list">
-                <div class="challenge-item">
-                    <h3>Challenge 1: Win a Match</h3>
-                    <p>Description of the challenge goes here.</p>
-                    <button class="claim-reward-button">Claim 500 💎</button>
-                </div>
-                <div class="challenge-item">
-                    <h3>Challenge 2: Score a Century</h3>
-                    <p>Description of the challenge goes here.</p>
-                    <button class="claim-reward-button">Claim 1000 💎</button>
-                </div>
+            <div id="level-select" aria-label="Level selection screen" role="list"></div>
+
+  <div id="game" role="main" aria-live="polite" aria-atomic="true" aria-label="Game screen">
+    <div id="pillboxes" aria-label="Found words"></div>
+    <div id="selected-word" aria-live="polite" aria-atomic="true"></div>
+
+    <div id="letter-circle" aria-label="Letter selection circle" role="list">
+        <canvas id="drag-line-canvas"></canvas>
+        <div id="shuffle-button" aria-label="Shuffle letters">🔀</div>
+    </div>
+
+    <div id="hint" aria-live="polite" aria-atomic="true"></div>
+
+    <button id="btn-hint" aria-label="Show hint">Hint ✨</button>
+    <button id="btn-clear" aria-label="Clear selected word">Clear 🗑️</button>
+    <button id="btn-next" disabled aria-label="Next level">Next Level ▶️</button>
+    <div id="result" aria-live="polite" aria-atomic="true"></div>
+
+    <div id="rewardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+      <div class="modal-content">
+        <span class="close" onclick="closeRewardModal()" aria-label="Close modal">&times;</span>
+        <img id="preview-image" src="" alt="Level background" />
+        <p id="preview-text"></p>
+      </div>
+    </div>
+
+  </div>
+
+  <canvas id="fireworks-container"></canvas>
                 </div>
         </div>
 
