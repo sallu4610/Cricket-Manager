@@ -587,16 +587,17 @@
       }
     }
 
-    function hideSplashScreen() {
-      splashScreen.classList.add('hidden');
-      setTimeout(() => {
-        splashScreen.style.display = "none";
-        initializeGame();
-      }, 1000); // Wait for the fade out to complete
-    }
+    // --- SPLASH SCREEN FIX IS HERE ---
+    document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+            splashScreen.classList.add("hidden");
+            setTimeout(() => {
+                splashScreen.style.display = "none";
+                initializeGame();
+            }, 1000); // Wait for the CSS fade-out transition to complete
+        }, 3000); // 3 seconds delay before starting the fade-out
+    });
 
-    // Call the function to hide the splash screen after 3 seconds
-    setTimeout(hideSplashScreen, 3000);
 
     function getSavedProgress() {
       for (let i = levels.length - 1; i >= 0; i--) {
@@ -797,4 +798,8 @@
     }
 
     function addLetterToSelection(letterElem) {
-      const letter =
+      const letter = letterElem.getAttribute("data-letter");
+      if (!selectedLetterElements.includes(letterElem)) {
+        selected += letter;
+        letterElem.classList.add("active");
+        selectedLetter
