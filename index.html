@@ -1,70 +1,470 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cricket Manager Game</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <title>Cricket Word City - Powered Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    /* --- General Styles --- */
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+      user-select: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    h1 {
+      font-size: 32px;
+      text-align: center;
+      margin: 10px 0 15px;
+      text-shadow: 0 0 12px #ffcc00; /* Increased shadow for more pop */
+    }
+
+    /* --- Splash Screen --- */
+    #splash-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+    }
+    #splash-screen img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    /* --- Main Menu --- */
+    #main-menu {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      text-align: center;
+    }
+    #main-menu .menu-button {
+      width: 90%;
+      max-width: 300px;
+      padding: 15px 25px;
+      margin: 15px 0;
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #ffcc00, #ffaa00);
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 0 14px #ffcc00aa;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      color: #000;
+    }
+    #main-menu .menu-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #ffcc00dd;
+    }
+
+    /* --- Level Selection Screen --- */
+    #level-select {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      padding: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+    .level-card {
+      position: relative;
+      width: 110px;
+      height: 75px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #ffcc00cc;
+      cursor: pointer;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffcc00;
+      font-weight: 700;
+      font-size: 20px;
+      text-shadow: 0 0 4px #ffcc00bb;
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smoother transition */
+    }
+    .level-card:hover:not(.locked) {
+      transform: scale(1.08); /* More pronounced scale */
+      box-shadow: 0 0 25px #ffaa00dd; /* Stronger glow on hover */
+    }
+    .level-card.locked {
+      filter: blur(2px) grayscale(80%); /* Slightly less blur */
+      cursor: default;
+    }
+    .level-card.locked::after {
+      content: "🔒"; /* Emoji for locked */
+      position: absolute;
+      top: 5px; right: 5px;
+      font-size: 26px;
+      user-select: none;
+    }
+    .level-card img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      filter: brightness(0.5);
+      border-radius: 12px;
+    }
+    .level-number {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* --- Game Container --- */
+    #game {
+      display: none; /* Changed to none for initial display */
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 480px;
+      padding: 20px;
+      background-size: cover;
+      background-position: center;
+      min-height: 600px;
+      position: relative;
+      box-shadow: inset 0 0 80px #000a;
+      border-radius: 14px;
+      margin-bottom: 30px;
+    }
+
+    /* --- Pillboxes --- */
+    #pillboxes {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 15px;
+      gap: 14px;
+      perspective: 500px;
+    }
+    .pill {
+      padding: 12px 20px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #ffcc00, #ffaa00);
+      color: #000;
+      font-size: 18px;
+      font-weight: 900;
+      min-width: 90px;
+      text-align: center;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.3); /* Subtle inset shadow */
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition */
+      user-select: none;
+    }
+    .pill.completed {
+      background: linear-gradient(135deg, #28a745, #1e7e34);
+      color: #d4f2c5;
+      box-shadow: 0 0 20px #28a745dd; /* Stronger glow on completion */
+      transform: scale(1.1);
+    }
+
+    /* --- Selected Word Display --- */
+    #selected-word {
+      font-size: 28px; /* Slightly larger */
+      margin: 12px 0 8px;
+      letter-spacing: 6px;
+      font-weight: 700;
+      color: #ffcc00;
+      text-shadow: 0 0 16px #ffcc00dd; /* Stronger glow */
+      min-height: 32px;
+      user-select: none;
+      text-align: center;
+      animation: pulse 1.5s infinite alternate; /* Pulsating effect */
+    }
+
+    /* Animation for selected-word */
+    @keyframes pulse {
+        from { text-shadow: 0 0 10px #ffcc00bb; }
+        to { text-shadow: 0 0 25px #ffcc00ff; }
+    }
+
+    /* --- Letter Circle --- */
+    #letter-circle {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      user-select: none;
+      touch-action: none; /* Crucial for preventing default scroll on touch */
+    }
+    .letter {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: #222;
+      color: #fff;
+      font-size: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      cursor: pointer;
+      transition: background 0.3s, box-shadow 0.3s;
+      z-index: 2; /* Letters above canvas */
+      box-shadow: 0 0 8px #555; /* Slightly stronger default shadow */
+      font-weight: 700;
+    }
+    .letter.active {
+      background: #28a745;
+      box-shadow: 0 0 20px #28a745dd, 0 0 40px #a6f199aa; /* More vibrant active state */
+      transform: scale(1.05); /* Slight scale on active */
+    }
+
+    /* --- Shuffle Button --- */
+    #shuffle-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px; /* Larger for better tap target */
+      height: 70px;
+      background: linear-gradient(45deg, #ffcc00, #ffaa00);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px; /* Larger emoji */
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255, 204, 0, 0.7);
+      z-index: 3; /* Above letters and canvas */
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    #shuffle-button:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+      box-shadow: 0 0 25px rgba(255, 204, 0, 1);
+    }
+
+    /* --- Drag line canvas --- */
+    #drag-line-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1; /* Below letters, above background */
+      pointer-events: none; /* Allow events to pass through to letters below */
+    }
+
+
+    /* --- Hint and Result Boxes --- */
+    #hint, #result {
+      margin-top: 12px;
+      padding: 10px 20px;
+      background: rgba(0,0,0,0.75);
+      border-radius: 8px;
+      max-width: 90%;
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+      user-select: text;
+      min-height: 32px;
+      box-shadow: inset 0 0 8px #ffcc00aa;
+    }
+
+    /* --- Buttons --- */
+    .game-button {
+      padding: 12px 28px;
+      font-size: 18px;
+      background: linear-gradient(135deg, #ffcc00, #ffaa00);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 18px 10px 0 10px;
+      font-weight: 900;
+      box-shadow: 0 0 14px #ffcc00aa;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .game-button:hover:not(:disabled) {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #ffcc00dd;
+    }
+    .game-button:disabled {
+      background: #666;
+      cursor: default;
+      box-shadow: none;
+      color: #bbb;
+      filter: grayscale(70%); /* Make disabled buttons clearly look disabled */
+    }
+    /* New button style for "Clear" and "Submit" (Submit button removed from HTML now) */
+    #btn-clear {
+        background: linear-gradient(135deg, #dc3545, #bd2130);
+        box-shadow: 0 0 14px #dc3545aa;
+    }
+    #btn-clear:hover:not(:disabled) {
+        box-shadow: 0 0 30px #dc3545dd;
+    }
+    .back-button {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      padding: 8px 15px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      z-index: 1000;
+      user-select: none;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      transition: background 0.3s ease;
+    }
+    .back-button:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+    #player-diamonds {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      padding: 8px 15px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+      font-weight: 700;
+      color: #a6f199;
+      font-size: 18px;
+      z-index: 1000;
+      border: 1px solid #a6f199;
+    }
+    #player-diamonds::before {
+      content: "💎";
+      margin-right: 8px;
+    }
+
+
+    /* --- Modal --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.9);
+      backdrop-filter: blur(5px);
+    }
+    .modal-content {
+      background-color: #111;
+      margin: 10% auto;
+      padding: 20px 30px;
+      border: 3px solid #ffcc00;
+      width: 85%;
+      max-width: 420px;
+      text-align: center;
+      color: white;
+      border-radius: 14px;
+      box-shadow: 0 0 40px #ffcc00ee; /* More intense modal glow */
+      position: relative;
+    }
+    .modal-content img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #ffcc00bb;
+      margin-bottom: 15px;
+    }
+    .close {
+      color: #ffcc00;
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+      user-select: none;
+    }
+    .close:hover {
+      color: #ffaa00;
+    }
+
+    /* --- Fireworks Container --- */
+    #fireworks-container {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 10000;
+      overflow: visible;
+    }
+
+  </style>
 </head>
 <body>
 
-    <header class="game-header">
-        <h1>Cricket Manager</h1>
-        <div class="user-stats">
-            <span class="diamond-icon">💎</span>
-            <span id="diamond-count">1000</span>
-        </div>
-    </header>
+  <div id="splash-screen">
+    <img src="https://i.postimg.cc/NgDHSMY7/Picsart-25-07-24-20-15-56-995.png" alt="Splash" />
+  </div>
 
-    <nav class="game-nav">
-        <button class="nav-button active" data-page="my-team">MY TEAM</button>
-        <button class="nav-button" data-page="earn-diamonds">EARN DIAMONDS</button>
-        <button class="nav-button" data-page="market">MARKET</button>
-    </nav>
+  <div id="main-menu">
+    <h1>🏏 Cricket Word City</h1>
+    <button class="menu-button" onclick="showChallenges()">Earn Diamonds 💎</button>
+    <button class="menu-button" onclick="showLevelSelect()">Play Levels ▶️</button>
+  </div>
 
-    <main id="main-content" class="game-container">
-        <div id="my-team-page" class="page active-page">
-            <h2>My Team</h2>
-            <div id="my-team-grid" class="player-grid">
-                </div>
-        </div>
+  <div id="level-select" aria-label="Level selection screen" role="list">
+    <div class="back-button" onclick="showMainMenu()">Back</div>
+  </div>
 
-        <div id="earn-diamonds-page" class="page">
-            <h2>Earn Diamonds</h2>
-            <div class="challenges-list">
-                <div class="challenge-item">
-                    <h3>Challenge 1: Win a Match</h3>
-                    <p>Description of the challenge goes here.</p>
-                    <button class="claim-reward-button">Claim 500 💎</button>
-                </div>
-                <div class="challenge-item">
-                    <h3>Challenge 2: Score a Century</h3>
-                    <p>Description of the challenge goes here.</p>
-                    <button class="claim-reward-button">Claim 1000 💎</button>
-                </div>
-                </div>
-        </div>
+  <div id="game" role="main" aria-live="polite" aria-atomic="true" aria-label="Game screen">
+    <div class="back-button" onclick="showLevelSelect()">Back</div>
+    <h1>🏏 Cricket Word City</h1>
+    <div id="pillboxes" aria-label="Found words"></div>
+    <div id="selected-word" aria-live="polite" aria-atomic="true"></div>
 
-        <div id="market-page" class="page">
-            <h2>Market</h2>
-            <p class="market-intro">Select a team pack to open. Each pack costs 1000 💎.</p>
-            <div id="pack-grid" class="pack-grid">
-                </div>
-        </div>
-
-    </main>
-
-    <div id="card-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <h3 class="modal-title">You've Unlocked:</h3>
-            <div id="player-card-container">
-                </div>
-            <button id="collect-button" class="action-button">Collect Player</button>
-        </div>
+    <div id="letter-circle" aria-label="Letter selection circle" role="list">
+        <canvas id="drag-line-canvas"></canvas>
+        <div id="shuffle-button" aria-label="Shuffle letters">🔀</div>
     </div>
 
-    <script src="players.json"></script>
-    <script src="script.js"></script>
+    <div id="hint" aria-live="polite" aria-atomic="true"></div>
+
+    <button id="btn-hint" class="game-button" aria-label="Show hint">Hint ✨</button>
+    <button id="btn-clear" class="game-button" aria-label="Clear selected word">Clear 🗑️</button>
+    <button id="btn-next" class="game-button" disabled aria-label="Next level">Next Level ▶️</button>
+    <div id="result" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <div id="rewardModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-content">
+      <span class="close" onclick="closeRewardModal()" aria-label="Close modal">&times;</span>
+      <img id="preview-image" src="" alt="Level background" />
+      <p id="preview-text"></p>
+    </div>
+  </div>
+
+  <canvas id="fireworks-container"></canvas>
+
+  <div id="player-diamonds">0</div>
+
+  <script src="script.js"></script>
+
 </body>
 </html>
