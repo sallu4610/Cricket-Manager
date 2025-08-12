@@ -563,7 +563,6 @@
         initializeGame();
     });
 
-    // Corrected `getSavedProgress` function to find the highest completed level
     function getSavedProgress() {
       let highestLevel = 0;
       for (let i = 0; i < levels.length; i++) {
@@ -597,7 +596,6 @@
         num.textContent = i+1;
         lvl.appendChild(num);
 
-        // Corrected logic: a level is unlocked if its index is less than or equal to the highest completed level
         const unlocked = i <= maxUnlockedLevel;
         if (!unlocked) {
           lvl.classList.add("locked");
@@ -906,7 +904,7 @@
       previewImage.src = imageUrls[currentLevel];
       previewText.textContent = levelDescriptions[currentLevel];
       rewardModal.style.display = "block";
-      localStorage.setItem("cricketWordCity_level_" + currentLevel, "completed"); // Ensure the level is saved as completed here
+      localStorage.setItem("cricketWordCity_level_" + currentLevel, "completed");
 
       for(let i = 0; i < 5; i++) {
         setTimeout(launchFireworks, i * 300);
