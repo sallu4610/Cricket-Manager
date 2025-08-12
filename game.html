@@ -5,29 +5,6 @@
   <title>Cricket Word City - Powered Up</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    /* --- Splash Screen --- */
-    #splash-screen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999999;
-      transition: opacity 1s ease-out; /* Add transition for a fade effect */
-    }
-    #splash-screen.hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-    #splash-screen img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
-
     /* --- General Styles --- */
     * { box-sizing: border-box; }
     body {
@@ -377,10 +354,6 @@
 </head>
 <body>
 
-  <div id="splash-screen">
-    <img src="https://i.postimg.cc/NgDHSMY7/Picsart-25-07-24-20-15-56-995.png" alt="Splash" />
-  </div>
-
   <div id="level-select" aria-label="Level selection screen" role="list">
     <button id="back-button-level-select" onclick="window.location.href='index.html'">Back to Main Page</button>
   </div>
@@ -468,7 +441,6 @@
     let dragCanvas;
     let dragCtx;
 
-    const splashScreen = document.getElementById("splash-screen");
     const levelSelect = document.getElementById("level-select");
     const gameContainer = document.getElementById("game");
     const pillboxes = document.getElementById("pillboxes");
@@ -587,15 +559,8 @@
       }
     }
 
-    // --- SPLASH SCREEN FIX IS HERE ---
     document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-            splashScreen.classList.add("hidden");
-            setTimeout(() => {
-                splashScreen.style.display = "none";
-                initializeGame();
-            }, 1000); // Wait for the CSS fade-out transition to complete
-        }, 3000); // 3 seconds delay before starting the fade-out
+        initializeGame();
     });
 
 
@@ -802,4 +767,25 @@
       if (!selectedLetterElements.includes(letterElem)) {
         selected += letter;
         letterElem.classList.add("active");
-        selectedLetter
+        selectedLetterElements.push(letterElem);
+        soundSelect.play().catch(() => {});
+        updateSelectedWord();
+        resultBox.textContent = "";
+      }
+    }
+
+    function handleDragMove(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+
+      const clientX = e.clientX || e.touches[0].clientX;
+      const clientY = e.clientY || e.touches[0].clientY;
+
+      const circleRect = circle.getBoundingClientRect();
+      const relativeX = clientX - circleRect.left;
+      const relativeY = clientY - circleRect.top;
+
+      dragCtx.clearRect(0, 0, dragCanvas.width, dragCanvas.height);
+
+      for (let i = 0; i < selectedLetterElements.length - 1; i++) {
+        const p1 = getLetterCenter(selectedLetterElements
