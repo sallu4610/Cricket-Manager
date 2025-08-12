@@ -788,4 +788,177 @@
       dragCtx.clearRect(0, 0, dragCanvas.width, dragCanvas.height);
 
       for (let i = 0; i < selectedLetterElements.length - 1; i++) {
-        const p1 = getLetterCenter(selectedLetterElements
+        const p1 = getLetterCenter(selectedLetterElements[i]);
+        const p2 = getLetterCenter(selectedLetterElements[i + 1]);
+        drawLine(p1.x, p1.y, p2.x, p2.y);
+      }
+
+      if (selectedLetterElements.length > 0) {
+        const lastLetterCenter = getLetterCenter(selectedLetterElements[selectedLetterElements.length - 1]);
+        drawLine(lastLetterCenter.x, lastLetterCenter.y, relativeX, relativeY);
+      }
+
+      const allLettersInCircle = circle.querySelectorAll(".letter");
+      allLettersInCircle.forEach(letterElem => {
+        if (!selectedLetterElements.includes(letterElem)) {
+          const rect = letterElem.getBoundingClientRect();
+          if (clientX > rect.left && clientX < rect.right &&
+              clientY > rect.top && clientY < rect.bottom) {
+            addLetterToSelection(letterElem);
+          }
+        }
+      });
+    }
+
+    function handleDragEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      dragCtx.clearRect(0, 0, dragCanvas.width, dragCanvas.height);
+      if (selected.length > 0) {
+        checkWord();
+      } else {
+        clearActiveLetters(false);
+      }
+      document.removeEventListener("mousemove", handleDragMove);
+      document.removeEventListener("touchmove", handleDragMove);
+      document.removeEventListener("mouseup", handleDragEnd);
+      document.removeEventListener("touchend", handleDragEnd);
+    }
+
+    function drawLine(x1, y1, x2, y2) {
+      dragCtx.beginPath();
+      dragCtx.moveTo(x1, y1);
+      dragCtx.lineTo(x2, y2);
+      dragCtx.lineWidth = 5;
+      dragCtx.strokeStyle = "#ffcc00";
+      dragCtx.lineCap = "round";
+      dragCtx.stroke();
+    }
+
+    function updateSelectedWord() {
+      selectedWordDisplay.textContent = selected ? selected : "";
+    }
+
+    function checkWord() {
+      const upperWord = selected.toUpperCase();
+      if(!upperWord) {
+          resultBox.textContent = "Please select letters first!";
+          soundError.play().catch(() => {});
+          clearActiveLetters();
+          return;
+      }
+
+      if(levels[currentLevel].words.includes(upperWord) && !foundWords.has(upperWord)) {
+        foundWords.add(upperWord);
+        soundComplete.play().catch(() => {});
+        updatePills();
+        hintBox.textContent = "";
+        resultBox.textContent = `Great! 👍 You found: ${upperWord}`;
+        btnNext.disabled = foundWords.size !== levels[currentLevel].words.length;
+        clearActiveLetters(false);
+        if(foundWords.size === levels[currentLevel].words.length) {
+          awardGems(500);
+          setTimeout(showReward, 500);
+        }
+      } else {
+        resultBox.textContent = `❌ "${selected}" is incorrect or already found. Try again!`;
+        soundError.play().catch(() => {});
+        clearActiveLetters();
+      }
+    }
+
+    function awardGems(amount) {
+        let currentGems = parseInt(localStorage.getItem('cricketWordCityGems')) || 0;
+        currentGems += amount;
+        localStorage.setItem('cricketWordCityGems', currentGems);
+        
+        rewardMessage.textContent = `🎉 Congrats! You earned ${amount} gems! 🎉`;
+        rewardMessage.style.display = "block";
+        setTimeout(() => {
+            rewardMessage.style.display = "none";
+        }, 3000);
+    }
+
+    function clearActiveLetters(playSound = true) {
+      const letters = circle.querySelectorAll(".letter.active");
+      letters.forEach(l => l.classList.remove("active"));
+      selected = "";
+      selectedLetterElements = [];
+      updateSelectedWord();
+      if(playSound) {
+          soundError.play().catch(() => {});
+      }
+    }
+
+    function updatePills(){
+      const pills = pillboxes.children;
+      levels[currentLevel].words.forEach((w, i) => {
+        if(foundWords.has(w)) {
+          pills[i].textContent = w;
+          pills[i].classList.add("completed");
+        }
+      });
+    }
+
+    function showReward(){
+      previewImage.src = imageUrls[currentLevel];
+      previewText.textContent = levelDescriptions[currentLevel];
+      rewardModal.style.display = "block";
+
+      for(let i = 0; i < 5; i++) {
+        setTimeout(launchFireworks, i * 300);
+      }
+      animateFireworks();
+    }
+
+    function closeRewardModal(){
+      rewardModal.style.display = "none";
+    }
+
+    btnHint.addEventListener("click", () => {
+      if (hintsUsed >= hints.length) {
+        hintBox.textContent = "No more hints for this level. 🤔";
+        soundError.play().catch(() => {});
+        return;
+      }
+      hintBox.textContent = "Hint: " + hints[hintsUsed];
+      hintsUsed++;
+    });
+
+    btnClear.addEventListener("click", clearActiveLetters);
+
+    btnNext.addEventListener("click", () => {
+      localStorage.setItem("cricketWordCity_level_" + currentLevel, "completed");
+      if(currentLevel + 1 < levels.length){
+        currentLevel++;
+        startLevel(currentLevel);
+      } else {
+        const totalGems = localStorage.getItem('cricketWordCityGems') || 0;
+        alert(`🎉 You completed all levels and earned a total of ${totalGems} gems! Congrats! 🎉`);
+        localStorage.removeItem('cricketWordCityGems');
+        window.location.href = `index.html`;
+      }
+    });
+
+    function resetGame(){
+      foundWords.clear();
+      selected = "";
+      updateSelectedWord();
+      hintBox.textContent = "";
+      resultBox.textContent = "";
+      clearActiveLetters(false);
+      btnNext.disabled = true;
+      if (dragCtx) {
+        dragCtx.clearRect(0, 0, dragCanvas.width, dragCanvas.height);
+      }
+      const pills = pillboxes.querySelectorAll(".pill");
+      pills.forEach(pill => pill.classList.remove("completed"));
+    }
+
+    let hints = [];
+    function initializeGame() {
+      showLevelSelect();
+    }
+  </script>
+</body>
+</html>
