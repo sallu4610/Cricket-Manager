@@ -416,6 +416,21 @@
     .player-detail-view .profile-section .change-photo-btn:active {
       background: #3f4a5a;
     }
+    .player-detail-view .profile-section .retry-btn {
+      background: #f59e0b;
+      border: none;
+      color: #1a1a1a;
+      padding: 4px 14px;
+      border-radius: 40px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+      display: none;
+    }
+    .player-detail-view .profile-section .retry-btn:active {
+      background: #d97706;
+    }
 
     .player-detail-view .stats-grid-detail {
       display: grid;
@@ -1160,7 +1175,8 @@
     .popup-overlay-toss,
     .popup-overlay-selection,
     .popup-overlay-inning,
-    .popup-overlay-winner {
+    .popup-overlay-winner,
+    .popup-overlay-out {
       display: none;
       position: fixed;
       top: 0;
@@ -1177,14 +1193,16 @@
     .popup-overlay-toss.active,
     .popup-overlay-selection.active,
     .popup-overlay-inning.active,
-    .popup-overlay-winner.active {
+    .popup-overlay-winner.active,
+    .popup-overlay-out.active {
       display: flex;
     }
     .popup-card,
     .popup-card-toss,
     .popup-card-selection,
     .popup-card-inning,
-    .popup-card-winner {
+    .popup-card-winner,
+    .popup-card-out {
       background: #1e2835;
       border-radius: 32px;
       padding: 28px 24px;
@@ -1199,13 +1217,39 @@
     .popup-card-toss h3,
     .popup-card-selection h3,
     .popup-card-inning h3,
-    .popup-card-winner h3 {
+    .popup-card-winner h3,
+    .popup-card-out h3 {
       font-size: 22px;
       margin-bottom: 16px;
       text-align: center;
       border-bottom: 1px solid #2f3d4e;
       padding-bottom: 12px;
     }
+    .popup-card-out .out-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .popup-card-out .out-options button {
+      background: #26323f;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      padding: 16px 0;
+      font-size: 18px;
+      font-weight: 600;
+      color: #d9e7f7;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .popup-card-out .out-options button:active {
+      transform: scale(0.94);
+    }
+    .popup-card-out .out-options button.selected {
+      border-color: #3b82f6;
+      background: #1f2a38;
+    }
+
     .popup-card-winner .winner-emoji {
       font-size: 80px;
       text-align: center;
@@ -1430,7 +1474,6 @@
       width: 100%;
     }
 
-    /* scrollbar */
     ::-webkit-scrollbar {
       width: 4px;
     }
@@ -1442,12 +1485,10 @@
       border-radius: 4px;
     }
 
-    /* file input hidden */
     #fileInput {
       display: none;
     }
 
-    /* no players state */
     .no-players {
       text-align: center;
       padding: 40px 0;
@@ -1459,7 +1500,6 @@
       margin-bottom: 12px;
     }
 
-    /* Uploading state */
     .uploading {
       opacity: 0.6;
       pointer-events: none;
@@ -1485,14 +1525,10 @@
         <div id="screenNoMatch" class="no-matches active">
             <div class="brand-title">🏏 CRICKET CRAZE BY SALMAN SYED</div>
             <div class="icon-cricket"><span>🏏</span></div>
-
-            <!-- Home Tabs -->
             <div class="home-tabs">
                 <button class="active" data-hometab="matches">📋 Matches</button>
                 <button data-hometab="players">👤 Players</button>
             </div>
-
-            <!-- Matches Tab -->
             <div id="homeMatchesTab">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <h2 style="font-size:16px; color:#b0c6dd;">Completed Matches</h2>
@@ -1503,8 +1539,6 @@
                 </div>
                 <button class="btn-primary" id="btnNewMatch">+ New Match</button>
             </div>
-
-            <!-- Players Tab -->
             <div id="homePlayersTab" style="display:none; flex-direction:column; gap:12px;">
                 <input class="search-bar" id="playerSearch" type="text" placeholder="🔍 Search players..." />
                 <div class="player-grid" id="playerGrid">
@@ -1519,7 +1553,6 @@
             <h1 id="newMatchTitle"># New Match</h1>
             <div class="sub" id="newMatchSub">Team Names</div>
             <input type="hidden" id="editMatchId" value="" />
-
             <div class="input-group">
                 <label>Team 1 Name (SIRKHANA)</label>
                 <input id="teamBatting" type="text" placeholder="Team 1 Name" value="SIRKHANA" />
@@ -1752,6 +1785,7 @@ Bilal</textarea>
                 <div class="player-name" id="detailName">Player Name</div>
                 <div class="player-team" id="detailTeam">Team</div>
                 <button class="change-photo-btn" id="changePhotoBtn">📷 Change Photo</button>
+                <button class="retry-btn" id="retryPhotoBtn">↻ Retry Upload</button>
             </div>
             <div class="stats-grid-detail">
                 <div class="stat-card"><div class="num" id="detailMatches">0</div><div class="lbl">Matches</div></div>
@@ -1777,7 +1811,7 @@ Bilal</textarea>
             </div>
         </div>
 
-        <!-- ─── POPUPS (existing) ─── -->
+        <!-- ─── POPUPS ─── -->
         <div class="popup-overlay" id="popupOverlay">
             <div class="popup-card">
                 <h3 id="popupTitle">Wide</h3>
@@ -1812,6 +1846,20 @@ Bilal</textarea>
                 <div class="popup-actions">
                     <button class="btn-secondary" id="selectionCancel" style="display:none;">Cancel</button>
                     <button class="btn-primary" id="selectionConfirm">Confirm</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Out Selection Popup with player names -->
+        <div class="popup-overlay-out" id="outSelectionPopup">
+            <div class="popup-card-out">
+                <h3>Who is out?</h3>
+                <div class="out-options" id="outOptions">
+                    <button id="outStrikerBtn">Striker</button>
+                    <button id="outNonStrikerBtn">Non-Striker</button>
+                </div>
+                <div class="popup-actions">
+                    <button class="btn-secondary" id="outCancel">Cancel</button>
                 </div>
             </div>
         </div>
@@ -1890,7 +1938,6 @@ Bilal</textarea>
             "https://static.cricbuzz.com/a/img/v1/1080x608/i1/c185800/the-six-and-the-picture-that-headlined-the-2015-world-cup-semifinal-between-new-zealand-and-south-africa.jpg"
         ];
 
-        // ─── SPLASH ───
         const splashScreen = document.getElementById('splashScreen');
         const randomBgIndex = Math.floor(Math.random() * cricketCelebrations.length);
         splashScreen.style.backgroundImage = `url('${cricketCelebrations[randomBgIndex]}')`;
@@ -1981,6 +2028,7 @@ Bilal</textarea>
         const detailBattingDetail = document.getElementById('detailBattingDetail');
         const detailBowlingDetail = document.getElementById('detailBowlingDetail');
         const changePhotoBtn = document.getElementById('changePhotoBtn');
+        const retryPhotoBtn = document.getElementById('retryPhotoBtn');
         const fileInput = document.getElementById('fileInput');
 
         const passwordPopup = document.getElementById('passwordPopup');
@@ -1990,7 +2038,6 @@ Bilal</textarea>
         const passwordCancel = document.getElementById('passwordCancel');
         const passwordConfirm = document.getElementById('passwordConfirm');
 
-        // ─── other DOM refs ───
         const teamBattingInput = document.getElementById('teamBatting');
         const teamBowlingInput = document.getElementById('teamBowling');
         const players1Input = document.getElementById('players1');
@@ -2023,6 +2070,12 @@ Bilal</textarea>
         const winnerText = document.getElementById('winnerText');
         const winnerDetail = document.getElementById('winnerDetail');
         const btnSaveAndExit = document.getElementById('btnSaveAndExit');
+
+        // Out selection popup
+        const outSelectionPopup = document.getElementById('outSelectionPopup');
+        const outStrikerBtn = document.getElementById('outStrikerBtn');
+        const outNonStrikerBtn = document.getElementById('outNonStrikerBtn');
+        const outCancel = document.getElementById('outCancel');
 
         // ─── Password popup helpers ───
         let passwordResolve = null;
@@ -2256,7 +2309,7 @@ Bilal</textarea>
                 return true;
             } catch (e) {
                 console.error('❌ Firebase set failed:', e);
-                return false;
+                throw e;
             }
         }
 
@@ -2275,7 +2328,6 @@ Bilal</textarea>
             } catch (e) { console.warn('Photo load error:', e); }
         }
 
-        // ─── Resize image (max 200px, JPEG 70%) ───
         function resizeImage(file, maxSize = 200) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -2309,6 +2361,37 @@ Bilal</textarea>
                 reader.onerror = reject;
                 reader.readAsDataURL(file);
             });
+        }
+
+        let pendingPhotoData = null;
+
+        async function uploadPhoto(playerName, dataUrl) {
+            try {
+                const success = await setPlayerPhoto(playerName, dataUrl);
+                if (success) {
+                    photoCache[playerName] = dataUrl;
+                    detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
+                    renderPlayerStats();
+                    retryPhotoBtn.style.display = 'none';
+                    return true;
+                }
+                return false;
+            } catch (err) {
+                console.error('Upload error:', err);
+                const errorMsg = err.message || err.toString();
+                alert(`❌ Firebase upload failed.\n\nError: ${errorMsg}\n\nCheck your database security rules.\n\nPhoto saved locally as fallback.`);
+                try {
+                    localStorage.setItem('playerPhoto_' + playerName, dataUrl);
+                    photoCache[playerName] = dataUrl;
+                    detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
+                    renderPlayerStats();
+                    retryPhotoBtn.style.display = 'inline-block';
+                    pendingPhotoData = dataUrl;
+                } catch (localErr) {
+                    alert('❌ Failed to save locally: ' + localErr.message);
+                }
+                return false;
+            }
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2376,6 +2459,8 @@ Bilal</textarea>
             const p = allPlayersData.find(d => d.name === playerName);
             if (!p) return;
             currentDetailPlayer = p;
+            pendingPhotoData = null;
+            retryPhotoBtn.style.display = 'none';
 
             detailName.textContent = p.name;
             detailTeam.textContent = p.team || 'Unknown';
@@ -2629,7 +2714,6 @@ Bilal</textarea>
             document.getElementById('completedStatRunRate').textContent = rr;
         }
 
-        // ─── completed scorecard mini tabs ───
         document.getElementById('completedScorecardMiniTabs').addEventListener('click', function(e) {
             if (e.target.tagName === 'BUTTON') {
                 document.querySelectorAll('#completedScorecardMiniTabs button').forEach(b => b.classList.remove('active'));
@@ -2639,7 +2723,6 @@ Bilal</textarea>
             }
         });
 
-        // ─── completed match tabs ───
         document.querySelectorAll('.completed-match-view .tabs button').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.completed-match-view .tabs button').forEach(b => b.classList.remove(
@@ -3049,7 +3132,19 @@ Bilal</textarea>
             } else if (selectionType === 'nextBatsman') {
                 if (selectedPlayers.length === 0) { alert('Please select a batsman'); return; }
                 const newBatsman = selectedPlayers[0];
-                state.striker = newBatsman;
+                if (!state.striker) {
+                    state.striker = newBatsman;
+                } else if (!state.nonStriker) {
+                    state.nonStriker = newBatsman;
+                } else {
+                    if (pendingPosition === 'striker') {
+                        state.striker = newBatsman;
+                    } else if (pendingPosition === 'nonStriker') {
+                        state.nonStriker = newBatsman;
+                    } else {
+                        state.striker = newBatsman;
+                    }
+                }
                 if (!state.batsmanStats[newBatsman]) state.batsmanStats[newBatsman] = { runs: 0, balls: 0, fours: 0,
                     sixes: 0, out: false, outDesc: '' };
                 closeSelectionPopup();
@@ -3078,9 +3173,163 @@ Bilal</textarea>
         selectionCancel.addEventListener('click', closeSelectionPopup);
         selectionPopup.addEventListener('click', (e) => { if (e.target === selectionPopup) closeSelectionPopup(); });
 
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // LIVE MATCH UI
-        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // ─── Out Selection Popup with player names ───
+        let pendingWicketRuns = 0;
+        let pendingWicketSnapshot = null;
+        let pendingWicketAction = null;
+
+        function showOutSelectionPopup(runs) {
+            pendingWicketRuns = runs;
+            pendingWicketSnapshot = captureStateSnapshot();
+            pendingWicketAction = { type: 'wicket', runs: runs };
+
+            const strikerName = state.striker || 'Striker';
+            const nonStrikerName = state.nonStriker || 'Non-Striker';
+            outStrikerBtn.textContent = strikerName;
+            outNonStrikerBtn.textContent = nonStrikerName;
+
+            outSelectionPopup.classList.add('active');
+        }
+
+        function closeOutSelectionPopup() {
+            outSelectionPopup.classList.remove('active');
+            pendingWicketRuns = 0;
+            pendingWicketSnapshot = null;
+            pendingWicketAction = null;
+        }
+
+        outStrikerBtn.addEventListener('click', () => {
+            if (pendingWicketSnapshot && pendingWicketAction) {
+                processWicket(pendingWicketRuns, 'striker', pendingWicketSnapshot, pendingWicketAction);
+                closeOutSelectionPopup();
+            }
+        });
+
+        outNonStrikerBtn.addEventListener('click', () => {
+            if (pendingWicketSnapshot && pendingWicketAction) {
+                processWicket(pendingWicketRuns, 'nonStriker', pendingWicketSnapshot, pendingWicketAction);
+                closeOutSelectionPopup();
+            }
+        });
+
+        outCancel.addEventListener('click', closeOutSelectionPopup);
+        outSelectionPopup.addEventListener('click', (e) => { if (e.target === outSelectionPopup) closeOutSelectionPopup(); });
+
+        // ─── Process Wicket ───
+        let pendingPosition = null;
+
+        function processWicket(runs, outPosition, snapshot, action) {
+            restoreSnapshot(snapshot);
+
+            const outBatsman = (outPosition === 'striker') ? state.striker : state.nonStriker;
+            state.wickets += 1;
+            state.balls += 1;
+            state.overBalls += 1;
+            state.currentOverDeliveries.push('W');
+            if (outBatsman && state.batsmanStats[outBatsman]) {
+                state.batsmanStats[outBatsman].out = true;
+                state.batsmanStats[outBatsman].outDesc = runs > 0 ? `c & b ${state.currentBowler}` : 'b ' + state
+                    .currentBowler;
+                if (runs > 0) {
+                    state.batsmanStats[outBatsman].runs += runs;
+                    state.runs += runs;
+                }
+                state.batsmanStats[outBatsman].balls += 1;
+            }
+            if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
+                state.bowlerStats[state.currentBowler].wickets += 1;
+                state.bowlerStats[state.currentBowler].runs += runs;
+                state.bowlerStats[state.currentBowler].balls += 1;
+            }
+
+            if (outPosition === 'striker') {
+                pendingPosition = 'striker';
+                state.striker = null;
+            } else {
+                pendingPosition = 'nonStriker';
+                state.nonStriker = null;
+            }
+
+            pushHistory(action, snapshot);
+            updateLiveUI();
+
+            if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
+                if (state.currentInning === 1 && !state.isFirstInningComplete) {
+                    state.isMatchEnded = true;
+                    setTimeout(showInningComplete, 800);
+                } else if (state.currentInning === 2) {
+                    state.isMatchEnded = true;
+                    if (state.targetScore && state.runs < state.targetScore) {
+                        const winner = state.bowling;
+                        const diff = state.targetScore - state.runs - 1;
+                        state.winner = winner;
+                        state.winMargin = diff;
+                        state.winType = 'runs';
+                        saveInning2Data();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
+                    } else if (state.targetScore && state.runs >= state.targetScore) {
+                        const winner = state.batting;
+                        const wicketsRemaining = state.totalWickets - state.wickets;
+                        state.winner = winner;
+                        state.winMargin = wicketsRemaining;
+                        state.winType = 'wickets';
+                        state.isMatchEnded = true;
+                        saveInning2Data();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
+                    }
+                }
+                return;
+            }
+
+            const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p].out);
+            const otherEnd = (outPosition === 'striker') ? state.nonStriker : state.striker;
+            const candidates = allNotOut.filter(p => p !== otherEnd);
+            setTimeout(() => {
+                showSelectionPopup('nextBatsman', candidates.length > 0 ? candidates : state.battingPlayers,
+                    'Select Next Batsman', false);
+            }, 500);
+        }
+
+        // ─── Utility: capture and restore snapshot ───
+        function captureStateSnapshot() {
+            return {
+                runs: state.runs,
+                wickets: state.wickets,
+                balls: state.balls,
+                extras: { ...state.extras },
+                fours: state.fours,
+                sixes: state.sixes,
+                overBalls: state.overBalls,
+                striker: state.striker,
+                nonStriker: state.nonStriker,
+                currentOverDeliveries: [...state.currentOverDeliveries],
+                batsmanStats: JSON.parse(JSON.stringify(state.batsmanStats)),
+                bowlerStats: JSON.parse(JSON.stringify(state.bowlerStats))
+            };
+        }
+
+        function restoreSnapshot(snapshot) {
+            state.runs = snapshot.runs;
+            state.wickets = snapshot.wickets;
+            state.balls = snapshot.balls;
+            state.extras = { ...snapshot.extras };
+            state.fours = snapshot.fours;
+            state.sixes = snapshot.sixes;
+            state.overBalls = snapshot.overBalls;
+            state.striker = snapshot.striker;
+            state.nonStriker = snapshot.nonStriker;
+            state.currentOverDeliveries = [...snapshot.currentOverDeliveries];
+            state.batsmanStats = JSON.parse(JSON.stringify(snapshot.batsmanStats));
+            state.bowlerStats = JSON.parse(JSON.stringify(snapshot.bowlerStats));
+        }
+
+        function pushHistory(action, snapshot) {
+            action.prevState = snapshot;
+            state.history.push(action);
+            if (state.history.length > 50) state.history.shift();
+        }
+
+        // ─── Update UI ───
         function updateLiveUI() {
             const totalExtras = state.extras.wd + state.extras.nb + state.extras.b + state.extras.lb + state.extras.p;
             document.getElementById('liveScore').textContent = `${state.runs}/${state.wickets}`;
@@ -3126,23 +3375,8 @@ Bilal</textarea>
                 document.getElementById('currentBowler').textContent = '-';
             }
 
-            // Check for inning completion conditions
+            // Check for inning completion conditions inside updateLiveUI
             if (state.wickets >= state.totalWickets) {
-                if (state.currentInning === 1 && !state.isFirstInningComplete) {
-                    state.isMatchEnded = true;
-                    setTimeout(showInningComplete, 800);
-                } else if (state.currentInning === 2) {
-                    if (state.targetScore && state.runs < state.targetScore) {
-                        const winner = state.bowling;
-                        const diff = state.targetScore - state.runs - 1;
-                        state.winner = winner;
-                        state.winMargin = diff;
-                        state.winType = 'runs';
-                        saveInning2Data();
-                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
-                    }
-                }
-            } else if (state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
                     setTimeout(showInningComplete, 800);
@@ -3157,11 +3391,49 @@ Bilal</textarea>
                         saveInning2Data();
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
                     } else if (state.targetScore && state.runs >= state.targetScore) {
-                        if (!isWinnerPopupShown) checkMatchWin();
+                        const winner = state.batting;
+                        const wicketsRemaining = state.totalWickets - state.wickets;
+                        state.winner = winner;
+                        state.winMargin = wicketsRemaining;
+                        state.winType = 'wickets';
+                        state.isMatchEnded = true;
+                        saveInning2Data();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
                     }
                 }
-            } else if (state.currentInning === 2 && state.targetScore && state.runs >= state.targetScore) {
-                if (!isWinnerPopupShown) checkMatchWin();
+                // Don't let the normal status override
+                document.getElementById('liveStatus').textContent = (state.wickets >= state.totalWickets) ? '🏏 All out!' :
+                    '▶ ' + state.balls + ' balls bowled';
+                return;
+            }
+
+            if (state.balls >= state.totalOvers * state.ballsPerOver) {
+                if (state.currentInning === 1 && !state.isFirstInningComplete) {
+                    state.isMatchEnded = true;
+                    setTimeout(showInningComplete, 800);
+                } else if (state.currentInning === 2) {
+                    state.isMatchEnded = true;
+                    if (state.targetScore && state.runs < state.targetScore) {
+                        const winner = state.bowling;
+                        const diff = state.targetScore - state.runs - 1;
+                        state.winner = winner;
+                        state.winMargin = diff;
+                        state.winType = 'runs';
+                        saveInning2Data();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
+                    } else if (state.targetScore && state.runs >= state.targetScore) {
+                        const winner = state.batting;
+                        const wicketsRemaining = state.totalWickets - state.wickets;
+                        state.winner = winner;
+                        state.winMargin = wicketsRemaining;
+                        state.winType = 'wickets';
+                        state.isMatchEnded = true;
+                        saveInning2Data();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
+                    }
+                }
+                document.getElementById('liveStatus').textContent = '⏱ Overs complete';
+                return;
             }
 
             let status = `▶ ${state.balls} balls bowled`;
@@ -3304,58 +3576,129 @@ Bilal</textarea>
             };
         }
 
-        // ─── Scoring actions ───
+        // ─── Scoring functions ───
         function addRuns(runs, isExtra = false, extraType = null) {
             if (state.isMatchEnded || state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state
                 .ballsPerOver) return;
             if (runs === 4 || runs === 6) celebrate(runs);
 
-            const action = { type: 'runs', runs, isExtra, extraType, prevState: { runs: state.runs, wickets: state
-                        .wickets, balls: state.balls, extras: { ...state.extras }, fours: state.fours, sixes: state
-                        .sixes, overBalls: state.overBalls, striker: state.striker, nonStriker: state
-                        .nonStriker } };
+            const snapshot = captureStateSnapshot();
+            const action = { type: 'runs', runs, isExtra, extraType };
+
+            function swapStrikeIfOdd(runsTaken) {
+                if (runsTaken % 2 === 1) {
+                    const temp = state.striker;
+                    state.striker = state.nonStriker;
+                    state.nonStriker = temp;
+                }
+            }
 
             if (isExtra && extraType) {
-                if (extraType === 'wd') { state.extras.wd += 1;
+                if (extraType === 'wd') {
+                    state.extras.wd += 1;
                     state.runs += 1;
-                    state.currentOverDeliveries.push('Wd'); } else if (extraType === 'nb') {
+                    state.currentOverDeliveries.push('Wd');
+                    if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
+                        state.bowlerStats[state.currentBowler].runs += 1;
+                    }
+                    pushHistory(action, snapshot);
+                    updateLiveUI();
+                    if (state.currentInning === 2 && state.targetScore && state.runs >= state.targetScore) {
+                        if (!isWinnerPopupShown) {
+                            const winner = state.batting;
+                            const wicketsRemaining = state.totalWickets - state.wickets;
+                            state.winner = winner;
+                            state.winMargin = wicketsRemaining;
+                            state.winType = 'wickets';
+                            state.isMatchEnded = true;
+                            saveInning2Data();
+                            showWinnerPopup(winner, wicketsRemaining, 'wickets');
+                        }
+                    }
+                    return;
+                }
+                if (extraType === 'nb') {
                     const batRuns = runs - 1;
                     state.extras.nb += 1;
                     state.runs += runs;
                     state.currentOverDeliveries.push('Nb');
-                    if (state.striker && state.batsmanStats[state.striker]) state.batsmanStats[state.striker].runs +=
-                        batRuns;
-                } else if (extraType === 'b') { state.extras.b += runs;
-                    state.runs += runs;
-                    state.balls += 1;
-                    state.overBalls += 1;
-                    state.currentOverDeliveries.push(runs);
-                    if (state.striker && state.batsmanStats[state.striker]) state.batsmanStats[state.striker].balls +=
-                        1; } else if (extraType === 'lb') { state.extras.lb += runs;
-                    state.runs += runs;
-                    state.balls += 1;
-                    state.overBalls += 1;
-                    state.currentOverDeliveries.push(runs);
-                    if (state.striker && state.batsmanStats[state.striker]) state.batsmanStats[state.striker].balls +=
-                        1; } else if (extraType === 'p') { state.extras.p += runs;
-                    state.runs += runs;
-                    state.balls += 1;
-                    state.overBalls += 1;
-                    state.currentOverDeliveries.push(runs);
-                    if (state.striker && state.batsmanStats[state.striker]) state.batsmanStats[state.striker].balls +=
-                        1; }
-                if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
-                    state.bowlerStats[state.currentBowler].runs += runs;
-                    if (extraType !== 'wd' && extraType !== 'nb') state.bowlerStats[state.currentBowler].balls += 1;
+                    if (state.striker && state.batsmanStats[state.striker]) {
+                        state.batsmanStats[state.striker].runs += batRuns;
+                        state.batsmanStats[state.striker].balls += 1;
+                        if (batRuns === 4) { state.batsmanStats[state.striker].fours += 1;
+                            state.fours += 1; }
+                        if (batRuns === 6) { state.batsmanStats[state.striker].sixes += 1;
+                            state.sixes += 1; }
+                    }
+                    if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
+                        state.bowlerStats[state.currentBowler].runs += runs;
+                    }
+                    swapStrikeIfOdd(batRuns);
+                    pushHistory(action, snapshot);
+                    updateLiveUI();
+                    if (state.currentInning === 2 && state.targetScore && state.runs >= state.targetScore) {
+                        if (!isWinnerPopupShown) {
+                            const winner = state.batting;
+                            const wicketsRemaining = state.totalWickets - state.wickets;
+                            state.winner = winner;
+                            state.winMargin = wicketsRemaining;
+                            state.winType = 'wickets';
+                            state.isMatchEnded = true;
+                            saveInning2Data();
+                            showWinnerPopup(winner, wicketsRemaining, 'wickets');
+                        }
+                    }
+                    return;
                 }
-                state.history.push(action);
-                updateLiveUI();
-                if (state.currentInning === 2 && state.targetScore && state.runs >= state.targetScore) {
-                    if (!isWinnerPopupShown) checkMatchWin();
+                if (extraType === 'b' || extraType === 'lb' || extraType === 'p') {
+                    if (extraType === 'b') state.extras.b += runs;
+                    else if (extraType === 'lb') state.extras.lb += runs;
+                    else state.extras.p += runs;
+                    state.runs += runs;
+                    state.balls += 1;
+                    state.overBalls += 1;
+                    state.currentOverDeliveries.push(runs);
+                    if (state.striker && state.batsmanStats[state.striker]) {
+                        state.batsmanStats[state.striker].balls += 1;
+                    }
+                    if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
+                        state.bowlerStats[state.currentBowler].runs += runs;
+                        state.bowlerStats[state.currentBowler].balls += 1;
+                    }
+                    swapStrikeIfOdd(runs);
+                    pushHistory(action, snapshot);
+                    updateLiveUI();
+                    if (state.overBalls >= state.ballsPerOver && !state.isMatchEnded) {
+                        state.overBalls = 0;
+                        const temp = state.striker;
+                        state.striker = state.nonStriker;
+                        state.nonStriker = temp;
+                        if (!state.isMatchEnded) {
+                            const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
+                            setTimeout(() => {
+                                showSelectionPopup('nextBowler', available.length > 0 ? available : state
+                                    .bowlingPlayers, 'Select Next Bowler', false);
+                            }, 500);
+                        }
+                        updateLiveUI();
+                    }
+                    if (state.currentInning === 2 && state.targetScore && state.runs >= state.targetScore) {
+                        if (!isWinnerPopupShown) {
+                            const winner = state.batting;
+                            const wicketsRemaining = state.totalWickets - state.wickets;
+                            state.winner = winner;
+                            state.winMargin = wicketsRemaining;
+                            state.winType = 'wickets';
+                            state.isMatchEnded = true;
+                            saveInning2Data();
+                            showWinnerPopup(winner, wicketsRemaining, 'wickets');
+                        }
+                    }
+                    return;
                 }
-                return;
             }
 
+            // Normal delivery
             state.runs += runs;
             state.balls += 1;
             state.overBalls += 1;
@@ -3372,19 +3715,30 @@ Bilal</textarea>
                 state.bowlerStats[state.currentBowler].runs += runs;
                 state.bowlerStats[state.currentBowler].balls += 1;
             }
-            if (runs % 2 === 1) { const tmp = state.striker;
+            if (runs % 2 === 1) {
+                const temp = state.striker;
                 state.striker = state.nonStriker;
-                state.nonStriker = tmp; }
-            state.history.push(action);
+                state.nonStriker = temp;
+            }
+            pushHistory(action, snapshot);
             updateLiveUI();
             if (state.currentInning === 2 && state.targetScore && state.runs >= state.targetScore) {
-                if (!isWinnerPopupShown) checkMatchWin();
+                if (!isWinnerPopupShown) {
+                    const winner = state.batting;
+                    const wicketsRemaining = state.totalWickets - state.wickets;
+                    state.winner = winner;
+                    state.winMargin = wicketsRemaining;
+                    state.winType = 'wickets';
+                    state.isMatchEnded = true;
+                    saveInning2Data();
+                    showWinnerPopup(winner, wicketsRemaining, 'wickets');
+                }
             }
             if (state.overBalls >= state.ballsPerOver && !state.isMatchEnded) {
                 state.overBalls = 0;
-                const tmp = state.striker;
+                const temp = state.striker;
                 state.striker = state.nonStriker;
-                state.nonStriker = tmp;
+                state.nonStriker = temp;
                 if (!state.isMatchEnded) {
                     const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
                     setTimeout(() => {
@@ -3397,70 +3751,82 @@ Bilal</textarea>
             updateLiveUI();
         }
 
-        function addWicket(runs = 0) {
+        function initiateWicket(runs) {
             if (state.isMatchEnded || state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state
                 .ballsPerOver) return;
-            const action = { type: 'wicket', runs, prevState: { runs: state.runs, wickets: state.wickets, balls: state
-                        .balls, extras: { ...state.extras }, fours: state.fours, sixes: state.sixes,
-                    overBalls: state.overBalls, striker: state.striker, nonStriker: state.nonStriker } };
-            state.wickets += 1;
-            state.balls += 1;
-            state.overBalls += 1;
-            state.currentOverDeliveries.push('W');
-            if (state.striker && state.batsmanStats[state.striker]) {
-                state.batsmanStats[state.striker].out = true;
-                state.batsmanStats[state.striker].outDesc = runs > 0 ? `c & b ${state.currentBowler}` : 'b ' + state
-                    .currentBowler;
-                if (runs > 0) { state.batsmanStats[state.striker].runs += runs;
-                    state.runs += runs; }
-                state.batsmanStats[state.striker].balls += 1;
-            }
-            if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
-                state.bowlerStats[state.currentBowler].wickets += 1;
-                state.bowlerStats[state.currentBowler].runs += runs;
-                state.bowlerStats[state.currentBowler].balls += 1;
-            }
-            state.history.push(action);
-            updateLiveUI();
 
-            const overEnded = state.overBalls >= state.ballsPerOver;
-            if (state.wickets < state.totalWickets && state.balls < state.totalOvers * state.ballsPerOver && !state
-                .isMatchEnded) {
-                const available = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p]
-                    .out).filter(p => p !== state.nonStriker);
-                if (overEnded) {
-                    pendingBatsmanSelection = true;
-                    pendingBowlerSelection = true;
-                    setTimeout(() => {
-                        showSelectionPopup('nextBatsman', available.length > 0 ? available : state
-                            .battingPlayers, 'Select Next Batsman', false);
-                    }, 500);
-                } else {
-                    setTimeout(() => {
-                        showSelectionPopup('nextBatsman', available.length > 0 ? available : state
-                            .battingPlayers, 'Select Next Batsman', false);
-                    }, 500);
+            if (runs === 0) {
+                const snapshot = captureStateSnapshot();
+                const action = { type: 'wicket', runs: 0 };
+                state.wickets += 1;
+                state.balls += 1;
+                state.overBalls += 1;
+                state.currentOverDeliveries.push('W');
+                if (state.striker && state.batsmanStats[state.striker]) {
+                    state.batsmanStats[state.striker].out = true;
+                    state.batsmanStats[state.striker].outDesc = 'b ' + state.currentBowler;
+                    state.batsmanStats[state.striker].balls += 1;
                 }
-            }
-            if (overEnded && !state.isMatchEnded) {
-                state.overBalls = 0;
-                const tmp = state.striker;
-                state.striker = state.nonStriker;
-                state.nonStriker = tmp;
-            }
-            // Check all-out in second inning
-            if (state.wickets >= state.totalWickets && state.currentInning === 2) {
-                if (state.targetScore && state.runs < state.targetScore) {
-                    const winner = state.bowling;
-                    const diff = state.targetScore - state.runs - 1;
-                    state.winner = winner;
-                    state.winMargin = diff;
-                    state.winType = 'runs';
-                    saveInning2Data();
-                    setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
+                if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
+                    state.bowlerStats[state.currentBowler].wickets += 1;
+                    state.bowlerStats[state.currentBowler].balls += 1;
                 }
+                pendingPosition = 'striker';
+                state.striker = null;
+                pushHistory(action, snapshot);
+                updateLiveUI();
+                if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
+                    if (state.currentInning === 1 && !state.isFirstInningComplete) {
+                        state.isMatchEnded = true;
+                        setTimeout(showInningComplete, 800);
+                    } else if (state.currentInning === 2) {
+                        state.isMatchEnded = true;
+                        if (state.targetScore && state.runs < state.targetScore) {
+                            const winner = state.bowling;
+                            const diff = state.targetScore - state.runs - 1;
+                            state.winner = winner;
+                            state.winMargin = diff;
+                            state.winType = 'runs';
+                            saveInning2Data();
+                            setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
+                        } else if (state.targetScore && state.runs >= state.targetScore) {
+                            const winner = state.batting;
+                            const wicketsRemaining = state.totalWickets - state.wickets;
+                            state.winner = winner;
+                            state.winMargin = wicketsRemaining;
+                            state.winType = 'wickets';
+                            state.isMatchEnded = true;
+                            saveInning2Data();
+                            setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
+                        }
+                    }
+                    return;
+                }
+                const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p]
+                .out);
+                const candidates = allNotOut.filter(p => p !== state.nonStriker);
+                setTimeout(() => {
+                    showSelectionPopup('nextBatsman', candidates.length > 0 ? candidates : state.battingPlayers,
+                        'Select Next Batsman', false);
+                }, 500);
+            } else {
+                showOutSelectionPopup(runs);
             }
+        }
+
+        // ─── Undo ───
+        function undoLast() {
+            if (state.history.length === 0) {
+                alert('Nothing to undo.');
+                return;
+            }
+            const last = state.history.pop();
+            const prev = last.prevState;
+            if (!prev) return;
+            restoreSnapshot(prev);
             updateLiveUI();
+            updateScorecard();
+            updateStats();
         }
 
         function celebrate(runs) {
@@ -3518,7 +3884,6 @@ Bilal</textarea>
             }
         });
 
-        // ─── Save and Exit (winner popup) ───
         btnSaveAndExit.addEventListener('click', async () => {
             winnerPopup.classList.remove('active');
             await completeAndSaveMatch();
@@ -3590,23 +3955,6 @@ Bilal</textarea>
             } catch (e) {}
         }
 
-        function undoLast() {
-            if (state.history.length === 0) return;
-            const last = state.history.pop();
-            const prev = last.prevState;
-            state.runs = prev.runs;
-            state.wickets = prev.wickets;
-            state.balls = prev.balls;
-            state.extras = { ...prev.extras };
-            state.fours = prev.fours;
-            state.sixes = prev.sixes;
-            state.overBalls = prev.overBalls;
-            state.striker = prev.striker;
-            state.nonStriker = prev.nonStriker;
-            if (state.currentOverDeliveries.length > 0) state.currentOverDeliveries.pop();
-            updateLiveUI();
-        }
-
         // ─── Scoring popup ───
         let popupType = '';
         let selectedPopupValue = null;
@@ -3664,6 +4012,7 @@ Bilal</textarea>
 
         popupCancel.addEventListener('click', () => { popupOverlay.classList.remove('active');
             selectedPopupValue = null; });
+
         popupConfirm.addEventListener('click', () => {
             if (!selectedPopupValue) return;
             const val = selectedPopupValue;
@@ -3673,18 +4022,21 @@ Bilal</textarea>
                     addRuns(runs, true, 'wd'); } else { const parts = val.split('+');
                     runs = 1 + (parseInt(parts[1]) || 0);
                     addRuns(runs, true, 'wd'); }
-                if (isWicketOn) addWicket(0);
+                if (isWicketOn) {
+                    initiateWicket(0);
+                }
             } else if (popupType === 'nb') {
                 if (val === 'Nb') { runs = 1;
                     addRuns(runs, true, 'nb'); } else { const parts = val.split('+');
                     runs = 1 + (parseInt(parts[1]) || 0);
                     addRuns(runs, true, 'nb'); }
-                if (isWicketOn) addWicket(0);
+                if (isWicketOn) {
+                    initiateWicket(0);
+                }
             } else if (popupType === 'wicket') {
-                if (val === 'W') { runs = 0;
-                    addWicket(0); } else { const parts = val.split('+');
-                    runs = parseInt(parts[1]) || 0;
-                    addWicket(runs); }
+                if (val === 'W') { runs = 0; } else { const parts = val.split('+');
+                    runs = parseInt(parts[1]) || 0; }
+                initiateWicket(runs);
             }
             popupOverlay.classList.remove('active');
             selectedPopupValue = null;
@@ -3790,7 +4142,7 @@ Bilal</textarea>
             }
         });
 
-        // ─── Change Photo – store base64 directly in Firebase ───
+        // ─── Change Photo ───
         changePhotoBtn.addEventListener('click', async () => {
             if (!currentDetailPlayer) {
                 alert('Please select a player first.');
@@ -3802,42 +4154,31 @@ Bilal</textarea>
             } catch (e) { /* cancelled */ }
         });
 
+        retryPhotoBtn.addEventListener('click', async () => {
+            if (!currentDetailPlayer || !pendingPhotoData) return;
+            changePhotoBtn.textContent = '⏳ Uploading...';
+            changePhotoBtn.disabled = true;
+            const success = await uploadPhoto(currentDetailPlayer.name, pendingPhotoData);
+            changePhotoBtn.textContent = '📷 Change Photo';
+            changePhotoBtn.disabled = false;
+            if (success) retryPhotoBtn.style.display = 'none';
+        });
+
         fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file || !currentDetailPlayer) {
                 fileInput.value = '';
                 return;
             }
-
-            // Show uploading feedback
             changePhotoBtn.textContent = '⏳ Uploading...';
             changePhotoBtn.disabled = true;
             changePhotoBtn.classList.add('uploading');
-
             try {
-                // Resize image to max 200px (JPEG 70%)
                 const dataUrl = await resizeImage(file, 200);
                 console.log(`📸 Resized image for ${currentDetailPlayer.name}, size: ${(dataUrl.length/1024).toFixed(1)} KB`);
-
-                // Store in Firebase Realtime Database
-                const success = await setPlayerPhoto(currentDetailPlayer.name, dataUrl);
+                const success = await uploadPhoto(currentDetailPlayer.name, dataUrl);
                 if (success) {
-                    // Update cache and UI
-                    photoCache[currentDetailPlayer.name] = dataUrl;
-                    detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${currentDetailPlayer.name}" />`;
-                    renderPlayerStats(); // refresh grid
-                    alert('✅ Photo updated successfully!');
-                } else {
-                    // Fallback: store in localStorage
-                    try {
-                        localStorage.setItem('playerPhoto_' + currentDetailPlayer.name, dataUrl);
-                        photoCache[currentDetailPlayer.name] = dataUrl;
-                        detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${currentDetailPlayer.name}" />`;
-                        renderPlayerStats();
-                        alert('⚠️ Photo saved locally (Firebase failed).');
-                    } catch (localErr) {
-                        alert('❌ Failed to save photo: ' + localErr.message);
-                    }
+                    alert('✅ Photo uploaded to Firebase!');
                 }
             } catch (err) {
                 console.error('Photo upload error:', err);
@@ -3855,10 +4196,7 @@ Bilal</textarea>
         playerSearch2.addEventListener('input', renderPlayerStats);
 
         // ─── Init ───
-        // Load photos from Firebase
         await loadAllPhotos();
-
-        // Also load any localStorage photos (fallback)
         try {
             const localKeys = Object.keys(localStorage).filter(k => k.startsWith('playerPhoto_'));
             for (const key of localKeys) {
@@ -3875,9 +4213,9 @@ Bilal</textarea>
         renderPlayerStats();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App with Player Stats & Base64 photo storage!');
+        console.log('🏏 Cricket Scorer App with both popups restored.');
         console.log('🔐 Password for delete & photo: 28326');
-        console.log('📸 Photos are stored as base64 in Realtime Database (and localStorage fallback).');
+        console.log('✅ Inning Complete and Winner popups restored.');
     </script>
 </body>
 </html>
