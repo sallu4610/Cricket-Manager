@@ -2152,9 +2152,7 @@ Bilal</textarea>
             if (e.key === 'Escape') passwordCancel.click();
         });
 
-        passwordPopup.addEventListener('click', (e) => {
-            if (e.target === passwordPopup) passwordCancel.click();
-        });
+        // Remove outside-click close for password popup (already none)
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // DATABASE HELPERS
@@ -3130,7 +3128,8 @@ Bilal</textarea>
         });
 
         tossPopupCancel.addEventListener('click', () => tossPopup.classList.remove('active'));
-        tossPopup.addEventListener('click', (e) => { if (e.target === tossPopup) tossPopup.classList.remove('active'); });
+        // Remove outside-click close for tossPopup
+        // tossPopup.addEventListener('click', (e) => { if (e.target === tossPopup) tossPopup.classList.remove('active'); });
 
         btnResetToss.addEventListener('click', resetToss);
 
@@ -3300,6 +3299,9 @@ Bilal</textarea>
             document.body.classList.remove('popup-open');
         }
 
+        // Remove outside-click close for selectionPopup
+        // selectionPopup.addEventListener('click', (e) => { if (e.target === selectionPopup) closeSelectionPopup(); });
+
         selectionConfirm.addEventListener('click', () => {
             if (selectionType === 'openers') {
                 if (!selectedStriker || !selectedNonStriker) { alert('Please select both striker and non-striker'); return; }
@@ -3357,7 +3359,6 @@ Bilal</textarea>
         });
 
         selectionCancel.addEventListener('click', closeSelectionPopup);
-        selectionPopup.addEventListener('click', (e) => { if (e.target === selectionPopup) closeSelectionPopup(); });
 
         // ─── Out Selection Popup with player names ───
         let pendingWicketRuns = 0;
@@ -3399,7 +3400,7 @@ Bilal</textarea>
         });
 
         outCancel.addEventListener('click', closeOutSelectionPopup);
-        outSelectionPopup.addEventListener('click', (e) => { if (e.target === outSelectionPopup) closeOutSelectionPopup(); });
+        // Remove outside-click close for outSelectionPopup
 
         // ─── Process Wicket ───
         let pendingPosition = null;
@@ -4188,9 +4189,9 @@ Bilal</textarea>
             popupOverlay.classList.remove('active');
             selectedPopupValue = null;
         });
-        popupOverlay.addEventListener('click', (e) => { if (e.target === popupOverlay) { popupOverlay.classList.remove(
-                    'active');
-                selectedPopupValue = null; } });
+
+        // Remove outside-click close for popupOverlay
+        // popupOverlay.addEventListener('click', (e) => { if (e.target === popupOverlay) { ... } });
 
         // ─── Live tabs ───
         document.querySelectorAll('.live-match .tabs button').forEach(btn => {
@@ -4360,9 +4361,9 @@ Bilal</textarea>
         renderPlayerStats();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App with Stop/Continue');
+        console.log('🏏 Cricket Scorer App – All popups are modal now.');
         console.log('🔐 Password for delete & photo: 28326');
-        console.log('✅ Stop Match saves state, Continue restores it.');
+        console.log('✅ Outside-click on any popup does nothing.');
     </script>
 </body>
 </html>
