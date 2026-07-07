@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sallu4610.github.io/Cricket-Manager/sitemap.xml
