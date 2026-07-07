@@ -232,8 +232,7 @@
       border-radius: 16px;
       padding: 14px 16px;
       margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
+      cursor: default;
       border: 2px solid transparent;
     }
     .match-item:hover {
@@ -262,23 +261,54 @@
     .match-item .match-status.completed {
       color: #f59e0b;
     }
+    .match-item .match-status.paused {
+      color: #60a5fa;
+    }
     .match-item .match-winner {
       font-size: 13px;
       color: #22c55e;
       font-weight: 600;
       margin-top: 2px;
     }
-    .match-item .delete-match {
-      background: #dc2626;
+    .match-item .match-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .match-item .match-actions button {
+      background: #2d3744;
       border: none;
-      color: white;
+      color: #e2eaf2;
       border-radius: 8px;
       padding: 4px 12px;
       font-size: 12px;
       cursor: pointer;
+      transition: 0.15s;
     }
-    .match-item .delete-match:hover {
+    .match-item .match-actions button:hover {
+      background: #3f4a5a;
+    }
+    .match-item .match-actions .btn-continue {
+      background: #22c55e;
+      color: white;
+    }
+    .match-item .match-actions .btn-continue:hover {
+      background: #16a34a;
+    }
+    .match-item .match-actions .btn-delete {
+      background: #dc2626;
+      color: white;
+    }
+    .match-item .match-actions .btn-delete:hover {
       background: #b91c1c;
+    }
+    .match-item .match-actions .btn-view {
+      background: #3b82f6;
+      color: white;
+    }
+    .match-item .match-actions .btn-view:hover {
+      background: #2563eb;
     }
     .no-matches .loading-matches {
       color: #8b9fb5;
@@ -545,7 +575,7 @@
       min-height: 20px;
     }
 
-    /* ── EXISTING STYLES (preserved) ── */
+    /* ── EXISTING STYLES ── */
     .btn-primary {
       background: #3b82f6;
       border: none;
@@ -1531,7 +1561,7 @@
             </div>
             <div id="homeMatchesTab">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <h2 style="font-size:16px; color:#b0c6dd;">Completed Matches</h2>
+                    <h2 style="font-size:16px; color:#b0c6dd;">Matches</h2>
                     <span style="font-size:12px; color:#6b7f96;" id="matchCount">0 matches</span>
                 </div>
                 <div class="matches-list" id="matchesList">
@@ -1677,7 +1707,7 @@ Bilal</textarea>
                 </div>
                 <div class="bottom-actions">
                     <button class="btn-secondary" id="btnUndo">↩ Undo</button>
-                    <button class="btn-secondary" id="btnEndMatch">🏏 End Match</button>
+                    <button class="btn-secondary" id="btnStopMatch">⏹ Stop Match</button>
                     <button class="btn-secondary" id="btnBackHome">🏠 Home</button>
                 </div>
                 <div style="margin-top:6px; font-size:13px; color:#7b92ab; text-align:center;" id="liveStatus">▶ 0 balls bowled</div>
@@ -1850,7 +1880,7 @@ Bilal</textarea>
             </div>
         </div>
 
-        <!-- Out Selection Popup with player names -->
+        <!-- Out Selection Popup -->
         <div class="popup-overlay-out" id="outSelectionPopup">
             <div class="popup-card-out">
                 <h3>Who is out?</h3>
@@ -2133,15 +2163,13 @@ Bilal</textarea>
 
         function getMatchRef(matchId) { return ref(database, 'matches/' + matchId); }
 
+        // Load ALL matches (both completed and paused)
         async function loadAllMatches() {
             try {
                 const snapshot = await get(getMatchesRef());
                 const all = snapshot.val() || {};
-                const completed = {};
-                Object.keys(all).forEach(k => {
-                    if (all[k].isMatchCompleted === true) completed[k] = all[k];
-                });
-                return completed;
+                // Return all matches, we'll filter later
+                return all;
             } catch (e) {
                 console.error('Firebase load error:', e);
                 return loadMatchesFromLocalStorage();
@@ -2151,11 +2179,7 @@ Bilal</textarea>
         function loadMatchesFromLocalStorage() {
             try {
                 const all = JSON.parse(localStorage.getItem('cricketMatches') || '{}');
-                const completed = {};
-                Object.keys(all).forEach(k => {
-                    if (all[k].isMatchCompleted === true) completed[k] = all[k];
-                });
-                return completed;
+                return all;
             } catch (e) { return {}; }
         }
 
@@ -2180,6 +2204,146 @@ Bilal</textarea>
             }
         }
 
+        // ─── Save match as paused ───
+        async function savePausedMatch() {
+            // Save current state as paused
+            const matchData = buildMatchDataObject();
+            matchData.isMatchCompleted = false;
+            matchData.matchStatus = 'paused';
+            matchData.updatedAt = Date.now();
+            try {
+                await set(ref(database, 'matches/' + state.matchId), matchData);
+                console.log('⏹️ Match paused and saved:', state.matchId);
+                return true;
+            } catch (e) {
+                console.error('Error saving paused match:', e);
+                saveMatchToLocalStorage(state.matchId, matchData);
+                return false;
+            }
+        }
+
+        // ─── Build match data object from state ───
+        function buildMatchDataObject() {
+            return {
+                matchId: state.matchId,
+                batting: state.batting,
+                bowling: state.bowling,
+                totalOvers: state.totalOvers,
+                totalWickets: state.totalWickets,
+                ballsPerOver: state.ballsPerOver,
+                currentInning: state.currentInning,
+                runs: state.runs,
+                wickets: state.wickets,
+                balls: state.balls,
+                extras: state.extras,
+                fours: state.fours,
+                sixes: state.sixes,
+                history: state.history,
+                overBalls: state.overBalls,
+                tossWinner: state.tossWinner,
+                tossDecision: state.tossDecision,
+                battingPlayers: state.battingPlayers,
+                bowlingPlayers: state.bowlingPlayers,
+                striker: state.striker,
+                nonStriker: state.nonStriker,
+                currentBowler: state.currentBowler,
+                batsmanStats: state.batsmanStats,
+                bowlerStats: state.bowlerStats,
+                isMatchStarted: state.isMatchStarted,
+                isMatchEnded: state.isMatchEnded,
+                isFirstInningComplete: state.isFirstInningComplete,
+                currentOverDeliveries: state.currentOverDeliveries,
+                inningData: state.inningData,
+                targetScore: state.targetScore,
+                matchName: state.matchName || `${state.batting} vs ${state.bowling}`,
+                createdAt: state.createdAt || Date.now(),
+                updatedAt: Date.now(),
+                matchStatus: state.matchStatus || 'ongoing',
+                isMatchCompleted: state.isMatchCompleted || false,
+                winner: state.winner || null,
+                winMargin: state.winMargin || null,
+                winType: state.winType || null
+            };
+        }
+
+        // ─── Continue a paused match ───
+        async function continueMatch(matchId) {
+            const allMatches = await loadAllMatches();
+            const matchData = allMatches[matchId];
+            if (!matchData) {
+                alert('Match not found!');
+                return;
+            }
+            // Populate state from saved data
+            restoreStateFromData(matchData);
+            // Mark as not completed, set status to ongoing
+            state.isMatchCompleted = false;
+            state.matchStatus = 'ongoing';
+            state.isMatchEnded = false;
+            // Switch to live screen
+            showScreen('live');
+            updateLiveUI();
+            updateScorecard();
+            updateStats();
+            // Ensure match started flag is true if players are set
+            if (state.striker && state.nonStriker) {
+                state.isMatchStarted = true;
+            }
+        }
+
+        function restoreStateFromData(data) {
+            state.matchId = data.matchId;
+            state.batting = data.batting;
+            state.bowling = data.bowling;
+            state.totalOvers = data.totalOvers;
+            state.totalWickets = data.totalWickets;
+            state.ballsPerOver = data.ballsPerOver;
+            state.currentInning = data.currentInning || 1;
+            state.runs = data.runs || 0;
+            state.wickets = data.wickets || 0;
+            state.balls = data.balls || 0;
+            state.extras = data.extras || { wd: 0, nb: 0, b: 0, lb: 0, p: 0 };
+            state.fours = data.fours || 0;
+            state.sixes = data.sixes || 0;
+            state.history = data.history || [];
+            state.overBalls = data.overBalls || 0;
+            state.tossWinner = data.tossWinner || null;
+            state.tossDecision = data.tossDecision || null;
+            state.battingPlayers = data.battingPlayers || [];
+            state.bowlingPlayers = data.bowlingPlayers || [];
+            state.striker = data.striker || null;
+            state.nonStriker = data.nonStriker || null;
+            state.currentBowler = data.currentBowler || null;
+            state.batsmanStats = data.batsmanStats || {};
+            state.bowlerStats = data.bowlerStats || {};
+            state.isMatchStarted = data.isMatchStarted || false;
+            state.isMatchEnded = data.isMatchEnded || false;
+            state.isFirstInningComplete = data.isFirstInningComplete || false;
+            state.currentOverDeliveries = data.currentOverDeliveries || [];
+            state.inningData = data.inningData || { 1: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0,
+                        lb: 0, p: 0 }, fours: 0, sixes: 0, batsmanStats: {}, bowlerStats: {}, battingPlayers: [],
+                        bowlingPlayers: [], battingTeam: '', bowlingTeam: '' }, 2: { runs: 0, wickets: 0, balls: 0,
+                        extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0, sixes: 0, batsmanStats: {},
+                        bowlerStats: {}, battingPlayers: [], bowlingPlayers: [], battingTeam: '', bowlingTeam: '' } };
+            state.targetScore = data.targetScore || null;
+            state.matchName = data.matchName || `${state.batting} vs ${state.bowling}`;
+            state.createdAt = data.createdAt || Date.now();
+            state.updatedAt = data.updatedAt || Date.now();
+            state.isMatchCompleted = data.isMatchCompleted || false;
+            state.matchStatus = data.matchStatus || 'ongoing';
+            state.winner = data.winner || null;
+            state.winMargin = data.winMargin || null;
+            state.winType = data.winType || null;
+        }
+
+        function saveMatchToLocalStorage(matchId, data) {
+            try {
+                const m = JSON.parse(localStorage.getItem('cricketMatches') || '{}');
+                m[matchId] = data;
+                localStorage.setItem('cricketMatches', JSON.stringify(m));
+            } catch (e) {}
+        }
+
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // PLAYER STATS ENGINE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2188,6 +2352,8 @@ Bilal</textarea>
 
             Object.keys(allMatches).forEach(matchId => {
                 const m = allMatches[matchId];
+                // Only consider completed matches for stats? Or all matches? We'll only count completed ones.
+                if (m.isMatchCompleted !== true) return;
                 const allPlayers = new Set();
                 (m.battingPlayers || []).forEach(p => allPlayers.add(p));
                 (m.bowlingPlayers || []).forEach(p => allPlayers.add(p));
@@ -2401,8 +2567,8 @@ Bilal</textarea>
         let currentDetailPlayer = null;
 
         async function renderPlayerStats() {
-            const matches = await loadAllMatches();
-            allPlayersData = computePlayerStats(matches);
+            const allMatches = await loadAllMatches();
+            allPlayersData = computePlayerStats(allMatches);
             const container = document.getElementById('playerGrid');
             const container2 = document.getElementById('playerGrid2');
 
@@ -2519,25 +2685,31 @@ Bilal</textarea>
         // MATCHES LIST
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         async function renderMatchesList() {
-            const matches = await loadAllMatches();
-            const ids = Object.keys(matches);
+            const allMatches = await loadAllMatches();
+            const ids = Object.keys(allMatches);
             matchCount.textContent = ids.length + ' matches';
 
             if (ids.length === 0) {
                 matchesList.innerHTML =
-                    `<div style="text-align:center; padding:20px; color:#6b7f96; font-size:14px;">No completed matches yet. Play a match and end it to save!</div>`;
+                    `<div style="text-align:center; padding:20px; color:#6b7f96; font-size:14px;">No matches found. Start a new match!</div>`;
                 return;
             }
 
-            ids.sort((a, b) => (matches[b].updatedAt || 0) - (matches[a].updatedAt || 0));
+            // Sort by updatedAt descending
+            ids.sort((a, b) => (allMatches[b].updatedAt || 0) - (allMatches[a].updatedAt || 0));
 
             let html = '';
             for (const id of ids) {
-                const m = matches[id];
+                const m = allMatches[id];
                 const totalExtras = (m.extras?.wd || 0) + (m.extras?.nb || 0) + (m.extras?.b || 0) + (m.extras?.lb || 0) + (m
                     .extras?.p || 0);
                 const totalRuns = (m.runs || 0) + totalExtras;
+                const isCompleted = m.isMatchCompleted === true;
+                const isPaused = !isCompleted && (m.matchStatus === 'paused' || m.matchStatus === 'ongoing');
+                const statusText = isCompleted ? '✅ Completed' : (isPaused ? '⏸️ Paused' : '▶️ Ongoing');
+                const statusClass = isCompleted ? 'completed' : 'paused';
                 const winnerText = m.winner ? `🏆 Winner: ${m.winner}` : '';
+
                 html += `
                 <div class="match-item" data-matchid="${id}">
                   <div class="match-header">
@@ -2546,28 +2718,41 @@ Bilal</textarea>
                   </div>
                   <div class="match-header" style="margin-top:4px;">
                     <span>
-                      <span class="match-status completed">✅ Completed</span>
+                      <span class="match-status ${statusClass}">${statusText}</span>
                       ${winnerText ? `<span class="match-winner">${winnerText}</span>` : ''}
                     </span>
-                    <button class="delete-match" data-matchid="${id}">✕ Delete</button>
+                    <span style="font-size:11px; color:#6b7f96;">
+                      ${new Date(m.updatedAt || Date.now()).toLocaleDateString()}
+                    </span>
                   </div>
-                  <div style="font-size:11px; color:#6b7f96; margin-top:4px;">
-                    ${new Date(m.createdAt || Date.now()).toLocaleDateString()} ${new Date(m.updatedAt || Date.now()).toLocaleTimeString()}
+                  <div class="match-actions">
+                    ${!isCompleted ? `<button class="btn-continue" data-matchid="${id}">▶ Continue</button>` :
+                      `<button class="btn-view" data-matchid="${id}">👁 View</button>`}
+                    <button class="btn-delete" data-matchid="${id}">✕ Delete</button>
                   </div>
                 </div>
               `;
             }
             matchesList.innerHTML = html;
 
-            document.querySelectorAll('.match-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    if (e.target.classList.contains('delete-match')) return;
+            // Event listeners for buttons
+            document.querySelectorAll('.btn-continue').forEach(btn => {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    const matchId = this.dataset.matchid;
+                    await continueMatch(matchId);
+                });
+            });
+
+            document.querySelectorAll('.btn-view').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     const matchId = this.dataset.matchid;
                     viewCompletedMatch(matchId);
                 });
             });
 
-            document.querySelectorAll('.delete-match').forEach(btn => {
+            document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     const matchId = this.dataset.matchid;
@@ -2587,8 +2772,8 @@ Bilal</textarea>
         let completedScorecardInning = 1;
 
         async function viewCompletedMatch(matchId) {
-            const matches = await loadAllMatches();
-            const matchData = matches[matchId];
+            const allMatches = await loadAllMatches();
+            const matchData = allMatches[matchId];
             if (!matchData) { alert('Match not found!'); return; }
             viewedMatchData = matchData;
             completedScorecardInning = 1;
@@ -2797,6 +2982,7 @@ Bilal</textarea>
             state.createdAt = Date.now();
             state.matchName = `${state.batting} vs ${state.bowling}`;
             state.isMatchCompleted = false;
+            state.matchStatus = 'ongoing';
             showScreen('live');
             updateLiveUI();
             setTimeout(() => {
@@ -3401,7 +3587,6 @@ Bilal</textarea>
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
                     }
                 }
-                // Don't let the normal status override
                 document.getElementById('liveStatus').textContent = (state.wickets >= state.totalWickets) ? '🏏 All out!' :
                     '▶ ' + state.balls + ' balls bowled';
                 return;
@@ -3814,6 +3999,20 @@ Bilal</textarea>
             }
         }
 
+        // ─── Stop Match ───
+        async function stopMatch() {
+            if (confirm('Stop the match and save it to continue later?')) {
+                const success = await savePausedMatch();
+                if (success) {
+                    showScreen('noMatch');
+                    renderMatchesList();
+                    resetStateForNewMatch(); // clear state for next match
+                } else {
+                    alert('Failed to save match. Please try again.');
+                }
+            }
+        }
+
         // ─── Undo ───
         function undoLast() {
             if (state.history.length === 0) {
@@ -3866,21 +4065,12 @@ Bilal</textarea>
 
         document.getElementById('btnUndo').addEventListener('click', undoLast);
 
-        document.getElementById('btnEndMatch').addEventListener('click', async () => {
-            if (confirm('End the match and save to completed matches?')) {
-                if (state.currentInning === 2) saveInning2Data();
-                await completeAndSaveMatch();
-                showScreen('noMatch');
-                resetStateForNewMatch();
-                renderMatchesList();
-                renderPlayerStats();
-            }
-        });
+        // Stop Match button
+        document.getElementById('btnStopMatch').addEventListener('click', stopMatch);
 
         document.getElementById('btnBackHome').addEventListener('click', () => {
-            if (confirm('Go back home? Your current match progress will be lost!')) {
-                showScreen('noMatch');
-                resetStateForNewMatch();
+            if (confirm('Go back home? Your current match progress will be saved (auto-stop).')) {
+                stopMatch();
             }
         });
 
@@ -3893,51 +4083,16 @@ Bilal</textarea>
             renderPlayerStats();
         });
 
+        // ─── Complete and save (winner popup uses this) ───
         async function completeAndSaveMatch() {
             if (state.currentInning === 2) saveInning2Data();
             state.isMatchEnded = true;
             state.isMatchCompleted = true;
             state.matchStatus = 'completed';
-            const matchData = {
-                matchId: state.matchId,
-                batting: state.batting,
-                bowling: state.bowling,
-                totalOvers: state.totalOvers,
-                totalWickets: state.totalWickets,
-                ballsPerOver: state.ballsPerOver,
-                currentInning: state.currentInning,
-                runs: state.runs,
-                wickets: state.wickets,
-                balls: state.balls,
-                extras: state.extras,
-                fours: state.fours,
-                sixes: state.sixes,
-                history: state.history,
-                overBalls: state.overBalls,
-                tossWinner: state.tossWinner,
-                tossDecision: state.tossDecision,
-                battingPlayers: state.battingPlayers,
-                bowlingPlayers: state.bowlingPlayers,
-                striker: state.striker,
-                nonStriker: state.nonStriker,
-                currentBowler: state.currentBowler,
-                batsmanStats: state.batsmanStats,
-                bowlerStats: state.bowlerStats,
-                isMatchStarted: state.isMatchStarted,
-                isMatchEnded: true,
-                isFirstInningComplete: state.isFirstInningComplete,
-                currentOverDeliveries: state.currentOverDeliveries,
-                inningData: state.inningData,
-                targetScore: state.targetScore,
-                matchName: state.matchName || `${state.batting} vs ${state.bowling}`,
-                createdAt: state.createdAt || Date.now(),
-                updatedAt: Date.now(),
-                matchStatus: 'completed',
-                isMatchCompleted: true,
-                winner: state.winner || null,
-                winMargin: state.winMargin || null,
-                winType: state.winType || null
-            };
+            const matchData = buildMatchDataObject();
+            matchData.isMatchCompleted = true;
+            matchData.matchStatus = 'completed';
+            matchData.updatedAt = Date.now();
             try {
                 await set(ref(database, 'matches/' + state.matchId), matchData);
                 return true;
@@ -3945,14 +4100,6 @@ Bilal</textarea>
                 saveMatchToLocalStorage(state.matchId, matchData);
                 return false;
             }
-        }
-
-        function saveMatchToLocalStorage(matchId, data) {
-            try {
-                const m = JSON.parse(localStorage.getItem('cricketMatches') || '{}');
-                m[matchId] = data;
-                localStorage.setItem('cricketMatches', JSON.stringify(m));
-            } catch (e) {}
         }
 
         // ─── Scoring popup ───
@@ -4213,9 +4360,9 @@ Bilal</textarea>
         renderPlayerStats();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App with both popups restored.');
+        console.log('🏏 Cricket Scorer App with Stop/Continue');
         console.log('🔐 Password for delete & photo: 28326');
-        console.log('✅ Inning Complete and Winner popups restored.');
+        console.log('✅ Stop Match saves state, Continue restores it.');
     </script>
 </body>
 </html>
