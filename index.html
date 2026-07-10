@@ -1,1510 +1,1674 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Cricket Scorer</title>
-  <!-- Firebase SDK v9 Modular -->
-  <script type="importmap">
-    {
-      "imports": {
-        "firebase/app": "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js",
-        "firebase/database": "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js",
-        "firebase/analytics": "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js"
-      }
-    }
-  </script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>🏏 Cricket Craze – Salman's Manager</title>
+    <meta name="description" content="Play Salman's Cricket Manager, the ultimate browser-based cricket simulation game." />
+    <meta name="keywords" content="salman cricket manager, cricket simulation, cricket web game" />
+    <meta name="google-site-verification" content="LcQlj-bdyOqJQz251b13wiVx3djTvfv7fNAdsOMHA8s" />
 
-    body {
-      background: #0c0f14;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 12px;
-    }
-    body.popup-open {
-      overflow: hidden;
-    }
+    <!-- Firebase v9 Modular -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js",
+                "firebase/database": "https://www.gstatic.com/firebasejs/12.15.0/firebase-database.js",
+                "firebase/analytics": "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js"
+            }
+        }
+    </script>
 
-    /* ── SPLASH ── */
-    .splash-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-      transition: opacity 0.8s ease;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-    .splash-screen::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 1;
-    }
-    .splash-screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    .splash-screen .content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .splash-screen .cricket-icon {
-      font-size: 100px;
-      margin-bottom: 16px;
-      animation: bounce 1.5s ease-in-out infinite;
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5));
-    }
-    @keyframes bounce {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-15px);
-      }
-    }
-    .splash-screen h1 {
-      font-size: 52px;
-      font-weight: 800;
-      color: #ffffff;
-      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-      letter-spacing: 3px;
-      margin-bottom: 6px;
-    }
-    .splash-screen .developer {
-      font-size: 24px;
-      color: #d6e4f5;
-      letter-spacing: 3px;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-      margin-bottom: 16px;
-      font-weight: 500;
-    }
-    .splash-screen .loading-bar {
-      width: 200px;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 12px;
-    }
-    .splash-screen .loading-bar .fill {
-      height: 100%;
-      background: linear-gradient(90deg, #3b82f6, #60a5fa);
-      border-radius: 2px;
-      width: 0%;
-      animation: load 6s ease-in-out forwards;
-    }
-    @keyframes load {
-      0% {
-        width: 0%;
-      }
-      100% {
-        width: 100%;
-      }
-    }
+    <style>
+        /* ─── RESET & BASE ─── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
-    /* ── APP ── */
-    .app {
-      max-width: 400px;
-      width: 100%;
-      background: #141a21;
-      border-radius: 40px;
-      padding: 24px 20px 30px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-      color: #f0f4fa;
-      transition: all 0.2s;
-      position: relative;
-      opacity: 0;
-      animation: fadeIn 0.5s ease 6s forwards;
-    }
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
-    }
+        body {
+            background: #0b0f0b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 12px;
+            background-image: radial-gradient(circle at 20% 30%, #1a3a1a 0%, #0b0f0b 70%);
+            background-attachment: fixed;
+        }
+        body.popup-open {
+            overflow: hidden;
+        }
 
-    .no-matches,
-    .new-match,
-    .live-match,
-    .completed-match-view,
-    .player-stats-view,
-    .player-detail-view {
-      display: none;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .no-matches.active,
-    .new-match.active,
-    .live-match.active,
-    .completed-match-view.active,
-    .player-stats-view.active,
-    .player-detail-view.active {
-      display: flex;
-    }
+        /* ─── SPLASH SCREEN ─── */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+            transition: opacity 0.8s ease;
+            background: #0b0f0b;
+            background-image: radial-gradient(circle at 30% 40%, #1e4a1e 0%, #0b0f0b 80%);
+        }
+        .splash-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        .splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .splash-screen .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        .splash-screen .cricket-icon {
+            font-size: 100px;
+            margin-bottom: 16px;
+            animation: float 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.4));
+        }
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        .splash-screen h1 {
+            font-size: 52px;
+            font-weight: 800;
+            color: #ffd700;
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+        .splash-screen .developer {
+            font-size: 22px;
+            color: #b8d9b0;
+            letter-spacing: 4px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        .splash-screen .loading-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 215, 0, 0.15);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 12px auto 0;
+        }
+        .splash-screen .loading-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #f5a623, #ffd700);
+            border-radius: 4px;
+            width: 0%;
+            animation: load 6s ease-in-out forwards;
+            background-size: 200% 100%;
+            animation: load 6s ease-in-out forwards, shimmer 1.5s infinite;
+        }
+        @keyframes load {
+            0% {
+                width: 0%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
 
-    /* ── HOME TABS ── */
-    .home-tabs {
-      display: flex;
-      gap: 4px;
-      background: #1b232e;
-      border-radius: 16px;
-      padding: 4px;
-      margin-bottom: 4px;
-    }
-    .home-tabs button {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 10px 0;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #8b9fb5;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .home-tabs button.active {
-      background: #3b82f6;
-      color: white;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
+        /* ─── APP CONTAINER ─── */
+        .app {
+            max-width: 420px;
+            width: 100%;
+            background: rgba(18, 26, 18, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 24px 20px 30px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 215, 0, 0.03);
+            color: #f0f5f0;
+            transition: all 0.2s;
+            position: relative;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 6s forwards;
+            border: 1px solid rgba(255, 215, 0, 0.08);
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
 
-    /* ── NO MATCHES / HOME ── */
-    .no-matches .brand-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: #eef4fa;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #f0f6ff, #3b82f6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-align: center;
-    }
-    .no-matches .icon-cricket {
-      background: #1f2833;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-    }
-    .no-matches .icon-cricket span {
-      font-size: 40px;
-    }
+        /* ─── COMMON PANELS ─── */
+        .no-matches,
+        .new-match,
+        .live-match,
+        .completed-match-view,
+        .player-stats-view,
+        .player-detail-view {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .no-matches.active,
+        .new-match.active,
+        .live-match.active,
+        .completed-match-view.active,
+        .player-stats-view.active,
+        .player-detail-view.active {
+            display: flex;
+        }
 
-    .matches-list {
-      width: 100%;
-      max-height: 300px;
-      overflow-y: auto;
-      margin: 4px 0 8px;
-    }
-    .match-item {
-      background: #1b232e;
-      border-radius: 16px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: 2px solid transparent;
-    }
-    .match-item:hover {
-      background: #232e3d;
-      border-color: #3b82f6;
-    }
-    .match-item .match-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .match-item .match-teams {
-      font-weight: 600;
-      color: #d6e4f5;
-      font-size: 16px;
-    }
-    .match-item .match-score {
-      font-size: 14px;
-      color: #b0c6dd;
-    }
-    .match-item .match-status {
-      font-size: 12px;
-      color: #8b9fb5;
-      margin-top: 4px;
-    }
-    .match-item .match-status.completed {
-      color: #f59e0b;
-    }
-    .match-item .match-winner {
-      font-size: 13px;
-      color: #22c55e;
-      font-weight: 600;
-      margin-top: 2px;
-    }
-    .match-item .delete-match {
-      background: #dc2626;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      padding: 4px 12px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .match-item .delete-match:hover {
-      background: #b91c1c;
-    }
-    .no-matches .loading-matches {
-      color: #8b9fb5;
-      font-size: 14px;
-      margin: 16px 0;
-    }
+        /* ─── HOME TABS ─── */
+        .home-tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 60px;
+            padding: 4px;
+            border: 1px solid rgba(255, 215, 0, 0.06);
+        }
+        .home-tabs button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 0;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #8aa08a;
+            cursor: pointer;
+            transition: 0.25s;
+            letter-spacing: 0.5px;
+        }
+        .home-tabs button.active {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #0b0f0b;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+        }
 
-    /* ── PLAYER STATS TAB ── */
-    .player-stats-view .search-bar {
-      background: #1e2732;
-      border: 1px solid #2f3b49;
-      border-radius: 60px;
-      padding: 10px 18px;
-      color: #eef4fa;
-      font-size: 14px;
-      outline: none;
-      width: 100%;
-    }
-    .player-stats-view .search-bar:focus {
-      border-color: #3b82f6;
-    }
-    .player-stats-view .player-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      max-height: 440px;
-      overflow-y: auto;
-      padding: 2px 0 10px;
-    }
-    .player-card {
-      background: #1b232e;
-      border-radius: 20px;
-      padding: 14px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: 0.2s;
-      border: 2px solid transparent;
-    }
-    .player-card:hover {
-      border-color: #3b82f6;
-      background: #232e3d;
-    }
-    .player-card .avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: #2d3744;
-      margin: 0 auto 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      overflow: hidden;
-      border: 2px solid #3b82f6;
-    }
-    .player-card .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .player-card .pname {
-      font-weight: 600;
-      font-size: 14px;
-      color: #eef4fa;
-    }
-    .player-card .pteam {
-      font-size: 12px;
-      color: #8b9fb5;
-    }
-    .player-card .pstats-mini {
-      font-size: 11px;
-      color: #6b7f96;
-      margin-top: 4px;
-    }
-    .player-card .pstats-mini span {
-      margin: 0 4px;
-    }
+        /* ─── NO MATCHES / HOME ─── */
+        .no-matches .brand-title {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        .no-matches .icon-cricket {
+            background: rgba(255, 215, 0, 0.06);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            border: 2px solid rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.05);
+        }
+        .no-matches .icon-cricket span {
+            font-size: 44px;
+        }
 
-    /* ── PLAYER DETAIL VIEW ── */
-    .player-detail-view .back-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #b0c4db;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .player-detail-view .back-header span {
-      font-size: 22px;
-      line-height: 1;
-    }
-    .player-detail-view .profile-section {
-      text-align: center;
-      padding: 12px 0;
-    }
-    .player-detail-view .profile-section .big-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: #2d3744;
-      margin: 0 auto 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      overflow: hidden;
-      border: 3px solid #3b82f6;
-      position: relative;
-    }
-    .player-detail-view .profile-section .big-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .player-detail-view .profile-section .player-name {
-      font-size: 22px;
-      font-weight: 700;
-      color: #f0f6ff;
-    }
-    .player-detail-view .profile-section .player-team {
-      font-size: 14px;
-      color: #8b9fb5;
-    }
-    .player-detail-view .profile-section .change-photo-btn {
-      background: #2d3744;
-      border: none;
-      color: #b0c6dd;
-      padding: 6px 18px;
-      border-radius: 40px;
-      font-size: 12px;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: 0.15s;
-    }
-    .player-detail-view .profile-section .change-photo-btn:active {
-      background: #3f4a5a;
-    }
-    .player-detail-view .profile-section .retry-btn {
-      background: #f59e0b;
-      border: none;
-      color: #1a1a1a;
-      padding: 4px 14px;
-      border-radius: 40px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-top: 4px;
-      display: none;
-    }
-    .player-detail-view .profile-section .retry-btn:active {
-      background: #d97706;
-    }
+        /* ─── MATCH LIST ─── */
+        .matches-list {
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            margin: 4px 0 8px;
+            padding-right: 4px;
+        }
+        .match-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            cursor: default;
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            backdrop-filter: blur(4px);
+            transition: 0.25s;
+        }
+        .match-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 215, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .match-item .match-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .match-item .match-teams {
+            font-weight: 700;
+            color: #f0f5f0;
+            font-size: 16px;
+            letter-spacing: 0.3px;
+        }
+        .match-item .match-score {
+            font-size: 15px;
+            color: #ffd700;
+            font-weight: 600;
+        }
+        .match-item .match-status {
+            font-size: 12px;
+            color: #8aa08a;
+            margin-top: 4px;
+        }
+        .match-item .match-status.completed {
+            color: #ffd700;
+        }
+        .match-item .match-status.paused {
+            color: #f5a623;
+        }
+        .match-item .match-winner {
+            font-size: 13px;
+            color: #ffd700;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .match-item .match-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .match-item .match-actions button {
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #c0d4c0;
+            border-radius: 40px;
+            padding: 5px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .match-item .match-actions button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+        .match-item .match-actions .btn-continue {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #0b0f0b;
+        }
+        .match-item .match-actions .btn-continue:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+        .match-item .match-actions .btn-delete {
+            background: rgba(220, 50, 50, 0.15);
+            color: #ff6b6b;
+        }
+        .match-item .match-actions .btn-delete:hover {
+            background: rgba(220, 50, 50, 0.3);
+        }
+        .match-item .match-actions .btn-view {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+        }
+        .match-item .match-actions .btn-view:hover {
+            background: rgba(255, 215, 0, 0.2);
+        }
 
-    .player-detail-view .stats-grid-detail {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin: 8px 0;
-    }
-    .player-detail-view .stats-grid-detail .stat-card {
-      background: #1b232e;
-      border-radius: 16px;
-      padding: 14px 8px;
-      text-align: center;
-    }
-    .player-detail-view .stats-grid-detail .stat-card .num {
-      font-size: 26px;
-      font-weight: 700;
-      color: #f0f6ff;
-    }
-    .player-detail-view .stats-grid-detail .stat-card .lbl {
-      font-size: 10px;
-      color: #8b9fb5;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-top: 2px;
-    }
-    .player-detail-view .stats-grid-detail .stat-card .sub {
-      font-size: 10px;
-      color: #6b7f96;
-      margin-top: 1px;
-    }
+        /* ─── PLAYER STATS ─── */
+        .player-stats-view .search-bar {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+            border-radius: 60px;
+            padding: 12px 20px;
+            color: #f0f5f0;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .player-stats-view .search-bar:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+        }
+        .player-stats-view .player-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            max-height: 440px;
+            overflow-y: auto;
+            padding: 2px 0 10px;
+        }
+        .player-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            backdrop-filter: blur(4px);
+        }
+        .player-card:hover {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.04);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .player-card .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 auto 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        .player-card .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .player-card .pname {
+            font-weight: 700;
+            font-size: 15px;
+            color: #f0f5f0;
+        }
+        .player-card .pteam {
+            font-size: 12px;
+            color: #8aa08a;
+        }
+        .player-card .pstats-mini {
+            font-size: 12px;
+            color: #b0c8b0;
+            margin-top: 6px;
+        }
+        .player-card .pstats-mini span {
+            margin: 0 4px;
+        }
 
-    /* ── PASSWORD POPUP ── */
-    .popup-overlay-password {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      align-items: center;
-      justify-content: center;
-      z-index: 400;
-      padding: 20px;
-    }
-    .popup-overlay-password.active {
-      display: flex;
-    }
-    .popup-card-password {
-      background: #1e2835;
-      border-radius: 32px;
-      padding: 28px 24px;
-      max-width: 360px;
-      width: 100%;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-      color: #f0f6ff;
-    }
-    .popup-card-password h3 {
-      font-size: 20px;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-    .popup-card-password input {
-      width: 100%;
-      background: #1e2732;
-      border: 1px solid #2f3b49;
-      border-radius: 16px;
-      padding: 14px 18px;
-      font-size: 16px;
-      color: #eef4fa;
-      outline: none;
-      margin-bottom: 16px;
-      text-align: center;
-      letter-spacing: 4px;
-    }
-    .popup-card-password input:focus {
-      border-color: #3b82f6;
-    }
-    .popup-card-password .popup-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
-    .popup-card-password .popup-actions button {
-      padding: 10px 28px;
-      border-radius: 60px;
-      border: none;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .popup-card-password .popup-actions .btn-cancel {
-      background: #2d3744;
-      color: #e2eaf2;
-    }
-    .popup-card-password .popup-actions .btn-cancel:active {
-      background: #3f4a5a;
-    }
-    .popup-card-password .popup-actions .btn-confirm {
-      background: #3b82f6;
-      color: white;
-    }
-    .popup-card-password .popup-actions .btn-confirm:active {
-      background: #2a6fe0;
-    }
-    .popup-card-password .error-msg {
-      color: #ef4444;
-      font-size: 13px;
-      text-align: center;
-      margin-bottom: 10px;
-      min-height: 20px;
-    }
+        /* ─── PLAYER DETAIL ─── */
+        .player-detail-view .back-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b8d9b0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .player-detail-view .back-header:hover {
+            color: #ffd700;
+        }
+        .player-detail-view .back-header span {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .player-detail-view .profile-section {
+            text-align: center;
+            padding: 12px 0;
+        }
+        .player-detail-view .profile-section .big-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            overflow: hidden;
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+        }
+        .player-detail-view .profile-section .big-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .player-detail-view .profile-section .player-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #f0f5f0;
+        }
+        .player-detail-view .profile-section .player-team {
+            font-size: 14px;
+            color: #8aa08a;
+        }
+        .player-detail-view .profile-section .change-photo-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            color: #b8d9b0;
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: 0.2s;
+        }
+        .player-detail-view .profile-section .change-photo-btn:hover {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+        }
+        .player-detail-view .profile-section .retry-btn {
+            background: #f5a623;
+            border: none;
+            color: #0b0f0b;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 4px;
+            display: none;
+        }
+        .player-detail-view .profile-section .retry-btn:hover {
+            background: #ffd700;
+        }
 
-    /* ── EXISTING STYLES (preserved) ── */
-    .btn-primary {
-      background: #3b82f6;
-      border: none;
-      color: white;
-      font-weight: 600;
-      font-size: 16px;
-      padding: 14px 28px;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: 0.15s;
-      box-shadow: 0 6px 14px rgba(59, 130, 246, 0.25);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      letter-spacing: 0.3px;
-    }
-    .btn-primary:active {
-      transform: scale(0.96);
-      background: #2a6fe0;
-    }
-    .btn-secondary {
-      background: #2d3744;
-      border: none;
-      color: #e2eaf2;
-      font-weight: 600;
-      font-size: 15px;
-      padding: 12px 24px;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .btn-secondary:active {
-      background: #3f4a5a;
-    }
-    .btn-success {
-      background: #22c55e;
-      border: none;
-      color: white;
-      font-weight: 600;
-      font-size: 15px;
-      padding: 12px 24px;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .btn-success:active {
-      background: #16a34a;
-    }
-    .btn-danger {
-      background: #dc2626;
-      border: none;
-      color: white;
-      font-weight: 600;
-      font-size: 15px;
-      padding: 12px 24px;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-    .btn-danger:active {
-      background: #b91c1c;
-    }
-    .btn-gold {
-      background: #f59e0b;
-      border: none;
-      color: white;
-      font-weight: 600;
-      font-size: 18px;
-      padding: 16px 32px;
-      border-radius: 60px;
-      cursor: pointer;
-      transition: 0.15s;
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-    }
-    .btn-gold:active {
-      background: #d97706;
-    }
+        .player-detail-view .stats-grid-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin: 8px 0;
+        }
+        .player-detail-view .stats-grid-detail .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 14px 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            backdrop-filter: blur(4px);
+        }
+        .player-detail-view .stats-grid-detail .stat-card .num {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffd700;
+        }
+        .player-detail-view .stats-grid-detail .stat-card .lbl {
+            font-size: 10px;
+            color: #8aa08a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+        .player-detail-view .stats-grid-detail .stat-card .sub {
+            font-size: 11px;
+            color: #b0c8b0;
+            margin-top: 2px;
+        }
 
-    .new-match .back-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #b0c4db;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .new-match .back-header span {
-      font-size: 22px;
-      line-height: 1;
-    }
-    .new-match h1 {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #f0f6ff;
-    }
-    .new-match .sub {
-      color: #8b9eb5;
-      font-size: 14px;
-      margin-top: -6px;
-    }
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .input-group label {
-      font-size: 13px;
-      font-weight: 500;
-      color: #aabccf;
-      letter-spacing: 0.3px;
-    }
-    .input-group input,
-    .input-group textarea {
-      background: #1e2732;
-      border: 1px solid #2f3b49;
-      border-radius: 16px;
-      padding: 14px 18px;
-      font-size: 16px;
-      color: #eef4fa;
-      outline: none;
-      transition: 0.15s;
-      font-family: inherit;
-    }
-    .input-group input:focus,
-    .input-group textarea:focus {
-      border-color: #3b82f6;
-      background: #1f2a37;
-    }
-    .input-group textarea {
-      min-height: 80px;
-      resize: vertical;
-      font-size: 14px;
-    }
-    .input-group .hint {
-      font-size: 11px;
-      color: #6b7f96;
-      margin-top: -4px;
-    }
-    .settings-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      background: #1b232e;
-      padding: 18px 14px;
-      border-radius: 24px;
-      margin: 6px 0 8px;
-    }
-    .settings-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-    }
-    .settings-item .label {
-      font-size: 11px;
-      color: #8b9db2;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-    .settings-item .value {
-      font-size: 20px;
-      font-weight: 600;
-      color: #eaf1fa;
-    }
-    .settings-item input {
-      width: 60px;
-      background: #1e2732;
-      border: 1px solid #2f3b49;
-      border-radius: 12px;
-      padding: 6px 8px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #eaf1fa;
-      text-align: center;
-      outline: none;
-    }
-    .settings-item input:focus {
-      border-color: #3b82f6;
-    }
-    .create-btn {
-      width: 100%;
-      justify-content: center;
-    }
+        /* ─── PASSWORD POPUP ─── */
+        .popup-overlay-password {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            z-index: 400;
+            padding: 20px;
+        }
+        .popup-overlay-password.active {
+            display: flex;
+        }
+        .popup-card-password {
+            background: rgba(18, 26, 18, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 32px 28px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 215, 0, 0.08);
+        }
+        .popup-card-password h3 {
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 16px;
+            color: #ffd700;
+        }
+        .popup-card-password input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            border-radius: 60px;
+            padding: 14px 18px;
+            font-size: 16px;
+            color: #f0f5f0;
+            outline: none;
+            margin-bottom: 16px;
+            text-align: center;
+            letter-spacing: 4px;
+            transition: 0.2s;
+        }
+        .popup-card-password input:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+        }
+        .popup-card-password .popup-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .popup-card-password .popup-actions button {
+            padding: 10px 28px;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .popup-card-password .popup-actions .btn-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            color: #b8d9b0;
+            border: 1px solid rgba(255, 215, 0, 0.05);
+        }
+        .popup-card-password .popup-actions .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .popup-card-password .popup-actions .btn-confirm {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #0b0f0b;
+        }
+        .popup-card-password .popup-actions .btn-confirm:hover {
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+            transform: scale(1.02);
+        }
+        .popup-card-password .error-msg {
+            color: #ff6b6b;
+            font-size: 13px;
+            text-align: center;
+            min-height: 20px;
+            margin-bottom: 6px;
+        }
 
-    .toss-section {
-      background: #1b232e;
-      border-radius: 20px;
-      padding: 16px;
-      margin: 4px 0 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .toss-section .toss-label {
-      font-size: 14px;
-      font-weight: 600;
-      color: #b0c6dd;
-      text-align: center;
-    }
-    .toss-section .toss-result {
-      font-size: 16px;
-      color: #d6e4f5;
-      text-align: center;
-      padding: 8px;
-      background: #1e2732;
-      border-radius: 12px;
-      min-height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .toss-buttons {
-      display: flex;
-      gap: 10px;
-    }
-    .toss-buttons .btn-secondary,
-    .toss-buttons .btn-success {
-      flex: 1;
-      text-align: center;
-      justify-content: center;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+        /* ─── BUTTONS ─── */
+        .btn-primary {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            border: none;
+            color: #0b0f0b;
+            font-weight: 700;
+            font-size: 16px;
+            padding: 14px 28px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.15);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
 
-    .toss-options,
-    .toss-decision {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 16px 0;
-    }
-    .toss-options button,
-    .toss-decision button {
-      background: #26323f;
-      border: 2px solid transparent;
-      border-radius: 16px;
-      padding: 16px 0;
-      font-size: 18px;
-      font-weight: 600;
-      color: #d9e7f7;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .toss-options button:active,
-    .toss-decision button:active {
-      transform: scale(0.94);
-    }
-    .toss-options button.selected,
-    .toss-decision button.selected {
-      border-color: #3b82f6;
-      background: #1f2a38;
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-    }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            color: #b8d9b0;
+            font-weight: 600;
+            font-size: 15px;
+            padding: 12px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #f0f5f0;
+        }
 
-    .live-match .tabs,
-    .completed-match-view .tabs {
-      display: flex;
-      gap: 4px;
-      background: #1b232e;
-      border-radius: 16px;
-      padding: 4px;
-    }
-    .live-match .tabs button,
-    .completed-match-view .tabs button {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 10px 0;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #8b9fb5;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .live-match .tabs button.active,
-    .completed-match-view .tabs button.active {
-      background: #3b82f6;
-      color: white;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    }
-    .live-match .tab-content,
-    .completed-match-view .tab-content {
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .live-match .tab-content.active,
-    .completed-match-view .tab-content.active {
-      display: flex;
-    }
+        .btn-success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
+        }
 
-    .scorecard-mini-tabs {
-      display: flex;
-      gap: 4px;
-      background: #1b232e;
-      border-radius: 12px;
-      padding: 4px;
-      margin-bottom: 8px;
-    }
-    .scorecard-mini-tabs button {
-      flex: 1;
-      background: transparent;
-      border: none;
-      padding: 8px 0;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #8b9fb5;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .scorecard-mini-tabs button.active {
-      background: #3b82f6;
-      color: white;
-    }
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
 
-    .live-match .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #b6c9df;
-      font-size: 13px;
-      background: #1b2531;
-      padding: 10px 16px;
-      border-radius: 60px;
-    }
-    .live-match .top-bar .teams {
-      font-weight: 600;
-      color: #dce6f2;
-      letter-spacing: 0.2px;
-    }
-    .score-card {
-      background: #1e2835;
-      border-radius: 32px;
-      padding: 24px 20px;
-      box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.3);
-    }
-    .score-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-    .score-big {
-      font-size: 46px;
-      font-weight: 700;
-      letter-spacing: -1px;
-      color: #f2f8ff;
-    }
-    .score-stats {
-      display: flex;
-      gap: 18px;
-      color: #b2c7e0;
-      font-size: 14px;
-    }
-    .score-stats span {
-      font-weight: 500;
-      color: #d6e4f5;
-    }
-    .overs-extras {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 16px;
-      font-size: 15px;
-      color: #b2c6dd;
-      border-top: 1px solid #2a3746;
-      padding-top: 16px;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .overs-extras .overs {
-      background: #26313f;
-      padding: 4px 14px;
-      border-radius: 40px;
-      font-weight: 500;
-      color: #d2e2f5;
-    }
-    .extras-box {
-      display: flex;
-      gap: 14px;
-      background: #1e2937;
-      padding: 6px 16px;
-      border-radius: 40px;
-      flex-wrap: wrap;
-    }
-    .extras-box .extra-item {
-      display: flex;
-      gap: 4px;
-    }
-    .extras-box .extra-item .key {
-      color: #7d93ae;
-    }
-    .extras-box .extra-item .val {
-      font-weight: 600;
-      color: #dce8f5;
-    }
+        .btn-gold {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            border: none;
+            color: #0b0f0b;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 16px 32px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 6px 30px rgba(255, 215, 0, 0.2);
+        }
+        .btn-gold:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(255, 215, 0, 0.4);
+        }
 
-    .current-batsmen,
-    .current-bowler {
-      background: #1b232e;
-      border-radius: 16px;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .current-batsmen .label,
-    .current-bowler .label {
-      font-size: 12px;
-      color: #8b9fb5;
-      font-weight: 500;
-    }
-    .current-batsmen .names,
-    .current-bowler .name {
-      font-size: 14px;
-      font-weight: 600;
-      color: #d6e4f5;
-    }
-    .current-batsmen .names span {
-      margin: 0 6px;
-    }
-    .current-batsmen .names .striker {
-      color: #3b82f6;
-    }
-    .current-bowler .deliveries {
-      font-size: 12px;
-      color: #8b9fb5;
-      margin-left: 8px;
-    }
+        /* ─── NEW MATCH ─── */
+        .new-match .back-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b8d9b0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .new-match .back-header:hover {
+            color: #ffd700;
+        }
+        .new-match .back-header span {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .new-match h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #f0f5f0;
+        }
+        .new-match .sub {
+            color: #8aa08a;
+            font-size: 14px;
+            margin-top: -6px;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .input-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #b8d9b0;
+            letter-spacing: 0.5px;
+        }
+        .input-group input,
+        .input-group textarea {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: 20px;
+            padding: 14px 18px;
+            font-size: 16px;
+            color: #f0f5f0;
+            outline: none;
+            transition: 0.2s;
+            font-family: inherit;
+            backdrop-filter: blur(4px);
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.03);
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .input-group textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-size: 14px;
+        }
+        .input-group .hint {
+            font-size: 11px;
+            color: #6a8a6a;
+            margin-top: -4px;
+        }
 
-    .action-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin: 8px 0 10px;
-    }
-    .action-btn {
-      background: #1f2a38;
-      border: none;
-      border-radius: 20px;
-      padding: 14px 0;
-      font-size: 20px;
-      font-weight: 600;
-      color: #d9e7f7;
-      transition: 0.1s;
-      cursor: pointer;
-      box-shadow: 0 2px 0 #0b1016;
-      text-align: center;
-    }
-    .action-btn:active {
-      transform: scale(0.94);
-      background: #2d3b4d;
-    }
-    .action-btn.special {
-      background: #2a3a4e;
-    }
-    .action-btn.wide {
-      background: #2a3a4e;
-      color: #ffd966;
-    }
-    .action-btn.wicket {
-      background: #5a2d3a;
-      color: #ffa7b0;
-    }
-    .bottom-actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 4px;
-      gap: 10px;
-    }
-    .bottom-actions .btn-secondary {
-      padding: 10px 18px;
-      font-size: 14px;
-      flex: 1;
-      text-align: center;
-    }
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 18px 14px;
+            border-radius: 28px;
+            margin: 6px 0 8px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .settings-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        .settings-item .label {
+            font-size: 11px;
+            color: #8aa08a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .settings-item input {
+            width: 60px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: 16px;
+            padding: 6px 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #f0f5f0;
+            text-align: center;
+            outline: none;
+            transition: 0.2s;
+        }
+        .settings-item input:focus {
+            border-color: #ffd700;
+        }
 
-    .celebrate-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 300;
-      pointer-events: none;
-      font-size: 120px;
-      font-weight: 900;
-      animation: celebratePop 1.2s ease-out forwards;
-      text-shadow: 0 0 40px rgba(255, 215, 0, 0.5), 0 0 80px rgba(255, 215, 0, 0.3);
-    }
-    .celebrate-overlay.active {
-      display: flex;
-    }
-    .celebrate-overlay .text {
-      font-size: 80px;
-      color: #ffd700;
-      text-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
-      animation: textPulse 0.8s ease-out forwards;
-    }
-    @keyframes celebratePop {
-      0% {
-        transform: scale(0.3);
-        opacity: 0;
-      }
-      50% {
-        transform: scale(1.3);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1);
-        opacity: 0;
-      }
-    }
-    @keyframes textPulse {
-      0% {
-        transform: scale(0.5);
-        opacity: 0;
-      }
-      40% {
-        transform: scale(1.3);
-        opacity: 1;
-      }
-      70% {
-        transform: scale(0.9);
-      }
-      100% {
-        transform: scale(1);
-        opacity: 0;
-      }
-    }
+        .toss-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 28px;
+            padding: 16px;
+            margin: 4px 0 8px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            backdrop-filter: blur(4px);
+        }
+        .toss-section .toss-label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #b8d9b0;
+            text-align: center;
+        }
+        .toss-section .toss-result {
+            font-size: 16px;
+            color: #ffd700;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .toss-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .toss-buttons .btn-secondary,
+        .toss-buttons .btn-success {
+            flex: 1;
+            text-align: center;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-    .scorecard-table {
-      background: #1b232e;
-      border-radius: 16px;
-      overflow: hidden;
-    }
-    .scorecard-table .table-header {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-      padding: 10px 14px;
-      background: #1e2732;
-      font-size: 12px;
-      font-weight: 600;
-      color: #8b9fb5;
-      border-bottom: 1px solid #2a3746;
-    }
-    .scorecard-table .table-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
-      padding: 8px 14px;
-      font-size: 13px;
-      color: #d6e4f5;
-      border-bottom: 1px solid #1e2732;
-    }
-    .scorecard-table .table-row .batsman-name {
-      font-weight: 500;
-    }
-    .scorecard-table .table-row .batsman-name .out {
-      color: #ef4444;
-      font-size: 11px;
-      margin-left: 4px;
-    }
-    .scorecard-table .table-row .batsman-name .not-out {
-      color: #22c55e;
-      font-size: 11px;
-      margin-left: 4px;
-    }
-    .scorecard-table .table-header-bowling {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-      padding: 10px 14px;
-      background: #1e2732;
-      font-size: 12px;
-      font-weight: 600;
-      color: #8b9fb5;
-      border-bottom: 1px solid #2a3746;
-    }
-    .scorecard-table .table-row-bowling {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-      padding: 8px 14px;
-      font-size: 13px;
-      color: #d6e4f5;
-      border-bottom: 1px solid #1e2732;
-    }
-    .scorecard-table .section-title {
-      padding: 12px 14px 6px;
-      font-size: 15px;
-      font-weight: 700;
-      color: #b0c6dd;
-      background: #1b232e;
-    }
+        .toss-options,
+        .toss-decision {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .toss-options button,
+        .toss-decision button {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 16px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #b8d9b0;
+            cursor: pointer;
+            transition: 0.25s;
+            backdrop-filter: blur(4px);
+        }
+        .toss-options button:hover,
+        .toss-decision button:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .toss-options button.selected,
+        .toss-decision button.selected {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+        }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .stats-card {
-      background: #1b232e;
-      border-radius: 16px;
-      padding: 16px;
-      text-align: center;
-    }
-    .stats-card .stat-number {
-      font-size: 28px;
-      font-weight: 700;
-      color: #f0f6ff;
-    }
-    .stats-card .stat-label {
-      font-size: 12px;
-      color: #8b9fb5;
-      margin-top: 4px;
-    }
-    .stats-card .stat-sub {
-      font-size: 11px;
-      color: #6b7f96;
-      margin-top: 2px;
-    }
+        /* ─── LIVE MATCH ─── */
+        .live-match .tabs,
+        .completed-match-view .tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 60px;
+            padding: 4px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .live-match .tabs button,
+        .completed-match-view .tabs button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 10px 0;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #8aa08a;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+        .live-match .tabs button.active,
+        .completed-match-view .tabs button.active {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #0b0f0b;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+        }
+        .live-match .tab-content,
+        .completed-match-view .tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .live-match .tab-content.active,
+        .completed-match-view .tab-content.active {
+            display: flex;
+        }
 
-    .popup-overlay,
-    .popup-overlay-toss,
-    .popup-overlay-selection,
-    .popup-overlay-inning,
-    .popup-overlay-winner,
-    .popup-overlay-out {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      padding: 20px;
-    }
-    .popup-overlay.active,
-    .popup-overlay-toss.active,
-    .popup-overlay-selection.active,
-    .popup-overlay-inning.active,
-    .popup-overlay-winner.active,
-    .popup-overlay-out.active {
-      display: flex;
-    }
-    .popup-card,
-    .popup-card-toss,
-    .popup-card-selection,
-    .popup-card-inning,
-    .popup-card-winner,
-    .popup-card-out {
-      background: #1e2835;
-      border-radius: 32px;
-      padding: 28px 24px;
-      max-width: 380px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-      color: #f0f6ff;
-    }
-    .popup-card h3,
-    .popup-card-toss h3,
-    .popup-card-selection h3,
-    .popup-card-inning h3,
-    .popup-card-winner h3,
-    .popup-card-out h3 {
-      font-size: 22px;
-      margin-bottom: 16px;
-      text-align: center;
-      border-bottom: 1px solid #2f3d4e;
-      padding-bottom: 12px;
-    }
-    .popup-card-out .out-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 16px 0;
-    }
-    .popup-card-out .out-options button {
-      background: #26323f;
-      border: 2px solid transparent;
-      border-radius: 16px;
-      padding: 16px 0;
-      font-size: 18px;
-      font-weight: 600;
-      color: #d9e7f7;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-    .popup-card-out .out-options button:active {
-      transform: scale(0.94);
-    }
-    .popup-card-out .out-options button.selected {
-      border-color: #3b82f6;
-      background: #1f2a38;
-    }
+        .scorecard-mini-tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
+            padding: 4px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .scorecard-mini-tabs button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #8aa08a;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .scorecard-mini-tabs button.active {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            color: #0b0f0b;
+        }
 
-    .popup-card-winner .winner-emoji {
-      font-size: 80px;
-      text-align: center;
-      margin: 10px 0;
-    }
-    .popup-card-winner .winner-text {
-      font-size: 24px;
-      font-weight: 700;
-      text-align: center;
-      color: #f59e0b;
-      margin: 10px 0;
-    }
-    .popup-card-winner .winner-detail {
-      font-size: 16px;
-      text-align: center;
-      color: #d6e4f5;
-      margin: 8px 0;
-    }
-    .popup-card-selection .player-list {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin: 12px 0;
-    }
-    .popup-card-selection .player-list button {
-      background: #26323f;
-      border: 2px solid transparent;
-      border-radius: 12px;
-      padding: 10px 8px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #d9e7f7;
-      cursor: pointer;
-      transition: 0.1s;
-    }
-    .popup-card-selection .player-list button:active {
-      transform: scale(0.94);
-    }
-    .popup-card-selection .player-list button.selected {
-      border-color: #3b82f6;
-      background: #1f2a38;
-    }
-    .popup-card-selection .player-list button.striker-selected {
-      border-color: #22c55e;
-      background: #1f2a38;
-    }
-    .popup-card-selection .player-list button.non-striker-selected {
-      border-color: #f59e0b;
-      background: #1f2a38;
-    }
-    .popup-card-selection .sub-input {
-      margin: 12px 0;
-    }
-    .popup-card-selection .sub-input input {
-      width: 100%;
-      background: #1e2732;
-      border: 1px solid #2f3b49;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 14px;
-      color: #eef4fa;
-      outline: none;
-      transition: 0.15s;
-    }
-    .popup-card-selection .sub-input input:focus {
-      border-color: #3b82f6;
-      background: #1f2a37;
-    }
-    .popup-card-selection .sub-input label {
-      font-size: 13px;
-      color: #8b9fb5;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .popup-card-selection .sub-input .input-row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    .popup-card-selection .sub-input .input-row input {
-      flex: 1;
-    }
-    .popup-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-top: 16px;
-    }
-    .popup-actions-center {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 16px;
-    }
+        .live-match .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #b8d9b0;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 10px 16px;
+            border-radius: 60px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .live-match .top-bar .teams {
+            font-weight: 700;
+            color: #f0f5f0;
+            letter-spacing: 0.5px;
+        }
+        .score-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 36px;
+            padding: 24px 20px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            backdrop-filter: blur(8px);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .score-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .score-big {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(255, 215, 0, 0.1);
+        }
+        .score-stats {
+            display: flex;
+            gap: 18px;
+            color: #b8d9b0;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .score-stats span {
+            font-weight: 600;
+            color: #f0f5f0;
+        }
+        .overs-extras {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 16px;
+            font-size: 15px;
+            color: #b8d9b0;
+            border-top: 1px solid rgba(255, 215, 0, 0.04);
+            padding-top: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .overs-extras .overs {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #f0f5f0;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .extras-box {
+            display: flex;
+            gap: 14px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 16px;
+            border-radius: 40px;
+            flex-wrap: wrap;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .extras-box .extra-item {
+            display: flex;
+            gap: 4px;
+        }
+        .extras-box .extra-item .key {
+            color: #8aa08a;
+        }
+        .extras-box .extra-item .val {
+            font-weight: 700;
+            color: #f0f5f0;
+        }
 
-    .toggle-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 16px;
-      padding: 10px;
-      background: #1a232e;
-      border-radius: 16px;
-    }
-    .toggle-container label {
-      font-size: 16px;
-      font-weight: 600;
-      color: #b0c6dd;
-    }
-    .toggle-switch {
-      position: relative;
-      width: 50px;
-      height: 28px;
-      background: #2d3744;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-      flex-shrink: 0;
-    }
-    .toggle-switch.active {
-      background: #5a2d3a;
-    }
-    .toggle-switch .toggle-knob {
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 22px;
-      height: 22px;
-      background: #eef4fa;
-      border-radius: 50%;
-      transition: 0.2s;
-    }
-    .toggle-switch.active .toggle-knob {
-      left: 25px;
-      background: #ffa7b0;
-    }
-    .toggle-status {
-      font-size: 14px;
-      font-weight: 600;
-      color: #8b9fb5;
-    }
-    .toggle-status.active {
-      color: #ffa7b0;
-    }
-    .popup-options {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin: 12px 0;
-    }
-    .popup-options .opt-btn {
-      background: #26323f;
-      border: none;
-      border-radius: 16px;
-      padding: 14px 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #d9e7f7;
-      cursor: pointer;
-      transition: 0.1s;
-    }
-    .popup-options .opt-btn:active {
-      transform: scale(0.94);
-      background: #364a5a;
-    }
-    .popup-options .opt-btn.wicket-opt {
-      background: #5a2d3a;
-      color: #ffa7b0;
-    }
-    .popup-options .opt-btn.selected {
-      border: 2px solid #3b82f6;
-    }
+        .current-batsmen,
+        .current-bowler {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .current-batsmen .label,
+        .current-bowler .label {
+            font-size: 12px;
+            color: #8aa08a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .current-batsmen .names,
+        .current-bowler .name {
+            font-size: 15px;
+            font-weight: 700;
+            color: #f0f5f0;
+        }
+        .current-batsmen .names .striker {
+            color: #ffd700;
+        }
+        .current-bowler .deliveries {
+            font-size: 12px;
+            color: #8aa08a;
+            margin-left: 8px;
+        }
 
-    .completed-match-view .back-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #b0c4db;
-      font-size: 14px;
-      cursor: pointer;
-    }
-    .completed-match-view .back-header span {
-      font-size: 22px;
-      line-height: 1;
-    }
-    .completed-match-view .match-result {
-      text-align: center;
-      padding: 12px;
-      background: #1b232e;
-      border-radius: 16px;
-      font-size: 18px;
-      font-weight: 600;
-      color: #f59e0b;
-    }
+        /* ─── ACTION GRID ─── */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 8px 0 10px;
+        }
+        .action-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            border-radius: 24px;
+            padding: 14px 0;
+            font-size: 22px;
+            font-weight: 700;
+            color: #b8d9b0;
+            transition: 0.15s;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .action-btn:active {
+            transform: scale(0.92);
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .action-btn.special {
+            background: rgba(255, 215, 0, 0.03);
+            color: #ffd700;
+        }
+        .action-btn.wide {
+            background: rgba(245, 166, 35, 0.05);
+            color: #f5a623;
+            border-color: rgba(245, 166, 35, 0.1);
+        }
+        .action-btn.wicket {
+            background: rgba(231, 76, 60, 0.05);
+            color: #ff6b6b;
+            border-color: rgba(231, 76, 60, 0.1);
+        }
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
 
-    .text-muted {
-      color: #8b9fb5;
-    }
-    .text-sm {
-      font-size: 13px;
-    }
-    .mt-1 {
-      margin-top: 8px;
-    }
-    .mb-1 {
-      margin-bottom: 8px;
-    }
-    .flex {
-      display: flex;
-    }
-    .gap-2 {
-      gap: 8px;
-    }
-    .items-center {
-      align-items: center;
-    }
-    .justify-between {
-      justify-content: space-between;
-    }
-    .w-full {
-      width: 100%;
-    }
+        .bottom-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4px;
+            gap: 10px;
+        }
+        .bottom-actions .btn-secondary {
+            padding: 10px 18px;
+            font-size: 14px;
+            flex: 1;
+            text-align: center;
+        }
 
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #141a21;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #3b82f6;
-      border-radius: 4px;
-    }
+        /* ─── CELEBRATION OVERLAY ─── */
+        .celebrate-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            pointer-events: none;
+            animation: celebratePop 1.4s ease-out forwards;
+        }
+        .celebrate-overlay.active {
+            display: flex;
+        }
+        .celebrate-overlay .text {
+            font-size: 80px;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 60px rgba(255, 215, 0, 0.6), 0 0 120px rgba(255, 215, 0, 0.3);
+            animation: textPulse 0.9s ease-out forwards;
+        }
+        @keyframes celebratePop {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+            40% {
+                transform: scale(1.4);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        @keyframes textPulse {
+            0% {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            40% {
+                transform: scale(1.3);
+                opacity: 1;
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
 
-    #fileInput {
-      display: none;
-    }
+        /* ─── SCORECARD TABLES ─── */
+        .scorecard-table {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .scorecard-table .table-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            font-weight: 700;
+            color: #8aa08a;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .scorecard-table .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+            padding: 8px 14px;
+            font-size: 14px;
+            color: #f0f5f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .scorecard-table .table-row .batsman-name {
+            font-weight: 600;
+        }
+        .scorecard-table .table-row .batsman-name .out {
+            color: #ff6b6b;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+        .scorecard-table .table-row .batsman-name .not-out {
+            color: #2ecc71;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+        .scorecard-table .table-header-bowling {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            padding: 10px 14px;
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 12px;
+            font-weight: 700;
+            color: #8aa08a;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .scorecard-table .table-row-bowling {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            padding: 8px 14px;
+            font-size: 14px;
+            color: #f0f5f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .scorecard-table .section-title {
+            padding: 12px 14px 6px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #b8d9b0;
+            background: rgba(255, 255, 255, 0.01);
+        }
 
-    .no-players {
-      text-align: center;
-      padding: 40px 0;
-      color: #6b7f96;
-      font-size: 14px;
-    }
-    .no-players .big-icon {
-      font-size: 60px;
-      margin-bottom: 12px;
-    }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .stats-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+            backdrop-filter: blur(4px);
+        }
+        .stats-card .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #ffd700;
+        }
+        .stats-card .stat-label {
+            font-size: 12px;
+            color: #8aa08a;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
-    .uploading {
-      opacity: 0.6;
-      pointer-events: none;
-    }
-  </style>
+        /* ─── POPUPS ─── */
+        .popup-overlay,
+        .popup-overlay-toss,
+        .popup-overlay-selection,
+        .popup-overlay-inning,
+        .popup-overlay-winner,
+        .popup-overlay-out {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            padding: 20px;
+        }
+        .popup-overlay.active,
+        .popup-overlay-toss.active,
+        .popup-overlay-selection.active,
+        .popup-overlay-inning.active,
+        .popup-overlay-winner.active,
+        .popup-overlay-out.active {
+            display: flex;
+        }
+
+        .popup-card,
+        .popup-card-toss,
+        .popup-card-selection,
+        .popup-card-inning,
+        .popup-card-winner,
+        .popup-card-out {
+            background: rgba(18, 26, 18, 0.92);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 28px 24px;
+            max-width: 380px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            color: #f0f5f0;
+        }
+        .popup-card h3,
+        .popup-card-toss h3,
+        .popup-card-selection h3,
+        .popup-card-inning h3,
+        .popup-card-winner h3,
+        .popup-card-out h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            padding-bottom: 12px;
+            color: #ffd700;
+        }
+        .popup-card-out .out-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .popup-card-out .out-options button {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 16px 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #b8d9b0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .popup-card-out .out-options button:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .popup-card-out .out-options button.selected {
+            border-color: #ffd700;
+        }
+
+        .popup-card-winner .winner-emoji {
+            font-size: 80px;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .popup-card-winner .winner-text {
+            font-size: 26px;
+            font-weight: 800;
+            text-align: center;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        .popup-card-winner .winner-detail {
+            font-size: 16px;
+            text-align: center;
+            color: #b8d9b0;
+            margin: 8px 0;
+        }
+
+        .popup-card-selection .player-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .popup-card-selection .player-list button {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid transparent;
+            border-radius: 16px;
+            padding: 10px 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #b8d9b0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .popup-card-selection .player-list button:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .popup-card-selection .player-list button.selected {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .popup-card-selection .player-list button.striker-selected {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+        }
+        .popup-card-selection .player-list button.non-striker-selected {
+            border-color: #f5a623;
+            background: rgba(245, 166, 35, 0.08);
+        }
+        .popup-card-selection .sub-input {
+            margin: 12px 0;
+        }
+        .popup-card-selection .sub-input input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 215, 0, 0.06);
+            border-radius: 16px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #f0f5f0;
+            outline: none;
+            transition: 0.2s;
+        }
+        .popup-card-selection .sub-input input:focus {
+            border-color: #ffd700;
+        }
+        .popup-card-selection .sub-input label {
+            font-size: 13px;
+            color: #8aa08a;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .popup-card-selection .sub-input .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .popup-card-selection .sub-input .input-row input {
+            flex: 1;
+        }
+        .btn-add {
+            background: linear-gradient(135deg, #ffd700, #f5a623);
+            border: none;
+            color: #0b0f0b;
+            font-weight: 700;
+            padding: 10px 16px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .btn-add:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .popup-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .popup-actions-center {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .toggle-container label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #b8d9b0;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .toggle-switch.active {
+            background: rgba(231, 76, 60, 0.3);
+        }
+        .toggle-switch .toggle-knob {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            background: #f0f5f0;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+        .toggle-switch.active .toggle-knob {
+            left: 25px;
+            background: #ff6b6b;
+        }
+        .toggle-status {
+            font-size: 14px;
+            font-weight: 700;
+            color: #8aa08a;
+        }
+        .toggle-status.active {
+            color: #ff6b6b;
+        }
+
+        .popup-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .popup-options .opt-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: none;
+            border-radius: 20px;
+            padding: 14px 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #b8d9b0;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+        .popup-options .opt-btn:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+        .popup-options .opt-btn.wicket-opt {
+            color: #ff6b6b;
+            border-color: rgba(231, 76, 60, 0.1);
+        }
+        .popup-options .opt-btn.selected {
+            border: 2px solid #ffd700;
+        }
+
+        /* ─── COMPLETED MATCH ─── */
+        .completed-match-view .back-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #b8d9b0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .completed-match-view .back-header:hover {
+            color: #ffd700;
+        }
+        .completed-match-view .back-header span {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .completed-match-view .match-result {
+            text-align: center;
+            padding: 12px;
+            background: rgba(255, 215, 0, 0.03);
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.04);
+        }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 4px;
+        }
+
+        /* ─── UTILITY ─── */
+        .text-muted {
+            color: #8aa08a;
+        }
+        .text-sm {
+            font-size: 13px;
+        }
+        .mt-1 {
+            margin-top: 8px;
+        }
+        .mb-1 {
+            margin-bottom: 8px;
+        }
+        .flex {
+            display: flex;
+        }
+        .gap-2 {
+            gap: 8px;
+        }
+        .items-center {
+            align-items: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .w-full {
+            width: 100%;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .no-players {
+            text-align: center;
+            padding: 40px 0;
+            color: #8aa08a;
+            font-size: 14px;
+        }
+        .no-players .big-icon {
+            font-size: 60px;
+            margin-bottom: 12px;
+        }
+
+        .uploading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* ─── RESPONSIVE TWEAKS ─── */
+        @media (max-width: 420px) {
+            .app {
+                padding: 16px 14px 20px;
+                border-radius: 32px;
+            }
+            .score-big {
+                font-size: 38px;
+            }
+            .action-btn {
+                font-size: 18px;
+                padding: 12px 0;
+            }
+            .popup-card {
+                padding: 20px 16px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -1531,8 +1695,8 @@
             </div>
             <div id="homeMatchesTab">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <h2 style="font-size:16px; color:#b0c6dd;">Completed Matches</h2>
-                    <span style="font-size:12px; color:#6b7f96;" id="matchCount">0 matches</span>
+                    <h2 style="font-size:16px; color:#b8d9b0;">Matches</h2>
+                    <span style="font-size:12px; color:#8aa08a;" id="matchCount">0 matches</span>
                 </div>
                 <div class="matches-list" id="matchesList">
                     <div class="loading-matches">Loading matches...</div>
@@ -1648,14 +1812,14 @@ Bilal</textarea>
                             <span class="extra-item"><span class="key">P</span> <span class="val" id="liveP">0</span></span>
                         </div>
                     </div>
-                    <div style="font-size:14px; color:#b0c6dd; margin-top:10px;" id="battingTeamLabel">SIRKHANA batting</div>
-                    <div style="font-size:13px; color:#22c55e; margin-top:4px;" id="targetDisplay"></div>
+                    <div style="font-size:14px; color:#b8d9b0; margin-top:10px;" id="battingTeamLabel">SIRKHANA batting</div>
+                    <div style="font-size:13px; color:#ffd700; margin-top:4px;" id="targetDisplay"></div>
                 </div>
                 <div class="current-batsmen">
                     <div class="label">Batting</div>
                     <div class="names" id="currentBatsmen">
                         <span class="striker" id="strikerName">-</span>
-                        <span style="color:#6b7f96;">|</span>
+                        <span style="color:#6a8a6a;">|</span>
                         <span id="nonStrikerName">-</span>
                     </div>
                 </div>
@@ -1673,14 +1837,14 @@ Bilal</textarea>
                     <button class="action-btn wide" id="btnWidePopup">Wd</button>
                     <button class="action-btn wide" id="btnNbPopup">Nb</button>
                     <button class="action-btn wicket" id="btnWicketPopup">W</button>
-                    <button class="action-btn" data-run="5" style="background:#2a3a4e;">5</button>
+                    <button class="action-btn" data-run="5" style="background:rgba(255,255,255,0.02);">5</button>
                 </div>
                 <div class="bottom-actions">
                     <button class="btn-secondary" id="btnUndo">↩ Undo</button>
-                    <button class="btn-secondary" id="btnEndMatch">🏏 End Match</button>
+                    <button class="btn-secondary" id="btnStopMatch">⏹ Stop</button>
                     <button class="btn-secondary" id="btnBackHome">🏠 Home</button>
                 </div>
-                <div style="margin-top:6px; font-size:13px; color:#7b92ab; text-align:center;" id="liveStatus">▶ 0 balls bowled</div>
+                <div style="margin-top:6px; font-size:13px; color:#6a8a6a; text-align:center;" id="liveStatus">▶ 0 balls bowled</div>
             </div>
             <div id="tabScorecard" class="tab-content">
                 <div class="scorecard-mini-tabs" id="scorecardMiniTabs">
@@ -1692,10 +1856,10 @@ Bilal</textarea>
                         <div class="section-title">🏏 Batting - <span id="battingTeamName1">SIRKHANA</span></div>
                         <div class="table-header"><span>Batter</span><span>R</span><span>B</span><span>4s</span><span>6s</span><span>SR</span></div>
                         <div id="battingRows1"></div>
-                        <div style="padding:8px 14px; font-size:13px; color:#8b9fb5; border-top:1px solid #2a3746;">
+                        <div style="padding:8px 14px; font-size:13px; color:#8aa08a; border-top:1px solid rgba(255,255,255,0.03);">
                             Extras: <span id="scorecardExtras1">0</span> (Wd: <span id="scorecardWd1">0</span>, Nb: <span id="scorecardNb1">0</span>, B: <span id="scorecardB1">0</span>, LB: <span id="scorecardLb1">0</span>, P: <span id="scorecardP1">0</span>)
                         </div>
-                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:#d6e4f5; border-top:1px solid #2a3746;">
+                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:#f0f5f0; border-top:1px solid rgba(255,255,255,0.03);">
                             Total: <span id="scorecardTotal1">0/0</span> (Overs: <span id="scorecardOvers1">0.0</span>)
                         </div>
                     </div>
@@ -1708,7 +1872,7 @@ Bilal</textarea>
             </div>
             <div id="tabStats" class="tab-content">
                 <div class="stats-grid">
-                    <div class="stats-card"><div class="stat-number" id="statRuns">0</div><div class="stat-label">Total Runs</div></div>
+                    <div class="stats-card"><div class="stat-number" id="statRuns">0</div><div class="stat-label">Runs</div></div>
                     <div class="stats-card"><div class="stat-number" id="statWickets">0</div><div class="stat-label">Wickets</div></div>
                     <div class="stats-card"><div class="stat-number" id="statFours">0</div><div class="stat-label">Fours</div></div>
                     <div class="stats-card"><div class="stat-number" id="statSixes">0</div><div class="stat-label">Sixes</div></div>
@@ -1737,10 +1901,10 @@ Bilal</textarea>
                         <div class="section-title">🏏 Batting - <span id="completedBattingTeamName1">-</span></div>
                         <div class="table-header"><span>Batter</span><span>R</span><span>B</span><span>4s</span><span>6s</span><span>SR</span></div>
                         <div id="completedBattingRows1"></div>
-                        <div style="padding:8px 14px; font-size:13px; color:#8b9fb5; border-top:1px solid #2a3746;">
+                        <div style="padding:8px 14px; font-size:13px; color:#8aa08a; border-top:1px solid rgba(255,255,255,0.03);">
                             Extras: <span id="completedExtras1">0</span> (Wd: <span id="completedWd1">0</span>, Nb: <span id="completedNb1">0</span>, B: <span id="completedB1">0</span>, LB: <span id="completedLb1">0</span>, P: <span id="completedP1">0</span>)
                         </div>
-                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:#d6e4f5; border-top:1px solid #2a3746;">
+                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:#f0f5f0; border-top:1px solid rgba(255,255,255,0.03);">
                             Total: <span id="completedTotal1">0/0</span> (Overs: <span id="completedOvers1">0.0</span>)
                         </div>
                     </div>
@@ -1753,7 +1917,7 @@ Bilal</textarea>
             </div>
             <div id="tabCompletedStats" class="tab-content">
                 <div class="stats-grid">
-                    <div class="stats-card"><div class="stat-number" id="completedStatRuns">0</div><div class="stat-label">Total Runs</div></div>
+                    <div class="stats-card"><div class="stat-number" id="completedStatRuns">0</div><div class="stat-label">Runs</div></div>
                     <div class="stats-card"><div class="stat-number" id="completedStatWickets">0</div><div class="stat-label">Wickets</div></div>
                     <div class="stats-card"><div class="stat-number" id="completedStatFours">0</div><div class="stat-label">Fours</div></div>
                     <div class="stats-card"><div class="stat-number" id="completedStatSixes">0</div><div class="stat-label">Sixes</div></div>
@@ -1768,7 +1932,7 @@ Bilal</textarea>
             <div class="back-header" id="backFromPlayerStats" style="cursor:pointer;">
                 <span>←</span> <span>Back to Home</span>
             </div>
-            <h1 style="font-size:22px; font-weight:700; color:#f0f6ff;">👤 Player Stats</h1>
+            <h1 style="font-size:22px; font-weight:700; color:#f0f5f0;">👤 Player Stats</h1>
             <input class="search-bar" id="playerSearch2" type="text" placeholder="🔍 Search players..." />
             <div class="player-grid" id="playerGrid2">
                 <div class="no-players"><div class="big-icon">🏏</div>No players found.<br />Play some matches to generate stats!</div>
@@ -1792,7 +1956,7 @@ Bilal</textarea>
                 <div class="stat-card"><div class="num" id="detailRuns">0</div><div class="lbl">Runs</div><div class="sub" id="detailAvg">Avg: 0.0</div></div>
                 <div class="stat-card"><div class="num" id="detailWickets">0</div><div class="lbl">Wickets</div><div class="sub" id="detailConceded">Conc: 0</div></div>
             </div>
-            <div style="background:#1b232e; border-radius:16px; padding:14px 16px; font-size:13px; color:#8b9fb5; text-align:center;">
+            <div style="background:rgba(255,255,255,0.02); border-radius:20px; padding:14px 16px; font-size:13px; color:#8aa08a; text-align:center; border:1px solid rgba(255,215,0,0.04);">
                 <span id="detailBattingDetail">Batting: 0 runs, 0 balls</span> &bull;
                 <span id="detailBowlingDetail">Bowling: 0 runs, 0 wkts</span>
             </div>
@@ -1850,7 +2014,7 @@ Bilal</textarea>
             </div>
         </div>
 
-        <!-- Out Selection Popup with player names -->
+        <!-- Out Selection Popup -->
         <div class="popup-overlay-out" id="outSelectionPopup">
             <div class="popup-card-out">
                 <h3>Who is out?</h3>
@@ -1869,11 +2033,11 @@ Bilal</textarea>
             <div class="popup-card-inning">
                 <h3>🏏 Inning Complete!</h3>
                 <div style="text-align:center; padding:16px 0;">
-                    <div style="font-size:18px; color:#d6e4f5;" id="inningSummary">First inning completed</div>
-                    <div style="font-size:14px; color:#8b9fb5; margin-top:8px;" id="inningScore">Score: 0/0</div>
+                    <div style="font-size:18px; color:#b8d9b0;" id="inningSummary">First inning completed</div>
+                    <div style="font-size:14px; color:#8aa08a; margin-top:8px;" id="inningScore">Score: 0/0</div>
                 </div>
                 <div class="popup-actions" style="justify-content:center;">
-                    <button class="btn-success" id="btnStartSecondInning" style="padding:14px 40px; font-size:18px;">▶ START SECOND INNING</button>
+                    <button class="btn-gold" id="btnStartSecondInning" style="padding:14px 40px; font-size:18px;">▶ START SECOND INNING</button>
                 </div>
             </div>
         </div>
@@ -1991,7 +2155,8 @@ Bilal</textarea>
             isMatchCompleted: false,
             winner: null,
             winMargin: null,
-            winType: null
+            winType: null,
+            _overCompleteAfterWicket: false
         };
 
         // ─── DOM REFS ───
@@ -2071,7 +2236,6 @@ Bilal</textarea>
         const winnerDetail = document.getElementById('winnerDetail');
         const btnSaveAndExit = document.getElementById('btnSaveAndExit');
 
-        // Out selection popup
         const outSelectionPopup = document.getElementById('outSelectionPopup');
         const outStrikerBtn = document.getElementById('outStrikerBtn');
         const outNonStrikerBtn = document.getElementById('outNonStrikerBtn');
@@ -2122,10 +2286,6 @@ Bilal</textarea>
             if (e.key === 'Escape') passwordCancel.click();
         });
 
-        passwordPopup.addEventListener('click', (e) => {
-            if (e.target === passwordPopup) passwordCancel.click();
-        });
-
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // DATABASE HELPERS
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2137,11 +2297,7 @@ Bilal</textarea>
             try {
                 const snapshot = await get(getMatchesRef());
                 const all = snapshot.val() || {};
-                const completed = {};
-                Object.keys(all).forEach(k => {
-                    if (all[k].isMatchCompleted === true) completed[k] = all[k];
-                });
-                return completed;
+                return all;
             } catch (e) {
                 console.error('Firebase load error:', e);
                 return loadMatchesFromLocalStorage();
@@ -2151,11 +2307,7 @@ Bilal</textarea>
         function loadMatchesFromLocalStorage() {
             try {
                 const all = JSON.parse(localStorage.getItem('cricketMatches') || '{}');
-                const completed = {};
-                Object.keys(all).forEach(k => {
-                    if (all[k].isMatchCompleted === true) completed[k] = all[k];
-                });
-                return completed;
+                return all;
             } catch (e) { return {}; }
         }
 
@@ -2180,6 +2332,139 @@ Bilal</textarea>
             }
         }
 
+        async function savePausedMatch() {
+            const matchData = buildMatchDataObject();
+            matchData.isMatchCompleted = false;
+            matchData.matchStatus = 'paused';
+            matchData.updatedAt = Date.now();
+            try {
+                await set(ref(database, 'matches/' + state.matchId), matchData);
+                console.log('⏹️ Match paused and saved:', state.matchId);
+                return true;
+            } catch (e) {
+                console.error('Error saving paused match:', e);
+                saveMatchToLocalStorage(state.matchId, matchData);
+                return false;
+            }
+        }
+
+        function buildMatchDataObject() {
+            return {
+                matchId: state.matchId,
+                batting: state.batting,
+                bowling: state.bowling,
+                totalOvers: state.totalOvers,
+                totalWickets: state.totalWickets,
+                ballsPerOver: state.ballsPerOver,
+                currentInning: state.currentInning,
+                runs: state.runs,
+                wickets: state.wickets,
+                balls: state.balls,
+                extras: state.extras,
+                fours: state.fours,
+                sixes: state.sixes,
+                history: state.history,
+                overBalls: state.overBalls,
+                tossWinner: state.tossWinner,
+                tossDecision: state.tossDecision,
+                battingPlayers: state.battingPlayers,
+                bowlingPlayers: state.bowlingPlayers,
+                striker: state.striker,
+                nonStriker: state.nonStriker,
+                currentBowler: state.currentBowler,
+                batsmanStats: state.batsmanStats,
+                bowlerStats: state.bowlerStats,
+                isMatchStarted: state.isMatchStarted,
+                isMatchEnded: state.isMatchEnded,
+                isFirstInningComplete: state.isFirstInningComplete,
+                currentOverDeliveries: state.currentOverDeliveries,
+                inningData: state.inningData,
+                targetScore: state.targetScore,
+                matchName: state.matchName || `${state.batting} vs ${state.bowling}`,
+                createdAt: state.createdAt || Date.now(),
+                updatedAt: Date.now(),
+                matchStatus: state.matchStatus || 'ongoing',
+                isMatchCompleted: state.isMatchCompleted || false,
+                winner: state.winner || null,
+                winMargin: state.winMargin || null,
+                winType: state.winType || null
+            };
+        }
+
+        async function continueMatch(matchId) {
+            const allMatches = await loadAllMatches();
+            const matchData = allMatches[matchId];
+            if (!matchData) {
+                alert('Match not found!');
+                return;
+            }
+            restoreStateFromData(matchData);
+            state.isMatchCompleted = false;
+            state.matchStatus = 'ongoing';
+            state.isMatchEnded = false;
+            showScreen('live');
+            updateLiveUI();
+            updateScorecard();
+            updateStats();
+            if (state.striker && state.nonStriker) {
+                state.isMatchStarted = true;
+            }
+        }
+
+        function restoreStateFromData(data) {
+            state.matchId = data.matchId;
+            state.batting = data.batting;
+            state.bowling = data.bowling;
+            state.totalOvers = data.totalOvers;
+            state.totalWickets = data.totalWickets;
+            state.ballsPerOver = data.ballsPerOver;
+            state.currentInning = data.currentInning || 1;
+            state.runs = data.runs || 0;
+            state.wickets = data.wickets || 0;
+            state.balls = data.balls || 0;
+            state.extras = data.extras || { wd: 0, nb: 0, b: 0, lb: 0, p: 0 };
+            state.fours = data.fours || 0;
+            state.sixes = data.sixes || 0;
+            state.history = data.history || [];
+            state.overBalls = data.overBalls || 0;
+            state.tossWinner = data.tossWinner || null;
+            state.tossDecision = data.tossDecision || null;
+            state.battingPlayers = data.battingPlayers || [];
+            state.bowlingPlayers = data.bowlingPlayers || [];
+            state.striker = data.striker || null;
+            state.nonStriker = data.nonStriker || null;
+            state.currentBowler = data.currentBowler || null;
+            state.batsmanStats = data.batsmanStats || {};
+            state.bowlerStats = data.bowlerStats || {};
+            state.isMatchStarted = data.isMatchStarted || false;
+            state.isMatchEnded = data.isMatchEnded || false;
+            state.isFirstInningComplete = data.isFirstInningComplete || false;
+            state.currentOverDeliveries = data.currentOverDeliveries || [];
+            state.inningData = data.inningData || { 1: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0,
+                        lb: 0, p: 0 }, fours: 0, sixes: 0, batsmanStats: {}, bowlerStats: {}, battingPlayers: [],
+                        bowlingPlayers: [], battingTeam: '', bowlingTeam: '' }, 2: { runs: 0, wickets: 0, balls: 0,
+                        extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0, sixes: 0, batsmanStats: {},
+                        bowlerStats: {}, battingPlayers: [], bowlingPlayers: [], battingTeam: '', bowlingTeam: '' } };
+            state.targetScore = data.targetScore || null;
+            state.matchName = data.matchName || `${state.batting} vs ${state.bowling}`;
+            state.createdAt = data.createdAt || Date.now();
+            state.updatedAt = data.updatedAt || Date.now();
+            state.isMatchCompleted = data.isMatchCompleted || false;
+            state.matchStatus = data.matchStatus || 'ongoing';
+            state.winner = data.winner || null;
+            state.winMargin = data.winMargin || null;
+            state.winType = data.winType || null;
+            state._overCompleteAfterWicket = false;
+        }
+
+        function saveMatchToLocalStorage(matchId, data) {
+            try {
+                const m = JSON.parse(localStorage.getItem('cricketMatches') || '{}');
+                m[matchId] = data;
+                localStorage.setItem('cricketMatches', JSON.stringify(m));
+            } catch (e) {}
+        }
+
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // PLAYER STATS ENGINE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2188,6 +2473,7 @@ Bilal</textarea>
 
             Object.keys(allMatches).forEach(matchId => {
                 const m = allMatches[matchId];
+                if (m.isMatchCompleted !== true) return;
                 const allPlayers = new Set();
                 (m.battingPlayers || []).forEach(p => allPlayers.add(p));
                 (m.bowlingPlayers || []).forEach(p => allPlayers.add(p));
@@ -2401,8 +2687,8 @@ Bilal</textarea>
         let currentDetailPlayer = null;
 
         async function renderPlayerStats() {
-            const matches = await loadAllMatches();
-            allPlayersData = computePlayerStats(matches);
+            const allMatches = await loadAllMatches();
+            allPlayersData = computePlayerStats(allMatches);
             const container = document.getElementById('playerGrid');
             const container2 = document.getElementById('playerGrid2');
 
@@ -2420,7 +2706,7 @@ Bilal</textarea>
                 );
                 if (filtered.length === 0) {
                     grid.innerHTML =
-                        `<div class="no-players" style="padding:20px 0; color:#6b7f96;">No players match your search.</div>`;
+                        `<div class="no-players" style="padding:20px 0; color:#8aa08a;">No players match your search.</div>`;
                     return;
                 }
                 let html = '';
@@ -2519,25 +2805,30 @@ Bilal</textarea>
         // MATCHES LIST
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         async function renderMatchesList() {
-            const matches = await loadAllMatches();
-            const ids = Object.keys(matches);
+            const allMatches = await loadAllMatches();
+            const ids = Object.keys(allMatches);
             matchCount.textContent = ids.length + ' matches';
 
             if (ids.length === 0) {
                 matchesList.innerHTML =
-                    `<div style="text-align:center; padding:20px; color:#6b7f96; font-size:14px;">No completed matches yet. Play a match and end it to save!</div>`;
+                    `<div style="text-align:center; padding:20px; color:#8aa08a; font-size:14px;">No matches found. Start a new match!</div>`;
                 return;
             }
 
-            ids.sort((a, b) => (matches[b].updatedAt || 0) - (matches[a].updatedAt || 0));
+            ids.sort((a, b) => (allMatches[b].updatedAt || 0) - (allMatches[a].updatedAt || 0));
 
             let html = '';
             for (const id of ids) {
-                const m = matches[id];
+                const m = allMatches[id];
                 const totalExtras = (m.extras?.wd || 0) + (m.extras?.nb || 0) + (m.extras?.b || 0) + (m.extras?.lb || 0) + (m
                     .extras?.p || 0);
                 const totalRuns = (m.runs || 0) + totalExtras;
+                const isCompleted = m.isMatchCompleted === true;
+                const isPaused = !isCompleted && (m.matchStatus === 'paused' || m.matchStatus === 'ongoing');
+                const statusText = isCompleted ? '✅ Completed' : (isPaused ? '⏸️ Paused' : '▶️ Ongoing');
+                const statusClass = isCompleted ? 'completed' : 'paused';
                 const winnerText = m.winner ? `🏆 Winner: ${m.winner}` : '';
+
                 html += `
                 <div class="match-item" data-matchid="${id}">
                   <div class="match-header">
@@ -2546,28 +2837,40 @@ Bilal</textarea>
                   </div>
                   <div class="match-header" style="margin-top:4px;">
                     <span>
-                      <span class="match-status completed">✅ Completed</span>
+                      <span class="match-status ${statusClass}">${statusText}</span>
                       ${winnerText ? `<span class="match-winner">${winnerText}</span>` : ''}
                     </span>
-                    <button class="delete-match" data-matchid="${id}">✕ Delete</button>
+                    <span style="font-size:11px; color:#6a8a6a;">
+                      ${new Date(m.updatedAt || Date.now()).toLocaleDateString()}
+                    </span>
                   </div>
-                  <div style="font-size:11px; color:#6b7f96; margin-top:4px;">
-                    ${new Date(m.createdAt || Date.now()).toLocaleDateString()} ${new Date(m.updatedAt || Date.now()).toLocaleTimeString()}
+                  <div class="match-actions">
+                    ${!isCompleted ? `<button class="btn-continue" data-matchid="${id}">▶ Continue</button>` :
+                      `<button class="btn-view" data-matchid="${id}">👁 View</button>`}
+                    <button class="btn-delete" data-matchid="${id}">✕ Delete</button>
                   </div>
                 </div>
               `;
             }
             matchesList.innerHTML = html;
 
-            document.querySelectorAll('.match-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    if (e.target.classList.contains('delete-match')) return;
+            document.querySelectorAll('.btn-continue').forEach(btn => {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    const matchId = this.dataset.matchid;
+                    await continueMatch(matchId);
+                });
+            });
+
+            document.querySelectorAll('.btn-view').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
                     const matchId = this.dataset.matchid;
                     viewCompletedMatch(matchId);
                 });
             });
 
-            document.querySelectorAll('.delete-match').forEach(btn => {
+            document.querySelectorAll('.btn-delete').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     const matchId = this.dataset.matchid;
@@ -2587,8 +2890,8 @@ Bilal</textarea>
         let completedScorecardInning = 1;
 
         async function viewCompletedMatch(matchId) {
-            const matches = await loadAllMatches();
-            const matchData = matches[matchId];
+            const allMatches = await loadAllMatches();
+            const matchData = allMatches[matchId];
             if (!matchData) { alert('Match not found!'); return; }
             viewedMatchData = matchData;
             completedScorecardInning = 1;
@@ -2648,7 +2951,7 @@ Bilal</textarea>
                 0) + (data.extras?.p || 0);
             const keys = Object.keys(data.batsmanStats || {});
             if (keys.length === 0) {
-                battingHtml = '<div class="table-row" style="color:#6b7f96;">No batting data</div>';
+                battingHtml = '<div class="table-row" style="color:#6a8a6a;">No batting data</div>';
             } else {
                 keys.forEach(name => {
                     const s = data.batsmanStats[name];
@@ -2683,7 +2986,7 @@ Bilal</textarea>
             let bowlingHtml = '';
             const bKeys = Object.keys(data.bowlerStats || {});
             if (bKeys.length === 0) {
-                bowlingHtml = '<div class="table-row-bowling" style="color:#6b7f96;">No bowling data</div>';
+                bowlingHtml = '<div class="table-row-bowling" style="color:#6a8a6a;">No bowling data</div>';
             } else {
                 bKeys.forEach(name => {
                     const b = data.bowlerStats[name];
@@ -2797,6 +3100,8 @@ Bilal</textarea>
             state.createdAt = Date.now();
             state.matchName = `${state.batting} vs ${state.bowling}`;
             state.isMatchCompleted = false;
+            state.matchStatus = 'ongoing';
+            state._overCompleteAfterWicket = false;
             showScreen('live');
             updateLiveUI();
             setTimeout(() => {
@@ -2866,6 +3171,7 @@ Bilal</textarea>
             state.winner = null;
             state.winMargin = null;
             state.winType = null;
+            state._overCompleteAfterWicket = false;
             tossResult.textContent = 'Click toss to decide';
         }
 
@@ -2882,12 +3188,12 @@ Bilal</textarea>
             const team1 = teamBattingInput.value.trim() || 'SIRKHANA';
             const team2 = teamBowlingInput.value.trim() || 'MORAGAI';
             tossPopupContent.innerHTML = `
-            <div style="text-align:center; margin-bottom:12px; font-size:16px; color:#b0c6dd;">TOSS WON BY</div>
+            <div style="text-align:center; margin-bottom:12px; font-size:16px; color:#b8d9b0;">TOSS WON BY</div>
             <div class="toss-options">
               <button data-team="${team1}" class="toss-opt">${team1}</button>
               <button data-team="${team2}" class="toss-opt">${team2}</button>
             </div>
-            <div style="text-align:center; margin-top:8px; font-size:14px; color:#8b9fb5;">Select the team that won the toss</div>
+            <div style="text-align:center; margin-top:8px; font-size:14px; color:#8aa08a;">Select the team that won the toss</div>
           `;
             document.querySelectorAll('.toss-opt').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -2907,8 +3213,8 @@ Bilal</textarea>
                 tossSelectedDecision = null;
                 tossPopupTitle.textContent = '🏏 DECISION';
                 tossPopupContent.innerHTML = `
-              <div style="text-align:center; margin-bottom:12px; font-size:16px; color:#b0c6dd;">${tossSelectedTeam} won the toss</div>
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8b9fb5;">Choose what to do</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:16px; color:#b8d9b0;">${tossSelectedTeam} won the toss</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Choose what to do</div>
               <div class="toss-decision">
                 <button data-decision="bat" class="toss-decision-opt">🏏 Bat First</button>
                 <button data-decision="bowl" class="toss-decision-opt">⚾ Bowl First</button>
@@ -2944,7 +3250,6 @@ Bilal</textarea>
         });
 
         tossPopupCancel.addEventListener('click', () => tossPopup.classList.remove('active'));
-        tossPopup.addEventListener('click', (e) => { if (e.target === tossPopup) tossPopup.classList.remove('active'); });
 
         btnResetToss.addEventListener('click', resetToss);
 
@@ -2975,7 +3280,7 @@ Bilal</textarea>
             let html = '';
             if (type === 'openers') {
                 html = `
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8b9fb5;">Select two opening batsmen</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Select two opening batsmen</div>
               <div class="player-list" id="playerList">
                 ${players.map(p => `<button data-player="${p}" class="player-btn">${p}</button>`).join('')}
               </div>
@@ -2986,11 +3291,11 @@ Bilal</textarea>
                   <button class="btn-add" id="btnAddSubstitute">+ Add</button>
                 </div>
               </div>
-              <div style="font-size:12px; color:#6b7f96; margin-top:4px;">Click a player → striker (green), click again → non-striker (yellow)</div>
+              <div style="font-size:12px; color:#6a8a6a; margin-top:4px;">Click a player → striker (gold), click again → non-striker (light gold)</div>
             `;
             } else if (type === 'nextBatsman') {
                 html = `
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8b9fb5;">Select next batsman</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Select next batsman</div>
               <div class="player-list" id="playerList">
                 ${players.map(p => `<button data-player="${p}" class="player-btn">${p}</button>`).join('')}
               </div>
@@ -3004,7 +3309,7 @@ Bilal</textarea>
             `;
             } else if (type === 'nextBowler') {
                 html = `
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8b9fb5;">Select bowler for next over</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Select bowler for next over</div>
               <div class="player-list" id="playerList">
                 ${players.map(p => `<button data-player="${p}" class="player-btn">${p}</button>`).join('')}
               </div>
@@ -3150,7 +3455,22 @@ Bilal</textarea>
                 closeSelectionPopup();
                 pendingBatsmanSelection = false;
                 updateLiveUI();
-                if (pendingBowlerSelection) {
+
+                // ★★★ FIX: After selecting new batsman, check if over is complete (wicket on last ball) ★★★
+                if (state._overCompleteAfterWicket) {
+                    state._overCompleteAfterWicket = false;
+                    // Swap batsmen so new batsman becomes non-striker (cricket rules)
+                    const temp = state.striker;
+                    state.striker = state.nonStriker;
+                    state.nonStriker = temp;
+                    state.overBalls = 0;
+                    // Show bowler selection for next over
+                    const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
+                    setTimeout(() => {
+                        showSelectionPopup('nextBowler', available.length > 0 ? available : state
+                            .bowlingPlayers, 'Select Next Bowler', false);
+                    }, 300);
+                } else if (pendingBowlerSelection) {
                     pendingBowlerSelection = false;
                     const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
                     setTimeout(() => {
@@ -3171,7 +3491,6 @@ Bilal</textarea>
         });
 
         selectionCancel.addEventListener('click', closeSelectionPopup);
-        selectionPopup.addEventListener('click', (e) => { if (e.target === selectionPopup) closeSelectionPopup(); });
 
         // ─── Out Selection Popup with player names ───
         let pendingWicketRuns = 0;
@@ -3213,9 +3532,8 @@ Bilal</textarea>
         });
 
         outCancel.addEventListener('click', closeOutSelectionPopup);
-        outSelectionPopup.addEventListener('click', (e) => { if (e.target === outSelectionPopup) closeOutSelectionPopup(); });
 
-        // ─── Process Wicket ───
+        // ─── Process Wicket (FIXED: handles last ball over completion) ───
         let pendingPosition = null;
 
         function processWicket(runs, outPosition, snapshot, action) {
@@ -3253,6 +3571,7 @@ Bilal</textarea>
             pushHistory(action, snapshot);
             updateLiveUI();
 
+            // Check if innings is over (all out or overs complete)
             if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
@@ -3281,6 +3600,14 @@ Bilal</textarea>
                 return;
             }
 
+            // ★★★ FIX: Check if wicket fell on the last ball of the over ★★★
+            const isLastBall = state.overBalls >= state.ballsPerOver;
+            if (isLastBall) {
+                state._overCompleteAfterWicket = true;
+                pendingBowlerSelection = true;
+            }
+
+            // Show batsman selection
             const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p].out);
             const otherEnd = (outPosition === 'striker') ? state.nonStriker : state.striker;
             const candidates = allNotOut.filter(p => p !== otherEnd);
@@ -3375,7 +3702,7 @@ Bilal</textarea>
                 document.getElementById('currentBowler').textContent = '-';
             }
 
-            // Check for inning completion conditions inside updateLiveUI
+            // Check for inning completion conditions
             if (state.wickets >= state.totalWickets) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
@@ -3401,7 +3728,6 @@ Bilal</textarea>
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
                     }
                 }
-                // Don't let the normal status override
                 document.getElementById('liveStatus').textContent = (state.wickets >= state.totalWickets) ? '🏏 All out!' :
                     '▶ ' + state.balls + ' balls bowled';
                 return;
@@ -3498,6 +3824,7 @@ Bilal</textarea>
             state.currentBowler = null;
             state.currentOverDeliveries = [];
             state.targetScore = state.inningData[1].runs + 1;
+            state._overCompleteAfterWicket = false;
             isWinnerPopupShown = false;
             state.inningData[2] = {
                 runs: 0,
@@ -3805,12 +4132,31 @@ Bilal</textarea>
                 const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p]
                 .out);
                 const candidates = allNotOut.filter(p => p !== state.nonStriker);
+                // ★★★ Check if wicket fell on last ball ★★★
+                if (state.overBalls >= state.ballsPerOver) {
+                    state._overCompleteAfterWicket = true;
+                    pendingBowlerSelection = true;
+                }
                 setTimeout(() => {
                     showSelectionPopup('nextBatsman', candidates.length > 0 ? candidates : state.battingPlayers,
                         'Select Next Batsman', false);
                 }, 500);
             } else {
                 showOutSelectionPopup(runs);
+            }
+        }
+
+        // ─── Stop Match ───
+        async function stopMatch() {
+            if (confirm('Stop the match and save it to continue later?')) {
+                const success = await savePausedMatch();
+                if (success) {
+                    showScreen('noMatch');
+                    renderMatchesList();
+                    resetStateForNewMatch();
+                } else {
+                    alert('Failed to save match. Please try again.');
+                }
             }
         }
 
@@ -3866,21 +4212,11 @@ Bilal</textarea>
 
         document.getElementById('btnUndo').addEventListener('click', undoLast);
 
-        document.getElementById('btnEndMatch').addEventListener('click', async () => {
-            if (confirm('End the match and save to completed matches?')) {
-                if (state.currentInning === 2) saveInning2Data();
-                await completeAndSaveMatch();
-                showScreen('noMatch');
-                resetStateForNewMatch();
-                renderMatchesList();
-                renderPlayerStats();
-            }
-        });
+        document.getElementById('btnStopMatch').addEventListener('click', stopMatch);
 
         document.getElementById('btnBackHome').addEventListener('click', () => {
-            if (confirm('Go back home? Your current match progress will be lost!')) {
-                showScreen('noMatch');
-                resetStateForNewMatch();
+            if (confirm('Go back home? Your current match progress will be saved (auto-stop).')) {
+                stopMatch();
             }
         });
 
@@ -3893,51 +4229,16 @@ Bilal</textarea>
             renderPlayerStats();
         });
 
+        // ─── Complete and save (winner popup uses this) ───
         async function completeAndSaveMatch() {
             if (state.currentInning === 2) saveInning2Data();
             state.isMatchEnded = true;
             state.isMatchCompleted = true;
             state.matchStatus = 'completed';
-            const matchData = {
-                matchId: state.matchId,
-                batting: state.batting,
-                bowling: state.bowling,
-                totalOvers: state.totalOvers,
-                totalWickets: state.totalWickets,
-                ballsPerOver: state.ballsPerOver,
-                currentInning: state.currentInning,
-                runs: state.runs,
-                wickets: state.wickets,
-                balls: state.balls,
-                extras: state.extras,
-                fours: state.fours,
-                sixes: state.sixes,
-                history: state.history,
-                overBalls: state.overBalls,
-                tossWinner: state.tossWinner,
-                tossDecision: state.tossDecision,
-                battingPlayers: state.battingPlayers,
-                bowlingPlayers: state.bowlingPlayers,
-                striker: state.striker,
-                nonStriker: state.nonStriker,
-                currentBowler: state.currentBowler,
-                batsmanStats: state.batsmanStats,
-                bowlerStats: state.bowlerStats,
-                isMatchStarted: state.isMatchStarted,
-                isMatchEnded: true,
-                isFirstInningComplete: state.isFirstInningComplete,
-                currentOverDeliveries: state.currentOverDeliveries,
-                inningData: state.inningData,
-                targetScore: state.targetScore,
-                matchName: state.matchName || `${state.batting} vs ${state.bowling}`,
-                createdAt: state.createdAt || Date.now(),
-                updatedAt: Date.now(),
-                matchStatus: 'completed',
-                isMatchCompleted: true,
-                winner: state.winner || null,
-                winMargin: state.winMargin || null,
-                winType: state.winType || null
-            };
+            const matchData = buildMatchDataObject();
+            matchData.isMatchCompleted = true;
+            matchData.matchStatus = 'completed';
+            matchData.updatedAt = Date.now();
             try {
                 await set(ref(database, 'matches/' + state.matchId), matchData);
                 return true;
@@ -3945,14 +4246,6 @@ Bilal</textarea>
                 saveMatchToLocalStorage(state.matchId, matchData);
                 return false;
             }
-        }
-
-        function saveMatchToLocalStorage(matchId, data) {
-            try {
-                const m = JSON.parse(localStorage.getItem('cricketMatches') || '{}');
-                m[matchId] = data;
-                localStorage.setItem('cricketMatches', JSON.stringify(m));
-            } catch (e) {}
         }
 
         // ─── Scoring popup ───
@@ -4041,9 +4334,6 @@ Bilal</textarea>
             popupOverlay.classList.remove('active');
             selectedPopupValue = null;
         });
-        popupOverlay.addEventListener('click', (e) => { if (e.target === popupOverlay) { popupOverlay.classList.remove(
-                    'active');
-                selectedPopupValue = null; } });
 
         // ─── Live tabs ───
         document.querySelectorAll('.live-match .tabs button').forEach(btn => {
@@ -4094,7 +4384,7 @@ Bilal</textarea>
               `;
             });
             document.getElementById('battingRows1').innerHTML = battingHtml ||
-                '<div class="table-row" style="color:#6b7f96;">No batting data</div>';
+                '<div class="table-row" style="color:#6a8a6a;">No batting data</div>';
             document.getElementById('battingTeamName1').textContent = battingTeam || state.batting;
             document.getElementById('bowlingTeamName1').textContent = bowlingTeam || state.bowling;
             document.getElementById('scorecardExtras1').textContent = totalExtras;
@@ -4120,7 +4410,7 @@ Bilal</textarea>
               `;
             });
             document.getElementById('bowlingRows1').innerHTML = bowlingHtml ||
-                '<div class="table-row-bowling" style="color:#6b7f96;">No bowling data</div>';
+                '<div class="table-row-bowling" style="color:#6a8a6a;">No bowling data</div>';
         }
 
         function updateStats() {
@@ -4213,9 +4503,9 @@ Bilal</textarea>
         renderPlayerStats();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App with both popups restored.');
+        console.log('🏏 Cricket Scorer App – Black & Gold Theme');
         console.log('🔐 Password for delete & photo: 28326');
-        console.log('✅ Inning Complete and Winner popups restored.');
+        console.log('✅ Wicket-on-last-ball bug FIXED: new batsman becomes non-striker, bowler popup appears.');
     </script>
 </body>
 </html>
