@@ -1064,7 +1064,7 @@
             color: var(--text-primary);
         }
 
-        /* ─── NEW BATSMEN DISPLAY ─── */
+        /* ─── BATSMEN DISPLAY (UPDATED) ─── */
         .current-batsmen {
             display: flex;
             gap: 12px;
@@ -1083,10 +1083,10 @@
             transition: 0.2s;
         }
         .batsman-item.striker {
-            border-bottom: 2px solid var(--accent-cyan);
+            border-bottom: 3px solid var(--accent-cyan);
         }
         .batsman-item.non-striker {
-            border-bottom: 2px solid var(--accent-gold);
+            border-bottom: 3px solid var(--accent-gold);
         }
         .batsman-avatar {
             width: 48px;
@@ -1107,17 +1107,15 @@
             object-fit: cover;
         }
         .batsman-role {
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: var(--text-primary);
             margin-top: 2px;
         }
         .batsman-stats {
             font-size: 15px;
-            font-weight: 700;
-            color: var(--text-primary);
+            font-weight: 600;
+            color: var(--text-secondary);
         }
         .batsman-stats small {
             font-weight: 400;
@@ -1359,7 +1357,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* ─── MAN OF THE MATCH (NEW) ─── */
+        /* ─── MAN OF THE MATCH ─── */
         .man-of-match {
             background: linear-gradient(135deg, rgba(255, 215, 0, 0.06), rgba(0, 212, 255, 0.06));
             border: 1px solid rgba(255, 215, 0, 0.15);
@@ -1904,7 +1902,7 @@ Adnan
 Mubeen
 Sohail
 Asad
-Saad
+Kashif
 Naeem
 Shayan
 Noor Islam
@@ -1972,16 +1970,16 @@ Bilal</textarea>
                     <div style="font-size:13px; color:var(--accent-gold); margin-top:4px;" id="targetDisplay"></div>
                 </div>
 
-                <!-- NEW: Batsmen display with photos and stats -->
+                <!-- BATSMEN DISPLAY – now shows name instead of role -->
                 <div class="current-batsmen" id="currentBatsmenContainer">
                     <div class="batsman-item striker" id="strikerItem">
                         <div class="batsman-avatar" id="strikerAvatar">👤</div>
-                        <div class="batsman-role">Striker</div>
+                        <div class="batsman-role" id="strikerRole">-</div>
                         <div class="batsman-stats" id="strikerStats">-</div>
                     </div>
                     <div class="batsman-item non-striker" id="nonStrikerItem">
                         <div class="batsman-avatar" id="nonStrikerAvatar">👤</div>
-                        <div class="batsman-role">Non-Striker</div>
+                        <div class="batsman-role" id="nonStrikerRole">-</div>
                         <div class="batsman-stats" id="nonStrikerStats">-</div>
                     </div>
                 </div>
@@ -2051,7 +2049,7 @@ Bilal</textarea>
             <h1 id="completedMatchTitle">Match Summary</h1>
             <div class="match-result" id="completedMatchResult">🏏 Match Completed</div>
 
-            <!-- MAN OF THE MATCH (NEW) -->
+            <!-- MAN OF THE MATCH -->
             <div id="manOfMatchContainer" style="display:none;"></div>
 
             <div class="tabs">
@@ -2408,9 +2406,11 @@ Bilal</textarea>
         const outNonStrikerBtn = document.getElementById('outNonStrikerBtn');
         const outCancel = document.getElementById('outCancel');
 
-        // NEW refs for batsmen display
+        // Batsmen display elements
         const strikerAvatar = document.getElementById('strikerAvatar');
         const nonStrikerAvatar = document.getElementById('nonStrikerAvatar');
+        const strikerRole = document.getElementById('strikerRole');
+        const nonStrikerRole = document.getElementById('nonStrikerRole');
         const strikerStats = document.getElementById('strikerStats');
         const nonStrikerStats = document.getElementById('nonStrikerStats');
         const strikerItem = document.getElementById('strikerItem');
@@ -2832,7 +2832,6 @@ Bilal</textarea>
                 const success = await setPlayerPhoto(playerName, dataUrl);
                 if (success) {
                     photoCache[playerName] = dataUrl;
-                    // Update detail view if visible
                     if (currentDetailPlayer && currentDetailPlayer.name === playerName) {
                         detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
                     }
@@ -3130,7 +3129,6 @@ Bilal</textarea>
         function computeManOfTheMatch(matchData) {
             if (!matchData.inningData) return null;
             const players = {};
-            // Collect all players from both innings
             [1, 2].forEach(inn => {
                 const inning = matchData.inningData[inn];
                 if (!inning) return;
@@ -3145,7 +3143,6 @@ Bilal</textarea>
                     const p = players[name];
                     if (inning.battingTeam && battingPlayers.includes(name)) p.team = inning.battingTeam;
                     if (inning.bowlingTeam && bowlingPlayers.includes(name)) p.team = inning.bowlingTeam;
-                    // batting stats
                     if (inning.batsmanStats && inning.batsmanStats[name]) {
                         const bs = inning.batsmanStats[name];
                         p.runs += bs.runs || 0;
@@ -3153,7 +3150,6 @@ Bilal</textarea>
                         p.fours += bs.fours || 0;
                         p.sixes += bs.sixes || 0;
                     }
-                    // bowling stats
                     if (inning.bowlerStats && inning.bowlerStats[name]) {
                         const bw = inning.bowlerStats[name];
                         p.wickets += bw.wickets || 0;
@@ -3163,13 +3159,10 @@ Bilal</textarea>
                 });
             });
 
-            // Calculate score: runs + (wickets * 15) + (fours*0.5) + (sixes*1) - (bowlingRuns/10) + (wickets*5)
             let best = null;
             Object.keys(players).forEach(name => {
                 const p = players[name];
-                // Simple weighted score
                 p.score = p.runs + (p.wickets * 20) + (p.fours * 0.3) + (p.sixes * 0.7);
-                // bonus for runs > 50 and wickets > 3
                 if (p.runs >= 50) p.score += 10;
                 if (p.wickets >= 3) p.score += 10;
                 if (!best || p.score > best.score) {
@@ -3177,12 +3170,11 @@ Bilal</textarea>
                 }
             });
 
-            // If no data, return null
             if (!best || best.score === 0) return null;
             return best;
         }
 
-        // ─── Render completed scorecard (existing) ───
+        // ─── Render completed scorecard ───
         function renderCompletedScorecard(matchData) {
             const inning = completedScorecardInning;
             let data, battingTeam, bowlingTeam;
@@ -3912,7 +3904,7 @@ Bilal</textarea>
             if (state.history.length > 50) state.history.shift();
         }
 
-        // ─── Update Live UI (with photos and stats) ───
+        // ─── Update Live UI (with photos and stats, and batsman name instead of role) ───
         function updateLiveUI() {
             const totalExtras = state.extras.wd + state.extras.nb + state.extras.b + state.extras.lb + state.extras.p;
             document.getElementById('liveScore').textContent = `${state.runs}/${state.wickets}`;
@@ -3936,10 +3928,11 @@ Bilal</textarea>
                 document.getElementById('targetDisplay').textContent = '';
             }
 
-            // Update batsmen display with photos and stats
+            // Update batsmen display with photo, name (instead of role), and stats
             if (state.striker) {
                 const photo = getPlayerPhotoSync(state.striker) || '';
                 strikerAvatar.innerHTML = photo ? `<img src="${photo}" alt="${state.striker}" />` : '👤';
+                strikerRole.textContent = state.striker; // show name instead of "Striker"
                 const s = state.batsmanStats[state.striker] || { runs: 0, balls: 0 };
                 strikerStats.textContent = `${s.runs} (${s.balls})`;
                 strikerItem.style.display = 'block';
@@ -3950,6 +3943,7 @@ Bilal</textarea>
             if (state.nonStriker) {
                 const photo = getPlayerPhotoSync(state.nonStriker) || '';
                 nonStrikerAvatar.innerHTML = photo ? `<img src="${photo}" alt="${state.nonStriker}" />` : '👤';
+                nonStrikerRole.textContent = state.nonStriker; // show name instead of "Non-Striker"
                 const ns = state.batsmanStats[state.nonStriker] || { runs: 0, balls: 0 };
                 nonStrikerStats.textContent = `${ns.runs} (${ns.balls})`;
                 nonStrikerItem.style.display = 'block';
@@ -4738,10 +4732,9 @@ Bilal</textarea>
         renderPlayerStats();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App – New theme: Dark Blue/Cyan/Gold');
+        console.log('🏏 Cricket Scorer App – Batsmen show name instead of role');
         console.log('🔐 Password for delete & photo: 28326');
-        console.log('✅ Batsmen display shows photos, role, and runs(balls)');
-        console.log('✅ Man of the Match automatically computed on match view');
+        console.log('✅ Striker = cyan underline, Non-Striker = gold underline');
     </script>
 </body>
 </html>
