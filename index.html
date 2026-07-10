@@ -20,7 +20,24 @@
     </script>
 
     <style>
-        /* ─── RESET & BASE ─── */
+        /* ─── CSS VARIABLES (NEW THEME) ─── */
+        :root {
+            --bg-primary: #0b0e1a;
+            --bg-secondary: #141b2b;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --border-light: rgba(0, 212, 255, 0.08);
+            --glass-bg: rgba(20, 27, 43, 0.75);
+            --text-primary: #e8f0fe;
+            --text-secondary: #8aa0c8;
+            --accent-cyan: #00d4ff;
+            --accent-gold: #ffd700;
+            --accent-pink: #ff6b9d;
+            --shadow-glow: 0 8px 32px rgba(0, 212, 255, 0.08);
+            --radius-lg: 32px;
+            --radius-md: 20px;
+            --radius-sm: 14px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -29,20 +46,20 @@
         }
 
         body {
-            background: #0b0f0b;
+            background: var(--bg-primary);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 12px;
-            background-image: radial-gradient(circle at 20% 30%, #1a3a1a 0%, #0b0f0b 70%);
+            background-image: radial-gradient(circle at 20% 30%, #1a2a4a 0%, #0b0e1a 80%);
             background-attachment: fixed;
         }
         body.popup-open {
             overflow: hidden;
         }
 
-        /* ─── SPLASH SCREEN ─── */
+        /* ─── SPLASH ─── */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -56,8 +73,8 @@
             z-index: 1000;
             padding: 20px;
             transition: opacity 0.8s ease;
-            background: #0b0f0b;
-            background-image: radial-gradient(circle at 30% 40%, #1e4a1e 0%, #0b0f0b 80%);
+            background: var(--bg-primary);
+            background-image: radial-gradient(circle at 30% 40%, #1a2a4a 0%, #0b0e1a 80%);
         }
         .splash-screen::before {
             content: '';
@@ -82,7 +99,7 @@
             font-size: 100px;
             margin-bottom: 16px;
             animation: float 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.4));
+            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
         }
         @keyframes float {
             0%,
@@ -96,29 +113,30 @@
         .splash-screen h1 {
             font-size: 52px;
             font-weight: 800;
-            color: #ffd700;
-            text-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 4px 20px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
             letter-spacing: 2px;
         }
         .splash-screen .developer {
             font-size: 22px;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             letter-spacing: 4px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
             margin-bottom: 20px;
             font-weight: 300;
         }
         .splash-screen .loading-bar {
             width: 200px;
             height: 4px;
-            background: rgba(255, 215, 0, 0.15);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 4px;
             overflow: hidden;
             margin: 12px auto 0;
         }
         .splash-screen .loading-bar .fill {
             height: 100%;
-            background: linear-gradient(90deg, #ffd700, #f5a623, #ffd700);
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold), var(--accent-cyan));
             border-radius: 4px;
             width: 0%;
             animation: load 6s ease-in-out forwards;
@@ -142,22 +160,22 @@
             }
         }
 
-        /* ─── APP CONTAINER ─── */
+        /* ─── APP ─── */
         .app {
             max-width: 420px;
             width: 100%;
-            background: rgba(18, 26, 18, 0.75);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 48px;
+            border-radius: var(--radius-lg);
             padding: 24px 20px 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(255, 215, 0, 0.03);
-            color: #f0f5f0;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 80px rgba(0, 212, 255, 0.03);
+            color: var(--text-primary);
             transition: all 0.2s;
             position: relative;
             opacity: 0;
             animation: fadeIn 0.6s ease 6s forwards;
-            border: 1px solid rgba(255, 215, 0, 0.08);
+            border: 1px solid var(--border-light);
         }
         @keyframes fadeIn {
             to {
@@ -189,10 +207,10 @@
         .home-tabs {
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255, 255, 255, 0.02);
             border-radius: 60px;
             padding: 4px;
-            border: 1px solid rgba(255, 215, 0, 0.06);
+            border: 1px solid var(--border-light);
         }
         .home-tabs button {
             flex: 1;
@@ -202,29 +220,29 @@
             border-radius: 40px;
             font-size: 14px;
             font-weight: 600;
-            color: #8aa08a;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: 0.25s;
             letter-spacing: 0.5px;
         }
         .home-tabs button.active {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
-            color: #0b0f0b;
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.25);
         }
 
-        /* ─── NO MATCHES / HOME ─── */
+        /* ─── NO MATCHES ─── */
         .no-matches .brand-title {
             font-size: 20px;
             font-weight: 700;
             text-align: center;
-            background: linear-gradient(135deg, #ffd700, #f5a623);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
         }
         .no-matches .icon-cricket {
-            background: rgba(255, 215, 0, 0.06);
+            background: rgba(0, 212, 255, 0.05);
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -232,8 +250,8 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
-            border: 2px solid rgba(255, 215, 0, 0.15);
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.15);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.05);
         }
         .no-matches .icon-cricket span {
             font-size: 44px;
@@ -248,20 +266,20 @@
             padding-right: 4px;
         }
         .match-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
             padding: 14px 16px;
             margin-bottom: 10px;
             cursor: default;
-            border: 1px solid rgba(255, 215, 0, 0.06);
+            border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
             transition: 0.25s;
         }
         .match-item:hover {
             background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 215, 0, 0.2);
+            border-color: var(--accent-cyan);
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-glow);
         }
         .match-item .match-header {
             display: flex;
@@ -270,29 +288,29 @@
         }
         .match-item .match-teams {
             font-weight: 700;
-            color: #f0f5f0;
+            color: var(--text-primary);
             font-size: 16px;
             letter-spacing: 0.3px;
         }
         .match-item .match-score {
             font-size: 15px;
-            color: #ffd700;
+            color: var(--accent-gold);
             font-weight: 600;
         }
         .match-item .match-status {
             font-size: 12px;
-            color: #8aa08a;
+            color: var(--text-secondary);
             margin-top: 4px;
         }
         .match-item .match-status.completed {
-            color: #ffd700;
+            color: var(--accent-gold);
         }
         .match-item .match-status.paused {
-            color: #f5a623;
+            color: var(--accent-cyan);
         }
         .match-item .match-winner {
             font-size: 13px;
-            color: #ffd700;
+            color: var(--accent-gold);
             font-weight: 700;
             margin-top: 2px;
         }
@@ -303,9 +321,9 @@
             flex-wrap: wrap;
         }
         .match-item .match-actions button {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             border: none;
-            color: #c0d4c0;
+            color: var(--text-secondary);
             border-radius: 40px;
             padding: 5px 14px;
             font-size: 12px;
@@ -315,39 +333,39 @@
             backdrop-filter: blur(4px);
         }
         .match-item .match-actions button:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             color: #fff;
         }
         .match-item .match-actions .btn-continue {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
-            color: #0b0f0b;
+            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            color: #fff;
         }
         .match-item .match-actions .btn-continue:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
         }
         .match-item .match-actions .btn-delete {
-            background: rgba(220, 50, 50, 0.15);
+            background: rgba(255, 70, 70, 0.12);
             color: #ff6b6b;
         }
         .match-item .match-actions .btn-delete:hover {
-            background: rgba(220, 50, 50, 0.3);
+            background: rgba(255, 70, 70, 0.25);
         }
         .match-item .match-actions .btn-view {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
+            background: rgba(255, 215, 0, 0.08);
+            color: var(--accent-gold);
         }
         .match-item .match-actions .btn-view:hover {
-            background: rgba(255, 215, 0, 0.2);
+            background: rgba(255, 215, 0, 0.18);
         }
 
         /* ─── PLAYER STATS ─── */
         .player-stats-view .search-bar {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-light);
             border-radius: 60px;
             padding: 12px 20px;
-            color: #f0f5f0;
+            color: var(--text-primary);
             font-size: 14px;
             outline: none;
             width: 100%;
@@ -355,8 +373,8 @@
             backdrop-filter: blur(4px);
         }
         .player-stats-view .search-bar:focus {
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
         }
         .player-stats-view .player-grid {
             display: grid;
@@ -367,33 +385,33 @@
             padding: 2px 0 10px;
         }
         .player-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 24px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
             padding: 16px 12px;
             text-align: center;
             cursor: pointer;
             transition: 0.25s;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
         }
         .player-card:hover {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.04);
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.04);
             transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-glow);
         }
         .player-card .avatar {
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             margin: 0 auto 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
             overflow: hidden;
-            border: 2px solid rgba(255, 215, 0, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.3);
         }
         .player-card .avatar img {
             width: 100%;
@@ -403,15 +421,15 @@
         .player-card .pname {
             font-weight: 700;
             font-size: 15px;
-            color: #f0f5f0;
+            color: var(--text-primary);
         }
         .player-card .pteam {
             font-size: 12px;
-            color: #8aa08a;
+            color: var(--text-secondary);
         }
         .player-card .pstats-mini {
             font-size: 12px;
-            color: #b0c8b0;
+            color: #8aa0c8;
             margin-top: 6px;
         }
         .player-card .pstats-mini span {
@@ -423,13 +441,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             font-size: 14px;
             cursor: pointer;
             transition: 0.2s;
         }
         .player-detail-view .back-header:hover {
-            color: #ffd700;
+            color: var(--accent-cyan);
         }
         .player-detail-view .back-header span {
             font-size: 22px;
@@ -443,15 +461,15 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
             margin: 0 auto 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 48px;
             overflow: hidden;
-            border: 3px solid #ffd700;
-            box-shadow: 0 0 40px rgba(255, 215, 0, 0.1);
+            border: 3px solid var(--accent-cyan);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
         }
         .player-detail-view .profile-section .big-avatar img {
             width: 100%;
@@ -461,16 +479,16 @@
         .player-detail-view .profile-section .player-name {
             font-size: 24px;
             font-weight: 700;
-            color: #f0f5f0;
+            color: var(--text-primary);
         }
         .player-detail-view .profile-section .player-team {
             font-size: 14px;
-            color: #8aa08a;
+            color: var(--text-secondary);
         }
         .player-detail-view .profile-section .change-photo-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.15);
-            color: #b8d9b0;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
             padding: 6px 20px;
             border-radius: 40px;
             font-size: 12px;
@@ -479,13 +497,13 @@
             transition: 0.2s;
         }
         .player-detail-view .profile-section .change-photo-btn:hover {
-            background: rgba(255, 215, 0, 0.1);
-            color: #ffd700;
+            background: rgba(0, 212, 255, 0.08);
+            color: var(--accent-cyan);
         }
         .player-detail-view .profile-section .retry-btn {
-            background: #f5a623;
+            background: var(--accent-gold);
             border: none;
-            color: #0b0f0b;
+            color: #0b0e1a;
             padding: 4px 14px;
             border-radius: 40px;
             font-size: 11px;
@@ -495,7 +513,7 @@
             display: none;
         }
         .player-detail-view .profile-section .retry-btn:hover {
-            background: #ffd700;
+            background: #ffed4a;
         }
 
         .player-detail-view .stats-grid-detail {
@@ -505,28 +523,28 @@
             margin: 8px 0;
         }
         .player-detail-view .stats-grid-detail .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 20px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
             padding: 14px 8px;
             text-align: center;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
         }
         .player-detail-view .stats-grid-detail .stat-card .num {
             font-size: 28px;
             font-weight: 700;
-            color: #ffd700;
+            color: var(--accent-cyan);
         }
         .player-detail-view .stats-grid-detail .stat-card .lbl {
             font-size: 10px;
-            color: #8aa08a;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: 4px;
         }
         .player-detail-view .stats-grid-detail .stat-card .sub {
             font-size: 11px;
-            color: #b0c8b0;
+            color: #8aa0c8;
             margin-top: 2px;
         }
 
@@ -549,29 +567,29 @@
             display: flex;
         }
         .popup-card-password {
-            background: rgba(18, 26, 18, 0.9);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            border-radius: 40px;
+            border-radius: var(--radius-lg);
             padding: 32px 28px;
             max-width: 360px;
             width: 100%;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 215, 0, 0.08);
+            border: 1px solid var(--border-light);
         }
         .popup-card-password h3 {
             font-size: 22px;
             text-align: center;
             margin-bottom: 16px;
-            color: #ffd700;
+            color: var(--accent-cyan);
         }
         .popup-card-password input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 215, 0, 0.1);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-light);
             border-radius: 60px;
             padding: 14px 18px;
             font-size: 16px;
-            color: #f0f5f0;
+            color: var(--text-primary);
             outline: none;
             margin-bottom: 16px;
             text-align: center;
@@ -579,8 +597,8 @@
             transition: 0.2s;
         }
         .popup-card-password input:focus {
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.05);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
         }
         .popup-card-password .popup-actions {
             display: flex;
@@ -597,19 +615,19 @@
             transition: 0.2s;
         }
         .popup-card-password .popup-actions .btn-cancel {
-            background: rgba(255, 255, 255, 0.05);
-            color: #b8d9b0;
-            border: 1px solid rgba(255, 215, 0, 0.05);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-light);
         }
         .popup-card-password .popup-actions .btn-cancel:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
         }
         .popup-card-password .popup-actions .btn-confirm {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
-            color: #0b0f0b;
+            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            color: #fff;
         }
         .popup-card-password .popup-actions .btn-confirm:hover {
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
             transform: scale(1.02);
         }
         .popup-card-password .error-msg {
@@ -622,16 +640,16 @@
 
         /* ─── BUTTONS ─── */
         .btn-primary {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
+            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
             border: none;
-            color: #0b0f0b;
+            color: #fff;
             font-weight: 700;
             font-size: 16px;
             padding: 14px 28px;
             border-radius: 60px;
             cursor: pointer;
             transition: 0.25s;
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.15);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.15);
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -639,7 +657,7 @@
         }
         .btn-primary:hover {
             transform: translateY(-2px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
         }
         .btn-primary:active {
             transform: scale(0.96);
@@ -647,8 +665,8 @@
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            color: #b8d9b0;
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
             font-weight: 600;
             font-size: 15px;
             padding: 12px 24px;
@@ -659,7 +677,7 @@
         }
         .btn-secondary:hover {
             background: rgba(255, 255, 255, 0.08);
-            color: #f0f5f0;
+            color: var(--text-primary);
         }
 
         .btn-success {
@@ -696,9 +714,9 @@
         }
 
         .btn-gold {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
+            background: linear-gradient(135deg, var(--accent-gold), #f5a623);
             border: none;
-            color: #0b0f0b;
+            color: #0b0e1a;
             font-weight: 700;
             font-size: 18px;
             padding: 16px 32px;
@@ -717,13 +735,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             font-size: 14px;
             cursor: pointer;
             transition: 0.2s;
         }
         .new-match .back-header:hover {
-            color: #ffd700;
+            color: var(--accent-cyan);
         }
         .new-match .back-header span {
             font-size: 22px;
@@ -733,10 +751,10 @@
             font-size: 28px;
             font-weight: 700;
             letter-spacing: -0.5px;
-            color: #f0f5f0;
+            color: var(--text-primary);
         }
         .new-match .sub {
-            color: #8aa08a;
+            color: var(--text-secondary);
             font-size: 14px;
             margin-top: -6px;
         }
@@ -748,17 +766,17 @@
         .input-group label {
             font-size: 13px;
             font-weight: 600;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             letter-spacing: 0.5px;
         }
         .input-group input,
         .input-group textarea {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
             padding: 14px 18px;
             font-size: 16px;
-            color: #f0f5f0;
+            color: var(--text-primary);
             outline: none;
             transition: 0.2s;
             font-family: inherit;
@@ -766,8 +784,8 @@
         }
         .input-group input:focus,
         .input-group textarea:focus {
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.03);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.03);
             background: rgba(255, 255, 255, 0.06);
         }
         .input-group textarea {
@@ -777,7 +795,7 @@
         }
         .input-group .hint {
             font-size: 11px;
-            color: #6a8a6a;
+            color: #5a7a8a;
             margin-top: -4px;
         }
 
@@ -787,9 +805,9 @@
             gap: 10px;
             background: rgba(255, 255, 255, 0.02);
             padding: 18px 14px;
-            border-radius: 28px;
+            border-radius: var(--radius-md);
             margin: 6px 0 8px;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .settings-item {
             display: flex;
@@ -799,53 +817,53 @@
         }
         .settings-item .label {
             font-size: 11px;
-            color: #8aa08a;
+            color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         .settings-item input {
             width: 60px;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
             padding: 6px 8px;
             font-size: 18px;
             font-weight: 700;
-            color: #f0f5f0;
+            color: var(--text-primary);
             text-align: center;
             outline: none;
             transition: 0.2s;
         }
         .settings-item input:focus {
-            border-color: #ffd700;
+            border-color: var(--accent-cyan);
         }
 
         .toss-section {
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 28px;
+            border-radius: var(--radius-md);
             padding: 16px;
             margin: 4px 0 8px;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
         }
         .toss-section .toss-label {
             font-size: 14px;
             font-weight: 700;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             text-align: center;
         }
         .toss-section .toss-result {
             font-size: 16px;
-            color: #ffd700;
+            color: var(--accent-cyan);
             text-align: center;
             padding: 10px;
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 16px;
+            border-radius: var(--radius-sm);
             min-height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .toss-buttons {
             display: flex;
@@ -872,24 +890,24 @@
         .toss-decision button {
             background: rgba(255, 255, 255, 0.03);
             border: 2px solid transparent;
-            border-radius: 20px;
+            border-radius: var(--radius-md);
             padding: 16px 0;
             font-size: 18px;
             font-weight: 700;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: 0.25s;
             backdrop-filter: blur(4px);
         }
         .toss-options button:hover,
         .toss-decision button:hover {
-            background: rgba(255, 215, 0, 0.05);
+            background: rgba(0, 212, 255, 0.05);
         }
         .toss-options button.selected,
         .toss-decision button.selected {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.08);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.05);
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.05);
         }
 
         /* ─── LIVE MATCH ─── */
@@ -900,7 +918,7 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: 60px;
             padding: 4px;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .live-match .tabs button,
         .completed-match-view .tabs button {
@@ -911,15 +929,15 @@
             border-radius: 40px;
             font-size: 14px;
             font-weight: 600;
-            color: #8aa08a;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: 0.25s;
         }
         .live-match .tabs button.active,
         .completed-match-view .tabs button.active {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
-            color: #0b0f0b;
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
         }
         .live-match .tab-content,
         .completed-match-view .tab-content {
@@ -938,7 +956,7 @@
             background: rgba(255, 255, 255, 0.02);
             border-radius: 40px;
             padding: 4px;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .scorecard-mini-tabs button {
             flex: 1;
@@ -948,36 +966,36 @@
             border-radius: 30px;
             font-size: 12px;
             font-weight: 600;
-            color: #8aa08a;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: 0.2s;
         }
         .scorecard-mini-tabs button.active {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
-            color: #0b0f0b;
+            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            color: #fff;
         }
 
         .live-match .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             font-size: 13px;
             background: rgba(255, 255, 255, 0.02);
             padding: 10px 16px;
             border-radius: 60px;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .live-match .top-bar .teams {
             font-weight: 700;
-            color: #f0f5f0;
+            color: var(--text-primary);
             letter-spacing: 0.5px;
         }
         .score-card {
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 36px;
+            border-radius: var(--radius-lg);
             padding: 24px 20px;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
             backdrop-filter: blur(8px);
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -990,29 +1008,29 @@
             font-size: 48px;
             font-weight: 800;
             letter-spacing: -1px;
-            background: linear-gradient(135deg, #ffd700, #f5a623);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 60px rgba(255, 215, 0, 0.1);
+            text-shadow: 0 0 60px rgba(0, 212, 255, 0.1);
         }
         .score-stats {
             display: flex;
             gap: 18px;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             font-size: 14px;
             font-weight: 500;
         }
         .score-stats span {
             font-weight: 600;
-            color: #f0f5f0;
+            color: var(--text-primary);
         }
         .overs-extras {
             display: flex;
             justify-content: space-between;
             margin-top: 16px;
             font-size: 15px;
-            color: #b8d9b0;
-            border-top: 1px solid rgba(255, 215, 0, 0.04);
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-light);
             padding-top: 16px;
             flex-wrap: wrap;
             gap: 8px;
@@ -1022,8 +1040,8 @@
             padding: 4px 16px;
             border-radius: 40px;
             font-weight: 600;
-            color: #f0f5f0;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
         }
         .extras-box {
             display: flex;
@@ -1032,50 +1050,105 @@
             padding: 6px 16px;
             border-radius: 40px;
             flex-wrap: wrap;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .extras-box .extra-item {
             display: flex;
             gap: 4px;
         }
         .extras-box .extra-item .key {
-            color: #8aa08a;
+            color: var(--text-secondary);
         }
         .extras-box .extra-item .val {
             font-weight: 700;
-            color: #f0f5f0;
+            color: var(--text-primary);
         }
 
-        .current-batsmen,
+        /* ─── NEW BATSMEN DISPLAY ─── */
+        .current-batsmen {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            border: 1px solid var(--border-light);
+        }
+        .batsman-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.02);
+            transition: 0.2s;
+        }
+        .batsman-item.striker {
+            border-bottom: 2px solid var(--accent-cyan);
+        }
+        .batsman-item.non-striker {
+            border-bottom: 2px solid var(--accent-gold);
+        }
+        .batsman-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            margin: 0 auto 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            overflow: hidden;
+            border: 2px solid rgba(0, 212, 255, 0.15);
+        }
+        .batsman-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .batsman-role {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+        .batsman-stats {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .batsman-stats small {
+            font-weight: 400;
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
         .current-bowler {
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 20px;
-            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            padding: 10px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
-        .current-batsmen .label,
         .current-bowler .label {
             font-size: 12px;
-            color: #8aa08a;
+            color: var(--text-secondary);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .current-batsmen .names,
         .current-bowler .name {
             font-size: 15px;
             font-weight: 700;
-            color: #f0f5f0;
-        }
-        .current-batsmen .names .striker {
-            color: #ffd700;
+            color: var(--text-primary);
         }
         .current-bowler .deliveries {
             font-size: 12px;
-            color: #8aa08a;
+            color: var(--text-secondary);
             margin-left: 8px;
         }
 
@@ -1088,12 +1161,12 @@
         }
         .action-btn {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 215, 0, 0.04);
-            border-radius: 24px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-md);
             padding: 14px 0;
             font-size: 22px;
             font-weight: 700;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             transition: 0.15s;
             cursor: pointer;
             backdrop-filter: blur(4px);
@@ -1101,21 +1174,21 @@
         }
         .action-btn:active {
             transform: scale(0.92);
-            background: rgba(255, 215, 0, 0.05);
+            background: rgba(0, 212, 255, 0.04);
         }
         .action-btn.special {
-            background: rgba(255, 215, 0, 0.03);
-            color: #ffd700;
+            background: rgba(0, 212, 255, 0.03);
+            color: var(--accent-cyan);
         }
         .action-btn.wide {
-            background: rgba(245, 166, 35, 0.05);
-            color: #f5a623;
-            border-color: rgba(245, 166, 35, 0.1);
+            background: rgba(255, 215, 0, 0.04);
+            color: var(--accent-gold);
+            border-color: rgba(255, 215, 0, 0.08);
         }
         .action-btn.wicket {
-            background: rgba(231, 76, 60, 0.05);
+            background: rgba(255, 70, 70, 0.05);
             color: #ff6b6b;
-            border-color: rgba(231, 76, 60, 0.1);
+            border-color: rgba(255, 70, 70, 0.08);
         }
         .action-btn:hover {
             background: rgba(255, 255, 255, 0.06);
@@ -1134,7 +1207,7 @@
             text-align: center;
         }
 
-        /* ─── CELEBRATION OVERLAY ─── */
+        /* ─── CELEBRATION ─── */
         .celebrate-overlay {
             position: fixed;
             top: 0;
@@ -1154,8 +1227,10 @@
         .celebrate-overlay .text {
             font-size: 80px;
             font-weight: 900;
-            color: #ffd700;
-            text-shadow: 0 0 60px rgba(255, 215, 0, 0.6), 0 0 120px rgba(255, 215, 0, 0.3);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(0, 212, 255, 0.3);
             animation: textPulse 0.9s ease-out forwards;
         }
         @keyframes celebratePop {
@@ -1193,9 +1268,9 @@
         /* ─── SCORECARD TABLES ─── */
         .scorecard-table {
             background: rgba(255, 255, 255, 0.02);
-            border-radius: 24px;
+            border-radius: var(--radius-md);
             overflow: hidden;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .scorecard-table .table-header {
             display: grid;
@@ -1204,8 +1279,8 @@
             background: rgba(0, 0, 0, 0.2);
             font-size: 12px;
             font-weight: 700;
-            color: #8aa08a;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-light);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1214,7 +1289,7 @@
             grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
             padding: 8px 14px;
             font-size: 14px;
-            color: #f0f5f0;
+            color: var(--text-primary);
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
         .scorecard-table .table-row .batsman-name {
@@ -1237,8 +1312,8 @@
             background: rgba(0, 0, 0, 0.2);
             font-size: 12px;
             font-weight: 700;
-            color: #8aa08a;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border-light);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1247,14 +1322,14 @@
             grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             padding: 8px 14px;
             font-size: 14px;
-            color: #f0f5f0;
+            color: var(--text-primary);
             border-bottom: 1px solid rgba(255, 255, 255, 0.02);
         }
         .scorecard-table .section-title {
             padding: 12px 14px 6px;
             font-size: 16px;
             font-weight: 700;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             background: rgba(255, 255, 255, 0.01);
         }
 
@@ -1264,24 +1339,87 @@
             gap: 10px;
         }
         .stats-card {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 24px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
             padding: 16px;
             text-align: center;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
         }
         .stats-card .stat-number {
             font-size: 32px;
             font-weight: 800;
-            color: #ffd700;
+            color: var(--accent-cyan);
         }
         .stats-card .stat-label {
             font-size: 12px;
-            color: #8aa08a;
+            color: var(--text-secondary);
             margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        /* ─── MAN OF THE MATCH (NEW) ─── */
+        .man-of-match {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.06), rgba(0, 212, 255, 0.06));
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+        .man-of-match .mom-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid var(--accent-gold);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.04);
+            font-size: 32px;
+        }
+        .man-of-match .mom-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .man-of-match .mom-info {
+            flex: 1;
+        }
+        .man-of-match .mom-info .mom-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+        .man-of-match .mom-info .mom-team {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .man-of-match .mom-info .mom-stats {
+            display: flex;
+            gap: 16px;
+            margin-top: 4px;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+        .man-of-match .mom-info .mom-stats span {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2px 10px;
+            border-radius: 40px;
+        }
+        .man-of-match .mom-badge {
+            background: var(--accent-gold);
+            color: #0b0e1a;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 40px;
+            white-space: nowrap;
         }
 
         /* ─── POPUPS ─── */
@@ -1319,17 +1457,17 @@
         .popup-card-inning,
         .popup-card-winner,
         .popup-card-out {
-            background: rgba(18, 26, 18, 0.92);
+            background: var(--glass-bg);
             backdrop-filter: blur(20px);
-            border-radius: 40px;
+            border-radius: var(--radius-lg);
             padding: 28px 24px;
             max-width: 380px;
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            color: #f0f5f0;
+            border: 1px solid var(--border-light);
+            color: var(--text-primary);
         }
         .popup-card h3,
         .popup-card-toss h3,
@@ -1340,9 +1478,9 @@
             font-size: 24px;
             margin-bottom: 16px;
             text-align: center;
-            border-bottom: 1px solid rgba(255, 215, 0, 0.04);
+            border-bottom: 1px solid var(--border-light);
             padding-bottom: 12px;
-            color: #ffd700;
+            color: var(--accent-cyan);
         }
         .popup-card-out .out-options {
             display: grid;
@@ -1353,19 +1491,19 @@
         .popup-card-out .out-options button {
             background: rgba(255, 255, 255, 0.03);
             border: 2px solid transparent;
-            border-radius: 20px;
+            border-radius: var(--radius-md);
             padding: 16px 0;
             font-size: 18px;
             font-weight: 700;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: 0.2s;
         }
         .popup-card-out .out-options button:hover {
-            background: rgba(255, 215, 0, 0.05);
+            background: rgba(0, 212, 255, 0.05);
         }
         .popup-card-out .out-options button.selected {
-            border-color: #ffd700;
+            border-color: var(--accent-cyan);
         }
 
         .popup-card-winner .winner-emoji {
@@ -1377,13 +1515,13 @@
             font-size: 26px;
             font-weight: 800;
             text-align: center;
-            color: #ffd700;
+            color: var(--accent-gold);
             margin: 10px 0;
         }
         .popup-card-winner .winner-detail {
             font-size: 16px;
             text-align: center;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             margin: 8px 0;
         }
 
@@ -1396,28 +1534,28 @@
         .popup-card-selection .player-list button {
             background: rgba(255, 255, 255, 0.03);
             border: 2px solid transparent;
-            border-radius: 16px;
+            border-radius: var(--radius-sm);
             padding: 10px 8px;
             font-size: 14px;
             font-weight: 600;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: 0.2s;
         }
         .popup-card-selection .player-list button:hover {
-            background: rgba(255, 215, 0, 0.05);
+            background: rgba(0, 212, 255, 0.05);
         }
         .popup-card-selection .player-list button.selected {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.05);
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.05);
         }
         .popup-card-selection .player-list button.striker-selected {
-            border-color: #ffd700;
-            background: rgba(255, 215, 0, 0.08);
+            border-color: var(--accent-cyan);
+            background: rgba(0, 212, 255, 0.08);
         }
         .popup-card-selection .player-list button.non-striker-selected {
-            border-color: #f5a623;
-            background: rgba(245, 166, 35, 0.08);
+            border-color: var(--accent-gold);
+            background: rgba(255, 215, 0, 0.08);
         }
         .popup-card-selection .sub-input {
             margin: 12px 0;
@@ -1425,20 +1563,20 @@
         .popup-card-selection .sub-input input {
             width: 100%;
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 215, 0, 0.06);
-            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius-sm);
             padding: 10px 14px;
             font-size: 14px;
-            color: #f0f5f0;
+            color: var(--text-primary);
             outline: none;
             transition: 0.2s;
         }
         .popup-card-selection .sub-input input:focus {
-            border-color: #ffd700;
+            border-color: var(--accent-cyan);
         }
         .popup-card-selection .sub-input label {
             font-size: 13px;
-            color: #8aa08a;
+            color: var(--text-secondary);
             display: block;
             margin-bottom: 4px;
         }
@@ -1451,12 +1589,12 @@
             flex: 1;
         }
         .btn-add {
-            background: linear-gradient(135deg, #ffd700, #f5a623);
+            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
             border: none;
-            color: #0b0f0b;
+            color: #fff;
             font-weight: 700;
             padding: 10px 16px;
-            border-radius: 16px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
             font-size: 14px;
             transition: 0.2s;
@@ -1464,7 +1602,7 @@
         }
         .btn-add:hover {
             transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
         }
 
         .popup-actions {
@@ -1488,13 +1626,13 @@
             margin-bottom: 16px;
             padding: 10px;
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
         }
         .toggle-container label {
             font-size: 16px;
             font-weight: 700;
-            color: #b8d9b0;
+            color: var(--text-secondary);
         }
         .toggle-switch {
             position: relative;
@@ -1505,7 +1643,7 @@
             cursor: pointer;
             transition: 0.2s;
             flex-shrink: 0;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .toggle-switch.active {
             background: rgba(231, 76, 60, 0.3);
@@ -1516,7 +1654,7 @@
             left: 3px;
             width: 22px;
             height: 22px;
-            background: #f0f5f0;
+            background: var(--text-primary);
             border-radius: 50%;
             transition: 0.2s;
         }
@@ -1527,7 +1665,7 @@
         .toggle-status {
             font-size: 14px;
             font-weight: 700;
-            color: #8aa08a;
+            color: var(--text-secondary);
         }
         .toggle-status.active {
             color: #ff6b6b;
@@ -1542,24 +1680,24 @@
         .popup-options .opt-btn {
             background: rgba(255, 255, 255, 0.03);
             border: none;
-            border-radius: 20px;
+            border-radius: var(--radius-md);
             padding: 14px 0;
             font-size: 16px;
             font-weight: 700;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: 0.2s;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            border: 1px solid var(--border-light);
         }
         .popup-options .opt-btn:hover {
-            background: rgba(255, 215, 0, 0.05);
+            background: rgba(0, 212, 255, 0.05);
         }
         .popup-options .opt-btn.wicket-opt {
             color: #ff6b6b;
-            border-color: rgba(231, 76, 60, 0.1);
+            border-color: rgba(255, 70, 70, 0.08);
         }
         .popup-options .opt-btn.selected {
-            border: 2px solid #ffd700;
+            border: 2px solid var(--accent-cyan);
         }
 
         /* ─── COMPLETED MATCH ─── */
@@ -1567,13 +1705,13 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            color: #b8d9b0;
+            color: var(--text-secondary);
             font-size: 14px;
             cursor: pointer;
             transition: 0.2s;
         }
         .completed-match-view .back-header:hover {
-            color: #ffd700;
+            color: var(--accent-cyan);
         }
         .completed-match-view .back-header span {
             font-size: 22px;
@@ -1583,11 +1721,11 @@
             text-align: center;
             padding: 12px;
             background: rgba(255, 215, 0, 0.03);
-            border-radius: 20px;
+            border-radius: var(--radius-md);
             font-size: 18px;
             font-weight: 700;
-            color: #ffd700;
-            border: 1px solid rgba(255, 215, 0, 0.04);
+            color: var(--accent-gold);
+            border: 1px solid var(--border-light);
         }
 
         /* ─── SCROLLBAR ─── */
@@ -1598,13 +1736,13 @@
             background: rgba(255, 255, 255, 0.02);
         }
         ::-webkit-scrollbar-thumb {
-            background: #ffd700;
+            background: var(--accent-cyan);
             border-radius: 4px;
         }
 
         /* ─── UTILITY ─── */
         .text-muted {
-            color: #8aa08a;
+            color: var(--text-secondary);
         }
         .text-sm {
             font-size: 13px;
@@ -1638,7 +1776,7 @@
         .no-players {
             text-align: center;
             padding: 40px 0;
-            color: #8aa08a;
+            color: var(--text-secondary);
             font-size: 14px;
         }
         .no-players .big-icon {
@@ -1651,11 +1789,10 @@
             pointer-events: none;
         }
 
-        /* ─── RESPONSIVE TWEAKS ─── */
         @media (max-width: 420px) {
             .app {
                 padding: 16px 14px 20px;
-                border-radius: 32px;
+                border-radius: 28px;
             }
             .score-big {
                 font-size: 38px;
@@ -1666,6 +1803,25 @@
             }
             .popup-card {
                 padding: 20px 16px;
+            }
+            .batsman-item {
+                padding: 4px 0;
+            }
+            .batsman-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            .batsman-stats {
+                font-size: 13px;
+            }
+            .man-of-match {
+                flex-wrap: wrap;
+                justify-content: center;
+                text-align: center;
+            }
+            .man-of-match .mom-info {
+                flex: 0 0 100%;
             }
         }
     </style>
@@ -1695,8 +1851,8 @@
             </div>
             <div id="homeMatchesTab">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                    <h2 style="font-size:16px; color:#b8d9b0;">Matches</h2>
-                    <span style="font-size:12px; color:#8aa08a;" id="matchCount">0 matches</span>
+                    <h2 style="font-size:16px; color:var(--text-secondary);">Matches</h2>
+                    <span style="font-size:12px; color:var(--text-secondary);" id="matchCount">0 matches</span>
                 </div>
                 <div class="matches-list" id="matchesList">
                     <div class="loading-matches">Loading matches...</div>
@@ -1812,17 +1968,24 @@ Bilal</textarea>
                             <span class="extra-item"><span class="key">P</span> <span class="val" id="liveP">0</span></span>
                         </div>
                     </div>
-                    <div style="font-size:14px; color:#b8d9b0; margin-top:10px;" id="battingTeamLabel">SIRKHANA batting</div>
-                    <div style="font-size:13px; color:#ffd700; margin-top:4px;" id="targetDisplay"></div>
+                    <div style="font-size:14px; color:var(--text-secondary); margin-top:10px;" id="battingTeamLabel">SIRKHANA batting</div>
+                    <div style="font-size:13px; color:var(--accent-gold); margin-top:4px;" id="targetDisplay"></div>
                 </div>
-                <div class="current-batsmen">
-                    <div class="label">Batting</div>
-                    <div class="names" id="currentBatsmen">
-                        <span class="striker" id="strikerName">-</span>
-                        <span style="color:#6a8a6a;">|</span>
-                        <span id="nonStrikerName">-</span>
+
+                <!-- NEW: Batsmen display with photos and stats -->
+                <div class="current-batsmen" id="currentBatsmenContainer">
+                    <div class="batsman-item striker" id="strikerItem">
+                        <div class="batsman-avatar" id="strikerAvatar">👤</div>
+                        <div class="batsman-role">Striker</div>
+                        <div class="batsman-stats" id="strikerStats">-</div>
+                    </div>
+                    <div class="batsman-item non-striker" id="nonStrikerItem">
+                        <div class="batsman-avatar" id="nonStrikerAvatar">👤</div>
+                        <div class="batsman-role">Non-Striker</div>
+                        <div class="batsman-stats" id="nonStrikerStats">-</div>
                     </div>
                 </div>
+
                 <div class="current-bowler">
                     <div class="label">Bowling</div>
                     <div class="name" id="currentBowler">- <span class="deliveries" id="bowlerDeliveries"></span></div>
@@ -1844,7 +2007,7 @@ Bilal</textarea>
                     <button class="btn-secondary" id="btnStopMatch">⏹ Stop</button>
                     <button class="btn-secondary" id="btnBackHome">🏠 Home</button>
                 </div>
-                <div style="margin-top:6px; font-size:13px; color:#6a8a6a; text-align:center;" id="liveStatus">▶ 0 balls bowled</div>
+                <div style="margin-top:6px; font-size:13px; color:var(--text-secondary); text-align:center;" id="liveStatus">▶ 0 balls bowled</div>
             </div>
             <div id="tabScorecard" class="tab-content">
                 <div class="scorecard-mini-tabs" id="scorecardMiniTabs">
@@ -1856,10 +2019,10 @@ Bilal</textarea>
                         <div class="section-title">🏏 Batting - <span id="battingTeamName1">SIRKHANA</span></div>
                         <div class="table-header"><span>Batter</span><span>R</span><span>B</span><span>4s</span><span>6s</span><span>SR</span></div>
                         <div id="battingRows1"></div>
-                        <div style="padding:8px 14px; font-size:13px; color:#8aa08a; border-top:1px solid rgba(255,255,255,0.03);">
+                        <div style="padding:8px 14px; font-size:13px; color:var(--text-secondary); border-top:1px solid var(--border-light);">
                             Extras: <span id="scorecardExtras1">0</span> (Wd: <span id="scorecardWd1">0</span>, Nb: <span id="scorecardNb1">0</span>, B: <span id="scorecardB1">0</span>, LB: <span id="scorecardLb1">0</span>, P: <span id="scorecardP1">0</span>)
                         </div>
-                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:#f0f5f0; border-top:1px solid rgba(255,255,255,0.03);">
+                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:var(--text-primary); border-top:1px solid var(--border-light);">
                             Total: <span id="scorecardTotal1">0/0</span> (Overs: <span id="scorecardOvers1">0.0</span>)
                         </div>
                     </div>
@@ -1887,6 +2050,10 @@ Bilal</textarea>
             <div class="back-header"><span id="backFromCompleted">←</span> <span>Back to Matches</span></div>
             <h1 id="completedMatchTitle">Match Summary</h1>
             <div class="match-result" id="completedMatchResult">🏏 Match Completed</div>
+
+            <!-- MAN OF THE MATCH (NEW) -->
+            <div id="manOfMatchContainer" style="display:none;"></div>
+
             <div class="tabs">
                 <button class="active" data-tab="completed-scorecard">Scorecard</button>
                 <button data-tab="completed-stats">Stats</button>
@@ -1901,10 +2068,10 @@ Bilal</textarea>
                         <div class="section-title">🏏 Batting - <span id="completedBattingTeamName1">-</span></div>
                         <div class="table-header"><span>Batter</span><span>R</span><span>B</span><span>4s</span><span>6s</span><span>SR</span></div>
                         <div id="completedBattingRows1"></div>
-                        <div style="padding:8px 14px; font-size:13px; color:#8aa08a; border-top:1px solid rgba(255,255,255,0.03);">
+                        <div style="padding:8px 14px; font-size:13px; color:var(--text-secondary); border-top:1px solid var(--border-light);">
                             Extras: <span id="completedExtras1">0</span> (Wd: <span id="completedWd1">0</span>, Nb: <span id="completedNb1">0</span>, B: <span id="completedB1">0</span>, LB: <span id="completedLb1">0</span>, P: <span id="completedP1">0</span>)
                         </div>
-                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:#f0f5f0; border-top:1px solid rgba(255,255,255,0.03);">
+                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:var(--text-primary); border-top:1px solid var(--border-light);">
                             Total: <span id="completedTotal1">0/0</span> (Overs: <span id="completedOvers1">0.0</span>)
                         </div>
                     </div>
@@ -1932,7 +2099,7 @@ Bilal</textarea>
             <div class="back-header" id="backFromPlayerStats" style="cursor:pointer;">
                 <span>←</span> <span>Back to Home</span>
             </div>
-            <h1 style="font-size:22px; font-weight:700; color:#f0f5f0;">👤 Player Stats</h1>
+            <h1 style="font-size:22px; font-weight:700; color:var(--text-primary);">👤 Player Stats</h1>
             <input class="search-bar" id="playerSearch2" type="text" placeholder="🔍 Search players..." />
             <div class="player-grid" id="playerGrid2">
                 <div class="no-players"><div class="big-icon">🏏</div>No players found.<br />Play some matches to generate stats!</div>
@@ -1956,7 +2123,7 @@ Bilal</textarea>
                 <div class="stat-card"><div class="num" id="detailRuns">0</div><div class="lbl">Runs</div><div class="sub" id="detailAvg">Avg: 0.0</div></div>
                 <div class="stat-card"><div class="num" id="detailWickets">0</div><div class="lbl">Wickets</div><div class="sub" id="detailConceded">Conc: 0</div></div>
             </div>
-            <div style="background:rgba(255,255,255,0.02); border-radius:20px; padding:14px 16px; font-size:13px; color:#8aa08a; text-align:center; border:1px solid rgba(255,215,0,0.04);">
+            <div style="background:rgba(255,255,255,0.02); border-radius:var(--radius-md); padding:14px 16px; font-size:13px; color:var(--text-secondary); text-align:center; border:1px solid var(--border-light);">
                 <span id="detailBattingDetail">Batting: 0 runs, 0 balls</span> &bull;
                 <span id="detailBowlingDetail">Bowling: 0 runs, 0 wkts</span>
             </div>
@@ -2033,8 +2200,8 @@ Bilal</textarea>
             <div class="popup-card-inning">
                 <h3>🏏 Inning Complete!</h3>
                 <div style="text-align:center; padding:16px 0;">
-                    <div style="font-size:18px; color:#b8d9b0;" id="inningSummary">First inning completed</div>
-                    <div style="font-size:14px; color:#8aa08a; margin-top:8px;" id="inningScore">Score: 0/0</div>
+                    <div style="font-size:18px; color:var(--text-secondary);" id="inningSummary">First inning completed</div>
+                    <div style="font-size:14px; color:var(--text-secondary); margin-top:8px;" id="inningScore">Score: 0/0</div>
                 </div>
                 <div class="popup-actions" style="justify-content:center;">
                     <button class="btn-gold" id="btnStartSecondInning" style="padding:14px 40px; font-size:18px;">▶ START SECOND INNING</button>
@@ -2240,6 +2407,15 @@ Bilal</textarea>
         const outStrikerBtn = document.getElementById('outStrikerBtn');
         const outNonStrikerBtn = document.getElementById('outNonStrikerBtn');
         const outCancel = document.getElementById('outCancel');
+
+        // NEW refs for batsmen display
+        const strikerAvatar = document.getElementById('strikerAvatar');
+        const nonStrikerAvatar = document.getElementById('nonStrikerAvatar');
+        const strikerStats = document.getElementById('strikerStats');
+        const nonStrikerStats = document.getElementById('nonStrikerStats');
+        const strikerItem = document.getElementById('strikerItem');
+        const nonStrikerItem = document.getElementById('nonStrikerItem');
+        const manOfMatchContainer = document.getElementById('manOfMatchContainer');
 
         // ─── Password popup helpers ───
         let passwordResolve = null;
@@ -2656,7 +2832,10 @@ Bilal</textarea>
                 const success = await setPlayerPhoto(playerName, dataUrl);
                 if (success) {
                     photoCache[playerName] = dataUrl;
-                    detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
+                    // Update detail view if visible
+                    if (currentDetailPlayer && currentDetailPlayer.name === playerName) {
+                        detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
+                    }
                     renderPlayerStats();
                     retryPhotoBtn.style.display = 'none';
                     return true;
@@ -2669,7 +2848,9 @@ Bilal</textarea>
                 try {
                     localStorage.setItem('playerPhoto_' + playerName, dataUrl);
                     photoCache[playerName] = dataUrl;
-                    detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
+                    if (currentDetailPlayer && currentDetailPlayer.name === playerName) {
+                        detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
+                    }
                     renderPlayerStats();
                     retryPhotoBtn.style.display = 'inline-block';
                     pendingPhotoData = dataUrl;
@@ -2706,7 +2887,7 @@ Bilal</textarea>
                 );
                 if (filtered.length === 0) {
                     grid.innerHTML =
-                        `<div class="no-players" style="padding:20px 0; color:#8aa08a;">No players match your search.</div>`;
+                        `<div class="no-players" style="padding:20px 0; color:var(--text-secondary);">No players match your search.</div>`;
                     return;
                 }
                 let html = '';
@@ -2811,7 +2992,7 @@ Bilal</textarea>
 
             if (ids.length === 0) {
                 matchesList.innerHTML =
-                    `<div style="text-align:center; padding:20px; color:#8aa08a; font-size:14px;">No matches found. Start a new match!</div>`;
+                    `<div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:14px;">No matches found. Start a new match!</div>`;
                 return;
             }
 
@@ -2840,7 +3021,7 @@ Bilal</textarea>
                       <span class="match-status ${statusClass}">${statusText}</span>
                       ${winnerText ? `<span class="match-winner">${winnerText}</span>` : ''}
                     </span>
-                    <span style="font-size:11px; color:#6a8a6a;">
+                    <span style="font-size:11px; color:var(--text-secondary);">
                       ${new Date(m.updatedAt || Date.now()).toLocaleDateString()}
                     </span>
                   </div>
@@ -2884,7 +3065,7 @@ Bilal</textarea>
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // VIEW COMPLETED MATCH
+        // VIEW COMPLETED MATCH (with Man of the Match)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         let viewedMatchData = null;
         let completedScorecardInning = 1;
@@ -2910,6 +3091,30 @@ Bilal</textarea>
             }
             document.getElementById('completedMatchResult').textContent = resultText;
 
+            // Compute Man of the Match
+            const mom = computeManOfTheMatch(matchData);
+            if (mom) {
+                const photo = getPlayerPhotoSync(mom.name) || '';
+                manOfMatchContainer.style.display = 'flex';
+                manOfMatchContainer.innerHTML = `
+                <div class="man-of-match">
+                    <div class="mom-avatar">${photo ? `<img src="${photo}" alt="${mom.name}" />` : '🏏'}</div>
+                    <div class="mom-info">
+                        <div class="mom-name">${mom.name}</div>
+                        <div class="mom-team">${mom.team}</div>
+                        <div class="mom-stats">
+                            <span>🏏 ${mom.runs} runs (${mom.balls} balls)</span>
+                            <span>🎯 ${mom.wickets} wkts (${mom.bowlingRuns} runs)</span>
+                            <span>📊 ${mom.score} pts</span>
+                        </div>
+                    </div>
+                    <div class="mom-badge">⭐ MOM</div>
+                </div>
+            `;
+            } else {
+                manOfMatchContainer.style.display = 'none';
+            }
+
             document.querySelectorAll('.completed-match-view .tabs button').forEach(b => b.classList.remove('active'));
             document.querySelector('.completed-match-view .tabs button[data-tab="completed-scorecard"]')?.classList.add(
             'active');
@@ -2921,6 +3126,63 @@ Bilal</textarea>
             renderCompletedStats(matchData);
         }
 
+        // ─── Man of the Match computation ───
+        function computeManOfTheMatch(matchData) {
+            if (!matchData.inningData) return null;
+            const players = {};
+            // Collect all players from both innings
+            [1, 2].forEach(inn => {
+                const inning = matchData.inningData[inn];
+                if (!inning) return;
+                const battingPlayers = inning.battingPlayers || [];
+                const bowlingPlayers = inning.bowlingPlayers || [];
+                const all = new Set([...battingPlayers, ...bowlingPlayers]);
+                all.forEach(name => {
+                    if (!players[name]) {
+                        players[name] = { name, team: '', runs: 0, balls: 0, fours: 0, sixes: 0, wickets: 0,
+                            bowlingRuns: 0, bowlingBalls: 0, score: 0 };
+                    }
+                    const p = players[name];
+                    if (inning.battingTeam && battingPlayers.includes(name)) p.team = inning.battingTeam;
+                    if (inning.bowlingTeam && bowlingPlayers.includes(name)) p.team = inning.bowlingTeam;
+                    // batting stats
+                    if (inning.batsmanStats && inning.batsmanStats[name]) {
+                        const bs = inning.batsmanStats[name];
+                        p.runs += bs.runs || 0;
+                        p.balls += bs.balls || 0;
+                        p.fours += bs.fours || 0;
+                        p.sixes += bs.sixes || 0;
+                    }
+                    // bowling stats
+                    if (inning.bowlerStats && inning.bowlerStats[name]) {
+                        const bw = inning.bowlerStats[name];
+                        p.wickets += bw.wickets || 0;
+                        p.bowlingRuns += bw.runs || 0;
+                        p.bowlingBalls += bw.balls || 0;
+                    }
+                });
+            });
+
+            // Calculate score: runs + (wickets * 15) + (fours*0.5) + (sixes*1) - (bowlingRuns/10) + (wickets*5)
+            let best = null;
+            Object.keys(players).forEach(name => {
+                const p = players[name];
+                // Simple weighted score
+                p.score = p.runs + (p.wickets * 20) + (p.fours * 0.3) + (p.sixes * 0.7);
+                // bonus for runs > 50 and wickets > 3
+                if (p.runs >= 50) p.score += 10;
+                if (p.wickets >= 3) p.score += 10;
+                if (!best || p.score > best.score) {
+                    best = p;
+                }
+            });
+
+            // If no data, return null
+            if (!best || best.score === 0) return null;
+            return best;
+        }
+
+        // ─── Render completed scorecard (existing) ───
         function renderCompletedScorecard(matchData) {
             const inning = completedScorecardInning;
             let data, battingTeam, bowlingTeam;
@@ -2951,7 +3213,7 @@ Bilal</textarea>
                 0) + (data.extras?.p || 0);
             const keys = Object.keys(data.batsmanStats || {});
             if (keys.length === 0) {
-                battingHtml = '<div class="table-row" style="color:#6a8a6a;">No batting data</div>';
+                battingHtml = '<div class="table-row" style="color:var(--text-secondary);">No batting data</div>';
             } else {
                 keys.forEach(name => {
                     const s = data.batsmanStats[name];
@@ -2986,7 +3248,7 @@ Bilal</textarea>
             let bowlingHtml = '';
             const bKeys = Object.keys(data.bowlerStats || {});
             if (bKeys.length === 0) {
-                bowlingHtml = '<div class="table-row-bowling" style="color:#6a8a6a;">No bowling data</div>';
+                bowlingHtml = '<div class="table-row-bowling" style="color:var(--text-secondary);">No bowling data</div>';
             } else {
                 bKeys.forEach(name => {
                     const b = data.bowlerStats[name];
@@ -3188,12 +3450,12 @@ Bilal</textarea>
             const team1 = teamBattingInput.value.trim() || 'SIRKHANA';
             const team2 = teamBowlingInput.value.trim() || 'MORAGAI';
             tossPopupContent.innerHTML = `
-            <div style="text-align:center; margin-bottom:12px; font-size:16px; color:#b8d9b0;">TOSS WON BY</div>
+            <div style="text-align:center; margin-bottom:12px; font-size:16px; color:var(--text-secondary);">TOSS WON BY</div>
             <div class="toss-options">
               <button data-team="${team1}" class="toss-opt">${team1}</button>
               <button data-team="${team2}" class="toss-opt">${team2}</button>
             </div>
-            <div style="text-align:center; margin-top:8px; font-size:14px; color:#8aa08a;">Select the team that won the toss</div>
+            <div style="text-align:center; margin-top:8px; font-size:14px; color:var(--text-secondary);">Select the team that won the toss</div>
           `;
             document.querySelectorAll('.toss-opt').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -3213,8 +3475,8 @@ Bilal</textarea>
                 tossSelectedDecision = null;
                 tossPopupTitle.textContent = '🏏 DECISION';
                 tossPopupContent.innerHTML = `
-              <div style="text-align:center; margin-bottom:12px; font-size:16px; color:#b8d9b0;">${tossSelectedTeam} won the toss</div>
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Choose what to do</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:16px; color:var(--text-secondary);">${tossSelectedTeam} won the toss</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:var(--text-secondary);">Choose what to do</div>
               <div class="toss-decision">
                 <button data-decision="bat" class="toss-decision-opt">🏏 Bat First</button>
                 <button data-decision="bowl" class="toss-decision-opt">⚾ Bowl First</button>
@@ -3280,7 +3542,7 @@ Bilal</textarea>
             let html = '';
             if (type === 'openers') {
                 html = `
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Select two opening batsmen</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:var(--text-secondary);">Select two opening batsmen</div>
               <div class="player-list" id="playerList">
                 ${players.map(p => `<button data-player="${p}" class="player-btn">${p}</button>`).join('')}
               </div>
@@ -3291,11 +3553,11 @@ Bilal</textarea>
                   <button class="btn-add" id="btnAddSubstitute">+ Add</button>
                 </div>
               </div>
-              <div style="font-size:12px; color:#6a8a6a; margin-top:4px;">Click a player → striker (gold), click again → non-striker (light gold)</div>
+              <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">Click a player → striker (cyan), click again → non-striker (gold)</div>
             `;
             } else if (type === 'nextBatsman') {
                 html = `
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Select next batsman</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:var(--text-secondary);">Select next batsman</div>
               <div class="player-list" id="playerList">
                 ${players.map(p => `<button data-player="${p}" class="player-btn">${p}</button>`).join('')}
               </div>
@@ -3309,7 +3571,7 @@ Bilal</textarea>
             `;
             } else if (type === 'nextBowler') {
                 html = `
-              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:#8aa08a;">Select bowler for next over</div>
+              <div style="text-align:center; margin-bottom:12px; font-size:14px; color:var(--text-secondary);">Select bowler for next over</div>
               <div class="player-list" id="playerList">
                 ${players.map(p => `<button data-player="${p}" class="player-btn">${p}</button>`).join('')}
               </div>
@@ -3456,15 +3718,12 @@ Bilal</textarea>
                 pendingBatsmanSelection = false;
                 updateLiveUI();
 
-                // ★★★ FIX: After selecting new batsman, check if over is complete (wicket on last ball) ★★★
                 if (state._overCompleteAfterWicket) {
                     state._overCompleteAfterWicket = false;
-                    // Swap batsmen so new batsman becomes non-striker (cricket rules)
                     const temp = state.striker;
                     state.striker = state.nonStriker;
                     state.nonStriker = temp;
                     state.overBalls = 0;
-                    // Show bowler selection for next over
                     const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
                     setTimeout(() => {
                         showSelectionPopup('nextBowler', available.length > 0 ? available : state
@@ -3533,7 +3792,7 @@ Bilal</textarea>
 
         outCancel.addEventListener('click', closeOutSelectionPopup);
 
-        // ─── Process Wicket (FIXED: handles last ball over completion) ───
+        // ─── Process Wicket ───
         let pendingPosition = null;
 
         function processWicket(runs, outPosition, snapshot, action) {
@@ -3571,7 +3830,6 @@ Bilal</textarea>
             pushHistory(action, snapshot);
             updateLiveUI();
 
-            // Check if innings is over (all out or overs complete)
             if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
@@ -3600,14 +3858,12 @@ Bilal</textarea>
                 return;
             }
 
-            // ★★★ FIX: Check if wicket fell on the last ball of the over ★★★
             const isLastBall = state.overBalls >= state.ballsPerOver;
             if (isLastBall) {
                 state._overCompleteAfterWicket = true;
                 pendingBowlerSelection = true;
             }
 
-            // Show batsman selection
             const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p].out);
             const otherEnd = (outPosition === 'striker') ? state.nonStriker : state.striker;
             const candidates = allNotOut.filter(p => p !== otherEnd);
@@ -3617,7 +3873,7 @@ Bilal</textarea>
             }, 500);
         }
 
-        // ─── Utility: capture and restore snapshot ───
+        // ─── Snapshot helpers ───
         function captureStateSnapshot() {
             return {
                 runs: state.runs,
@@ -3656,7 +3912,7 @@ Bilal</textarea>
             if (state.history.length > 50) state.history.shift();
         }
 
-        // ─── Update UI ───
+        // ─── Update Live UI (with photos and stats) ───
         function updateLiveUI() {
             const totalExtras = state.extras.wd + state.extras.nb + state.extras.b + state.extras.lb + state.extras.p;
             document.getElementById('liveScore').textContent = `${state.runs}/${state.wickets}`;
@@ -3680,17 +3936,25 @@ Bilal</textarea>
                 document.getElementById('targetDisplay').textContent = '';
             }
 
-            if (state.striker && state.batsmanStats[state.striker]) {
-                const s = state.batsmanStats[state.striker];
-                document.getElementById('strikerName').textContent = `${state.striker} (${s.runs}*)`;
+            // Update batsmen display with photos and stats
+            if (state.striker) {
+                const photo = getPlayerPhotoSync(state.striker) || '';
+                strikerAvatar.innerHTML = photo ? `<img src="${photo}" alt="${state.striker}" />` : '👤';
+                const s = state.batsmanStats[state.striker] || { runs: 0, balls: 0 };
+                strikerStats.textContent = `${s.runs} (${s.balls})`;
+                strikerItem.style.display = 'block';
             } else {
-                document.getElementById('strikerName').textContent = '-';
+                strikerItem.style.display = 'none';
             }
-            if (state.nonStriker && state.batsmanStats[state.nonStriker]) {
-                const ns = state.batsmanStats[state.nonStriker];
-                document.getElementById('nonStrikerName').textContent = `${state.nonStriker} (${ns.runs}*)`;
+
+            if (state.nonStriker) {
+                const photo = getPlayerPhotoSync(state.nonStriker) || '';
+                nonStrikerAvatar.innerHTML = photo ? `<img src="${photo}" alt="${state.nonStriker}" />` : '👤';
+                const ns = state.batsmanStats[state.nonStriker] || { runs: 0, balls: 0 };
+                nonStrikerStats.textContent = `${ns.runs} (${ns.balls})`;
+                nonStrikerItem.style.display = 'block';
             } else {
-                document.getElementById('nonStrikerName').textContent = '-';
+                nonStrikerItem.style.display = 'none';
             }
 
             if (state.currentBowler) {
@@ -3702,7 +3966,7 @@ Bilal</textarea>
                 document.getElementById('currentBowler').textContent = '-';
             }
 
-            // Check for inning completion conditions
+            // Check for inning completion
             if (state.wickets >= state.totalWickets) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
@@ -3857,33 +4121,6 @@ Bilal</textarea>
             winnerText.textContent = `${winnerTeam} won the match!`;
             winnerDetail.textContent = `By ${margin} ${marginType}`;
             winnerPopup.classList.add('active');
-        }
-
-        function checkMatchWin() {
-            if (state.currentInning !== 2 || !state.targetScore) return false;
-            if (state.runs >= state.targetScore) {
-                const winner = state.batting;
-                const wicketsRemaining = state.totalWickets - state.wickets;
-                state.winner = winner;
-                state.winMargin = wicketsRemaining;
-                state.winType = 'wickets';
-                state.isMatchEnded = true;
-                saveInning2Data();
-                showWinnerPopup(winner, wicketsRemaining, 'wickets');
-                return true;
-            }
-            if (state.balls >= state.totalOvers * state.ballsPerOver) {
-                const winner = state.bowling;
-                const diff = state.targetScore - state.runs - 1;
-                state.winner = winner;
-                state.winMargin = diff;
-                state.winType = 'runs';
-                state.isMatchEnded = true;
-                saveInning2Data();
-                showWinnerPopup(winner, diff, 'runs');
-                return true;
-            }
-            return false;
         }
 
         function saveInning2Data() {
@@ -4132,7 +4369,6 @@ Bilal</textarea>
                 const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p]
                 .out);
                 const candidates = allNotOut.filter(p => p !== state.nonStriker);
-                // ★★★ Check if wicket fell on last ball ★★★
                 if (state.overBalls >= state.ballsPerOver) {
                     state._overCompleteAfterWicket = true;
                     pendingBowlerSelection = true;
@@ -4229,7 +4465,6 @@ Bilal</textarea>
             renderPlayerStats();
         });
 
-        // ─── Complete and save (winner popup uses this) ───
         async function completeAndSaveMatch() {
             if (state.currentInning === 2) saveInning2Data();
             state.isMatchEnded = true;
@@ -4384,7 +4619,7 @@ Bilal</textarea>
               `;
             });
             document.getElementById('battingRows1').innerHTML = battingHtml ||
-                '<div class="table-row" style="color:#6a8a6a;">No batting data</div>';
+                '<div class="table-row" style="color:var(--text-secondary);">No batting data</div>';
             document.getElementById('battingTeamName1').textContent = battingTeam || state.batting;
             document.getElementById('bowlingTeamName1').textContent = bowlingTeam || state.bowling;
             document.getElementById('scorecardExtras1').textContent = totalExtras;
@@ -4410,7 +4645,7 @@ Bilal</textarea>
               `;
             });
             document.getElementById('bowlingRows1').innerHTML = bowlingHtml ||
-                '<div class="table-row-bowling" style="color:#6a8a6a;">No bowling data</div>';
+                '<div class="table-row-bowling" style="color:var(--text-secondary);">No bowling data</div>';
         }
 
         function updateStats() {
@@ -4503,9 +4738,10 @@ Bilal</textarea>
         renderPlayerStats();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App – Black & Gold Theme');
+        console.log('🏏 Cricket Scorer App – New theme: Dark Blue/Cyan/Gold');
         console.log('🔐 Password for delete & photo: 28326');
-        console.log('✅ Wicket-on-last-ball bug FIXED: new batsman becomes non-striker, bowler popup appears.');
+        console.log('✅ Batsmen display shows photos, role, and runs(balls)');
+        console.log('✅ Man of the Match automatically computed on match view');
     </script>
 </body>
 </html>
