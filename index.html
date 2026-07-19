@@ -20,7 +20,7 @@
     </script>
 
     <style>
-        /* ─── CSS VARIABLES (NEW THEME) ─── */
+        /* ─── CSS VARIABLES ─── */
         :root {
             --bg-primary: #0b0e1a;
             --bg-secondary: #141b2b;
@@ -32,6 +32,7 @@
             --accent-cyan: #00d4ff;
             --accent-gold: #ffd700;
             --accent-pink: #ff6b9d;
+            --accent-green: #2ecc71;
             --shadow-glow: 0 8px 32px rgba(0, 212, 255, 0.08);
             --radius-lg: 32px;
             --radius-md: 20px;
@@ -139,7 +140,6 @@
             background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold), var(--accent-cyan));
             border-radius: 4px;
             width: 0%;
-            animation: load 6s ease-in-out forwards;
             background-size: 200% 100%;
             animation: load 6s ease-in-out forwards, shimmer 1.5s infinite;
         }
@@ -1065,6 +1065,36 @@
         }
 
         /* ─── BATSMEN DISPLAY (UPDATED) ─── */
+        .batsmen-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .batsmen-header .batsmen-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-swap-strike {
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            color: var(--accent-cyan);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .btn-swap-strike:hover {
+            background: rgba(0, 212, 255, 0.18);
+            transform: scale(1.05);
+        }
+
         .current-batsmen {
             display: flex;
             gap: 12px;
@@ -1073,6 +1103,7 @@
             border-radius: var(--radius-md);
             padding: 12px 16px;
             border: 1px solid var(--border-light);
+            cursor: default;
         }
         .batsman-item {
             flex: 1;
@@ -1081,6 +1112,10 @@
             border-radius: var(--radius-sm);
             background: rgba(255, 255, 255, 0.02);
             transition: 0.2s;
+            cursor: pointer;
+        }
+        .batsman-item:hover {
+            background: rgba(0, 212, 255, 0.05);
         }
         .batsman-item.striker {
             border-bottom: 3px solid var(--accent-cyan);
@@ -1100,6 +1135,11 @@
             font-size: 24px;
             overflow: hidden;
             border: 2px solid rgba(0, 212, 255, 0.15);
+            transition: 0.2s;
+        }
+        .batsman-item:hover .batsman-avatar {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
         }
         .batsman-avatar img {
             width: 100%;
@@ -1111,6 +1151,11 @@
             font-weight: 700;
             color: var(--text-primary);
             margin-top: 2px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .batsman-role:hover {
+            color: var(--accent-cyan);
         }
         .batsman-stats {
             font-size: 15px;
@@ -1263,24 +1308,25 @@
             }
         }
 
-        /* ─── SCORECARD TABLES ─── */
+        /* ─── SCORECARD TABLES — IMPROVED UI ─── */
         .scorecard-table {
             background: rgba(255, 255, 255, 0.02);
             border-radius: var(--radius-md);
             overflow: hidden;
             border: 1px solid var(--border-light);
+            margin-bottom: 12px;
         }
         .scorecard-table .table-header {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
             padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.2);
-            font-size: 12px;
+            background: rgba(0, 0, 0, 0.35);
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-secondary);
             border-bottom: 1px solid var(--border-light);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
         .scorecard-table .table-row {
             display: grid;
@@ -1288,32 +1334,51 @@
             padding: 8px 14px;
             font-size: 14px;
             color: var(--text-primary);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.15s;
+        }
+        .scorecard-table .table-row:hover {
+            background: rgba(255, 255, 255, 0.02);
         }
         .scorecard-table .table-row .batsman-name {
             font-weight: 600;
         }
         .scorecard-table .table-row .batsman-name .out {
             color: #ff6b6b;
-            font-size: 11px;
+            font-size: 10px;
             margin-left: 4px;
+            background: rgba(255, 70, 70, 0.12);
+            padding: 1px 8px;
+            border-radius: 20px;
         }
         .scorecard-table .table-row .batsman-name .not-out {
             color: #2ecc71;
-            font-size: 11px;
+            font-size: 10px;
             margin-left: 4px;
+            background: rgba(46, 204, 113, 0.12);
+            padding: 1px 8px;
+            border-radius: 20px;
         }
+        .scorecard-table .table-row .batsman-name .retired-hurt {
+            color: var(--accent-gold);
+            font-size: 10px;
+            margin-left: 4px;
+            background: rgba(255, 215, 0, 0.12);
+            padding: 1px 8px;
+            border-radius: 20px;
+        }
+
         .scorecard-table .table-header-bowling {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
             padding: 10px 14px;
-            background: rgba(0, 0, 0, 0.2);
-            font-size: 12px;
+            background: rgba(0, 0, 0, 0.35);
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-secondary);
             border-bottom: 1px solid var(--border-light);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
         }
         .scorecard-table .table-row-bowling {
             display: grid;
@@ -1321,14 +1386,68 @@
             padding: 8px 14px;
             font-size: 14px;
             color: var(--text-primary);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: 0.15s;
+        }
+        .scorecard-table .table-row-bowling:hover {
+            background: rgba(255, 255, 255, 0.02);
         }
         .scorecard-table .section-title {
             padding: 12px 14px 6px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
             color: var(--text-secondary);
             background: rgba(255, 255, 255, 0.01);
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .scorecard-table .section-title .badge-bat {
+            background: rgba(0, 212, 255, 0.12);
+            color: var(--accent-cyan);
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+        .scorecard-table .section-title .badge-bowl {
+            background: rgba(255, 215, 0, 0.12);
+            color: var(--accent-gold);
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+
+        .scorecard-table .extras-summary {
+            padding: 8px 14px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-light);
+            background: rgba(255, 255, 255, 0.01);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+        }
+        .scorecard-table .extras-summary .extra-tag {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        .scorecard-table .total-row {
+            padding: 10px 14px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-top: 2px solid var(--border-light);
+            background: rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .scorecard-table .total-row .total-score {
+            color: var(--accent-gold);
+            font-size: 20px;
         }
 
         .stats-grid {
@@ -1426,7 +1545,8 @@
         .popup-overlay-selection,
         .popup-overlay-inning,
         .popup-overlay-winner,
-        .popup-overlay-out {
+        .popup-overlay-out,
+        .popup-overlay-retire {
             display: none;
             position: fixed;
             top: 0;
@@ -1445,7 +1565,8 @@
         .popup-overlay-selection.active,
         .popup-overlay-inning.active,
         .popup-overlay-winner.active,
-        .popup-overlay-out.active {
+        .popup-overlay-out.active,
+        .popup-overlay-retire.active {
             display: flex;
         }
 
@@ -1454,7 +1575,8 @@
         .popup-card-selection,
         .popup-card-inning,
         .popup-card-winner,
-        .popup-card-out {
+        .popup-card-out,
+        .popup-card-retire {
             background: var(--glass-bg);
             backdrop-filter: blur(20px);
             border-radius: var(--radius-lg);
@@ -1472,7 +1594,8 @@
         .popup-card-selection h3,
         .popup-card-inning h3,
         .popup-card-winner h3,
-        .popup-card-out h3 {
+        .popup-card-out h3,
+        .popup-card-retire h3 {
             font-size: 24px;
             margin-bottom: 16px;
             text-align: center;
@@ -1698,6 +1821,23 @@
             border: 2px solid var(--accent-cyan);
         }
 
+        /* ─── RETIRE HURT POPUP ─── */
+        .popup-card-retire .retire-icon {
+            font-size: 60px;
+            text-align: center;
+            margin: 8px 0;
+        }
+        .popup-card-retire .retire-text {
+            text-align: center;
+            font-size: 18px;
+            color: var(--text-primary);
+            margin: 12px 0;
+        }
+        .popup-card-retire .retire-text .player-name-highlight {
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
         /* ─── COMPLETED MATCH ─── */
         .completed-match-view .back-header {
             display: flex;
@@ -1820,6 +1960,22 @@
             }
             .man-of-match .mom-info {
                 flex: 0 0 100%;
+            }
+            .scorecard-table .table-header {
+                font-size: 9px;
+                padding: 8px 10px;
+            }
+            .scorecard-table .table-row {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+            .scorecard-table .table-header-bowling {
+                font-size: 9px;
+                padding: 8px 10px;
+            }
+            .scorecard-table .table-row-bowling {
+                font-size: 12px;
+                padding: 6px 10px;
             }
         }
     </style>
@@ -1970,7 +2126,11 @@ Bilal</textarea>
                     <div style="font-size:13px; color:var(--accent-gold); margin-top:4px;" id="targetDisplay"></div>
                 </div>
 
-                <!-- BATSMEN DISPLAY – now shows name instead of role -->
+                <!-- BATSMEN DISPLAY with Change Strike button -->
+                <div class="batsmen-header">
+                    <span class="batsmen-label">🏏 Batsmen</span>
+                    <button class="btn-swap-strike" id="btnSwapStrike">🔄 Change Strike</button>
+                </div>
                 <div class="current-batsmen" id="currentBatsmenContainer">
                     <div class="batsman-item striker" id="strikerItem">
                         <div class="batsman-avatar" id="strikerAvatar">👤</div>
@@ -2014,18 +2174,24 @@ Bilal</textarea>
                 </div>
                 <div id="scorecardContent">
                     <div class="scorecard-table">
-                        <div class="section-title">🏏 Batting - <span id="battingTeamName1">SIRKHANA</span></div>
+                        <div class="section-title">🏏 Batting <span class="badge-bat" id="battingTeamName1">SIRKHANA</span></div>
                         <div class="table-header"><span>Batter</span><span>R</span><span>B</span><span>4s</span><span>6s</span><span>SR</span></div>
                         <div id="battingRows1"></div>
-                        <div style="padding:8px 14px; font-size:13px; color:var(--text-secondary); border-top:1px solid var(--border-light);">
-                            Extras: <span id="scorecardExtras1">0</span> (Wd: <span id="scorecardWd1">0</span>, Nb: <span id="scorecardNb1">0</span>, B: <span id="scorecardB1">0</span>, LB: <span id="scorecardLb1">0</span>, P: <span id="scorecardP1">0</span>)
+                        <div class="extras-summary" id="extrasSummary1">
+                            Extras: <span id="scorecardExtras1">0</span>
+                            <span class="extra-tag">Wd: <span id="scorecardWd1">0</span></span>
+                            <span class="extra-tag">Nb: <span id="scorecardNb1">0</span></span>
+                            <span class="extra-tag">B: <span id="scorecardB1">0</span></span>
+                            <span class="extra-tag">LB: <span id="scorecardLb1">0</span></span>
+                            <span class="extra-tag">P: <span id="scorecardP1">0</span></span>
                         </div>
-                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:var(--text-primary); border-top:1px solid var(--border-light);">
-                            Total: <span id="scorecardTotal1">0/0</span> (Overs: <span id="scorecardOvers1">0.0</span>)
+                        <div class="total-row">
+                            <span>Total</span>
+                            <span class="total-score"><span id="scorecardTotal1">0/0</span> <span style="font-size:13px; font-weight:400; color:var(--text-secondary);">(Overs: <span id="scorecardOvers1">0.0</span>)</span></span>
                         </div>
                     </div>
                     <div class="scorecard-table">
-                        <div class="section-title">⚾ Bowling - <span id="bowlingTeamName1">MORAGAI</span></div>
+                        <div class="section-title">⚾ Bowling <span class="badge-bowl" id="bowlingTeamName1">MORAGAI</span></div>
                         <div class="table-header-bowling"><span>Bowler</span><span>O</span><span>M</span><span>R</span><span>W</span></div>
                         <div id="bowlingRows1"></div>
                     </div>
@@ -2063,18 +2229,24 @@ Bilal</textarea>
                 </div>
                 <div id="completedScorecardContent">
                     <div class="scorecard-table">
-                        <div class="section-title">🏏 Batting - <span id="completedBattingTeamName1">-</span></div>
+                        <div class="section-title">🏏 Batting <span class="badge-bat" id="completedBattingTeamName1">-</span></div>
                         <div class="table-header"><span>Batter</span><span>R</span><span>B</span><span>4s</span><span>6s</span><span>SR</span></div>
                         <div id="completedBattingRows1"></div>
-                        <div style="padding:8px 14px; font-size:13px; color:var(--text-secondary); border-top:1px solid var(--border-light);">
-                            Extras: <span id="completedExtras1">0</span> (Wd: <span id="completedWd1">0</span>, Nb: <span id="completedNb1">0</span>, B: <span id="completedB1">0</span>, LB: <span id="completedLb1">0</span>, P: <span id="completedP1">0</span>)
+                        <div class="extras-summary">
+                            Extras: <span id="completedExtras1">0</span>
+                            <span class="extra-tag">Wd: <span id="completedWd1">0</span></span>
+                            <span class="extra-tag">Nb: <span id="completedNb1">0</span></span>
+                            <span class="extra-tag">B: <span id="completedB1">0</span></span>
+                            <span class="extra-tag">LB: <span id="completedLb1">0</span></span>
+                            <span class="extra-tag">P: <span id="completedP1">0</span></span>
                         </div>
-                        <div style="padding:8px 14px; font-size:15px; font-weight:700; color:var(--text-primary); border-top:1px solid var(--border-light);">
-                            Total: <span id="completedTotal1">0/0</span> (Overs: <span id="completedOvers1">0.0</span>)
+                        <div class="total-row">
+                            <span>Total</span>
+                            <span class="total-score"><span id="completedTotal1">0/0</span> <span style="font-size:13px; font-weight:400; color:var(--text-secondary);">(Overs: <span id="completedOvers1">0.0</span>)</span></span>
                         </div>
                     </div>
                     <div class="scorecard-table">
-                        <div class="section-title">⚾ Bowling - <span id="completedBowlingTeamName1">-</span></div>
+                        <div class="section-title">⚾ Bowling <span class="badge-bowl" id="completedBowlingTeamName1">-</span></div>
                         <div class="table-header-bowling"><span>Bowler</span><span>O</span><span>M</span><span>R</span><span>W</span></div>
                         <div id="completedBowlingRows1"></div>
                     </div>
@@ -2182,13 +2354,31 @@ Bilal</textarea>
         <!-- Out Selection Popup -->
         <div class="popup-overlay-out" id="outSelectionPopup">
             <div class="popup-card-out">
-                <h3>Who is out?</h3>
+                <h3>🤔 Who is out?</h3>
                 <div class="out-options" id="outOptions">
                     <button id="outStrikerBtn">Striker</button>
                     <button id="outNonStrikerBtn">Non-Striker</button>
                 </div>
                 <div class="popup-actions">
                     <button class="btn-secondary" id="outCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Retire Hurt Popup -->
+        <div class="popup-overlay-retire" id="retirePopup">
+            <div class="popup-card-retire">
+                <div class="retire-icon">🩹</div>
+                <h3>Retire Hurt</h3>
+                <div class="retire-text">
+                    Retire <span class="player-name-highlight" id="retirePlayerName">Player</span>?
+                </div>
+                <p style="text-align:center; font-size:14px; color:var(--text-secondary);">
+                    The batsman will be marked as retired hurt.<br>No runs or wickets will be added.
+                </p>
+                <div class="popup-actions" style="justify-content:center;">
+                    <button class="btn-secondary" id="retireCancel">Cancel</button>
+                    <button class="btn-danger" id="retireConfirm">🩹 Retire Hurt</button>
                 </div>
             </div>
         </div>
@@ -2256,6 +2446,116 @@ Bilal</textarea>
         console.log('🔥 Firebase initialized!');
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        // SOUND ENGINE (Web Audio API)
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.enabled = true;
+                try {
+                    this.ctx = new(window.AudioContext || window.webkitAudioContext)();
+                } catch (e) { this.enabled = false; }
+            }
+
+            resume() {
+                if (this.ctx && this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+            }
+
+            playTone(freq, duration, type = 'sine', volume = 0.3) {
+                if (!this.enabled || !this.ctx) return;
+                try {
+                    this.resume();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(volume, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start(this.ctx.currentTime);
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch (e) { /* silent fail */ }
+            }
+
+            playRun(runs) {
+                if (runs === 0) {
+                    this.playTone(400, 0.08, 'sine', 0.2);
+                } else if (runs === 1) {
+                    this.playTone(523, 0.12, 'sine', 0.25);
+                } else if (runs === 2) {
+                    this.playTone(523, 0.1, 'sine', 0.25);
+                    setTimeout(() => this.playTone(659, 0.1, 'sine', 0.25), 120);
+                } else if (runs === 3) {
+                    this.playTone(523, 0.1, 'sine', 0.25);
+                    setTimeout(() => this.playTone(659, 0.1, 'sine', 0.25), 120);
+                    setTimeout(() => this.playTone(784, 0.1, 'sine', 0.25), 240);
+                } else if (runs === 4) {
+                    // Celebratory ascending
+                    this.playTone(523, 0.1, 'sine', 0.3);
+                    setTimeout(() => this.playTone(659, 0.1, 'sine', 0.3), 100);
+                    setTimeout(() => this.playTone(784, 0.15, 'sine', 0.35), 200);
+                    setTimeout(() => this.playTone(1047, 0.25, 'sine', 0.4), 320);
+                } else if (runs === 6) {
+                    // Big celebration
+                    this.playTone(523, 0.08, 'sine', 0.3);
+                    setTimeout(() => this.playTone(659, 0.08, 'sine', 0.3), 80);
+                    setTimeout(() => this.playTone(784, 0.08, 'sine', 0.35), 160);
+                    setTimeout(() => this.playTone(1047, 0.12, 'sine', 0.4), 240);
+                    setTimeout(() => this.playTone(1319, 0.18, 'sine', 0.45), 340);
+                } else if (runs === 5) {
+                    this.playTone(600, 0.1, 'square', 0.15);
+                }
+            }
+
+            playWicket() {
+                // Descending sad tone
+                this.playTone(800, 0.1, 'sawtooth', 0.2);
+                setTimeout(() => this.playTone(600, 0.1, 'sawtooth', 0.2), 100);
+                setTimeout(() => this.playTone(400, 0.15, 'sawtooth', 0.25), 200);
+                setTimeout(() => this.playTone(300, 0.3, 'sawtooth', 0.3), 320);
+            }
+
+            playExtra() {
+                this.playTone(700, 0.1, 'square', 0.15);
+                setTimeout(() => this.playTone(900, 0.12, 'square', 0.15), 100);
+            }
+
+            playOverComplete() {
+                this.playTone(440, 0.08, 'sine', 0.2);
+                setTimeout(() => this.playTone(554, 0.08, 'sine', 0.2), 100);
+                setTimeout(() => this.playTone(659, 0.12, 'sine', 0.25), 200);
+            }
+
+            playInningComplete() {
+                this.playTone(440, 0.1, 'sine', 0.25);
+                setTimeout(() => this.playTone(554, 0.1, 'sine', 0.25), 120);
+                setTimeout(() => this.playTone(659, 0.1, 'sine', 0.3), 240);
+                setTimeout(() => this.playTone(880, 0.2, 'sine', 0.35), 360);
+            }
+
+            playMatchEnd() {
+                // Fanfare
+                this.playTone(523, 0.1, 'sine', 0.3);
+                setTimeout(() => this.playTone(659, 0.1, 'sine', 0.3), 100);
+                setTimeout(() => this.playTone(784, 0.1, 'sine', 0.35), 200);
+                setTimeout(() => this.playTone(1047, 0.15, 'sine', 0.4), 300);
+                setTimeout(() => this.playTone(1319, 0.2, 'sine', 0.45), 420);
+                setTimeout(() => this.playTone(1568, 0.3, 'sine', 0.5), 540);
+            }
+
+            playRetire() {
+                this.playTone(500, 0.08, 'sine', 0.15);
+                setTimeout(() => this.playTone(400, 0.08, 'sine', 0.15), 80);
+                setTimeout(() => this.playTone(300, 0.12, 'sine', 0.2), 160);
+            }
+        }
+
+        const sound = new SoundEngine();
+
+        // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         // CONSTANTS & STATE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         const PASSWORD = '28326';
@@ -2321,7 +2621,8 @@ Bilal</textarea>
             winner: null,
             winMargin: null,
             winType: null,
-            _overCompleteAfterWicket: false
+            _overCompleteAfterWicket: false,
+            _pendingRetirePosition: null // 'striker' or 'non-striker'
         };
 
         // ─── DOM REFS ───
@@ -2405,6 +2706,13 @@ Bilal</textarea>
         const outStrikerBtn = document.getElementById('outStrikerBtn');
         const outNonStrikerBtn = document.getElementById('outNonStrikerBtn');
         const outCancel = document.getElementById('outCancel');
+
+        const retirePopup = document.getElementById('retirePopup');
+        const retirePlayerName = document.getElementById('retirePlayerName');
+        const retireCancel = document.getElementById('retireCancel');
+        const retireConfirm = document.getElementById('retireConfirm');
+
+        const btnSwapStrike = document.getElementById('btnSwapStrike');
 
         // Batsmen display elements
         const strikerAvatar = document.getElementById('strikerAvatar');
@@ -2631,6 +2939,7 @@ Bilal</textarea>
             state.winMargin = data.winMargin || null;
             state.winType = data.winType || null;
             state._overCompleteAfterWicket = false;
+            state._pendingRetirePosition = null;
         }
 
         function saveMatchToLocalStorage(matchId, data) {
@@ -3210,11 +3519,17 @@ Bilal</textarea>
                 keys.forEach(name => {
                     const s = data.batsmanStats[name];
                     const sr = s.balls > 0 ? ((s.runs / s.balls) * 100).toFixed(1) : '0.0';
-                    const outStatus = s.out ? `<span class="out">(out)</span>` :
-                    `<span class="not-out">(not out)</span>`;
+                    let statusBadge = '';
+                    if (s.retiredHurt) {
+                        statusBadge = `<span class="retired-hurt">retired hurt</span>`;
+                    } else if (s.out) {
+                        statusBadge = `<span class="out">out</span>`;
+                    } else {
+                        statusBadge = `<span class="not-out">not out</span>`;
+                    }
                     battingHtml += `
                   <div class="table-row">
-                    <span class="batsman-name">${name} ${outStatus}</span>
+                    <span class="batsman-name">${name} ${statusBadge}</span>
                     <span>${s.runs}</span>
                     <span>${s.balls}</span>
                     <span>${s.fours}</span>
@@ -3356,6 +3671,7 @@ Bilal</textarea>
             state.isMatchCompleted = false;
             state.matchStatus = 'ongoing';
             state._overCompleteAfterWicket = false;
+            state._pendingRetirePosition = null;
             showScreen('live');
             updateLiveUI();
             setTimeout(() => {
@@ -3426,6 +3742,7 @@ Bilal</textarea>
             state.winMargin = null;
             state.winType = null;
             state._overCompleteAfterWicket = false;
+            state._pendingRetirePosition = null;
             tossResult.textContent = 'Click toss to decide';
         }
 
@@ -3679,9 +3996,9 @@ Bilal</textarea>
                 state.striker = selectedStriker;
                 state.nonStriker = selectedNonStriker;
                 if (!state.batsmanStats[selectedStriker]) state.batsmanStats[selectedStriker] = { runs: 0, balls: 0,
-                    fours: 0, sixes: 0, out: false, outDesc: '' };
+                    fours: 0, sixes: 0, out: false, outDesc: '', retiredHurt: false };
                 if (!state.batsmanStats[selectedNonStriker]) state.batsmanStats[selectedNonStriker] = { runs: 0,
-                    balls: 0, fours: 0, sixes: 0, out: false, outDesc: '' };
+                    balls: 0, fours: 0, sixes: 0, out: false, outDesc: '', retiredHurt: false };
                 closeSelectionPopup();
                 state.isMatchStarted = true;
                 updateLiveUI();
@@ -3705,11 +4022,12 @@ Bilal</textarea>
                     }
                 }
                 if (!state.batsmanStats[newBatsman]) state.batsmanStats[newBatsman] = { runs: 0, balls: 0, fours: 0,
-                    sixes: 0, out: false, outDesc: '' };
+                    sixes: 0, out: false, outDesc: '', retiredHurt: false };
                 closeSelectionPopup();
                 pendingBatsmanSelection = false;
                 updateLiveUI();
 
+                // If this was a retire hurt replacement, we need to handle over completion
                 if (state._overCompleteAfterWicket) {
                     state._overCompleteAfterWicket = false;
                     const temp = state.striker;
@@ -3747,11 +4065,13 @@ Bilal</textarea>
         let pendingWicketRuns = 0;
         let pendingWicketSnapshot = null;
         let pendingWicketAction = null;
+        let pendingWicketPosition = null; // 'striker' or 'non-striker'
 
         function showOutSelectionPopup(runs) {
             pendingWicketRuns = runs;
             pendingWicketSnapshot = captureStateSnapshot();
             pendingWicketAction = { type: 'wicket', runs: runs };
+            pendingWicketPosition = null;
 
             const strikerName = state.striker || 'Striker';
             const nonStrikerName = state.nonStriker || 'Non-Striker';
@@ -3766,28 +4086,31 @@ Bilal</textarea>
             pendingWicketRuns = 0;
             pendingWicketSnapshot = null;
             pendingWicketAction = null;
+            pendingWicketPosition = null;
         }
 
         outStrikerBtn.addEventListener('click', () => {
             if (pendingWicketSnapshot && pendingWicketAction) {
-                processWicket(pendingWicketRuns, 'striker', pendingWicketSnapshot, pendingWicketAction);
+                pendingWicketPosition = 'striker';
+                processWicketWithPosition(pendingWicketRuns, 'striker', pendingWicketSnapshot, pendingWicketAction);
                 closeOutSelectionPopup();
             }
         });
 
         outNonStrikerBtn.addEventListener('click', () => {
             if (pendingWicketSnapshot && pendingWicketAction) {
-                processWicket(pendingWicketRuns, 'nonStriker', pendingWicketSnapshot, pendingWicketAction);
+                pendingWicketPosition = 'nonStriker';
+                processWicketWithPosition(pendingWicketRuns, 'nonStriker', pendingWicketSnapshot, pendingWicketAction);
                 closeOutSelectionPopup();
             }
         });
 
         outCancel.addEventListener('click', closeOutSelectionPopup);
 
-        // ─── Process Wicket ───
+        // ─── Process Wicket with position ───
         let pendingPosition = null;
 
-        function processWicket(runs, outPosition, snapshot, action) {
+        function processWicketWithPosition(runs, outPosition, snapshot, action) {
             restoreSnapshot(snapshot);
 
             const outBatsman = (outPosition === 'striker') ? state.striker : state.nonStriker;
@@ -3811,6 +4134,9 @@ Bilal</textarea>
                 state.bowlerStats[state.currentBowler].balls += 1;
             }
 
+            // Play wicket sound
+            sound.playWicket();
+
             if (outPosition === 'striker') {
                 pendingPosition = 'striker';
                 state.striker = null;
@@ -3822,9 +4148,11 @@ Bilal</textarea>
             pushHistory(action, snapshot);
             updateLiveUI();
 
+            // Check if all out or overs complete
             if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
                     state.isMatchEnded = true;
@@ -3835,6 +4163,7 @@ Bilal</textarea>
                         state.winMargin = diff;
                         state.winType = 'runs';
                         saveInning2Data();
+                        sound.playMatchEnd();
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
                     } else if (state.targetScore && state.runs >= state.targetScore) {
                         const winner = state.batting;
@@ -3844,6 +4173,7 @@ Bilal</textarea>
                         state.winType = 'wickets';
                         state.isMatchEnded = true;
                         saveInning2Data();
+                        sound.playMatchEnd();
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
                     }
                 }
@@ -3856,9 +4186,43 @@ Bilal</textarea>
                 pendingBowlerSelection = true;
             }
 
-            const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p].out);
+            const allNotOut = state.battingPlayers.filter(p => {
+                const s = state.batsmanStats[p];
+                return !s || (!s.out && !s.retiredHurt);
+            });
             const otherEnd = (outPosition === 'striker') ? state.nonStriker : state.striker;
             const candidates = allNotOut.filter(p => p !== otherEnd);
+            if (candidates.length === 0) {
+                // No batsmen left, all out
+                if (state.currentInning === 1 && !state.isFirstInningComplete) {
+                    state.isMatchEnded = true;
+                    sound.playInningComplete();
+                    setTimeout(showInningComplete, 800);
+                } else if (state.currentInning === 2) {
+                    state.isMatchEnded = true;
+                    if (state.targetScore && state.runs < state.targetScore) {
+                        const winner = state.bowling;
+                        const diff = state.targetScore - state.runs - 1;
+                        state.winner = winner;
+                        state.winMargin = diff;
+                        state.winType = 'runs';
+                        saveInning2Data();
+                        sound.playMatchEnd();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
+                    } else if (state.targetScore && state.runs >= state.targetScore) {
+                        const winner = state.batting;
+                        const wicketsRemaining = state.totalWickets - state.wickets;
+                        state.winner = winner;
+                        state.winMargin = wicketsRemaining;
+                        state.winType = 'wickets';
+                        state.isMatchEnded = true;
+                        saveInning2Data();
+                        sound.playMatchEnd();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
+                    }
+                }
+                return;
+            }
             setTimeout(() => {
                 showSelectionPopup('nextBatsman', candidates.length > 0 ? candidates : state.battingPlayers,
                     'Select Next Batsman', false);
@@ -3904,7 +4268,154 @@ Bilal</textarea>
             if (state.history.length > 50) state.history.shift();
         }
 
-        // ─── Update Live UI (with photos and stats, and batsman name instead of role) ───
+        // ─── Swap Strike ───
+        function swapStrike() {
+            if (!state.striker || !state.nonStriker) {
+                alert('Both batsmen must be at the crease to swap strike.');
+                return;
+            }
+            const temp = state.striker;
+            state.striker = state.nonStriker;
+            state.nonStriker = temp;
+            sound.playTone(800, 0.08, 'sine', 0.15);
+            updateLiveUI();
+        }
+
+        btnSwapStrike.addEventListener('click', swapStrike);
+
+        // ─── Retire Hurt ───
+        function showRetirePopup(position) {
+            const playerName = position === 'striker' ? state.striker : state.nonStriker;
+            if (!playerName) return;
+            state._pendingRetirePosition = position;
+            retirePlayerName.textContent = playerName;
+            retirePopup.classList.add('active');
+        }
+
+        retireCancel.addEventListener('click', () => {
+            retirePopup.classList.remove('active');
+            state._pendingRetirePosition = null;
+        });
+
+        retireConfirm.addEventListener('click', () => {
+            const position = state._pendingRetirePosition;
+            if (!position) { retirePopup.classList.remove('active'); return; }
+
+            const playerName = position === 'striker' ? state.striker : state.nonStriker;
+            if (!playerName) { retirePopup.classList.remove('active');
+                state._pendingRetirePosition = null; return; }
+
+            // Mark as retired hurt
+            if (state.batsmanStats[playerName]) {
+                state.batsmanStats[playerName].retiredHurt = true;
+                state.batsmanStats[playerName].out = false;
+                state.batsmanStats[playerName].outDesc = 'retired hurt';
+            } else {
+                state.batsmanStats[playerName] = { runs: 0, balls: 0, fours: 0, sixes: 0, out: false, outDesc: 'retired hurt',
+                    retiredHurt: true };
+            }
+
+            // Play sound
+            sound.playRetire();
+
+            // Remove from position
+            if (position === 'striker') {
+                pendingPosition = 'striker';
+                state.striker = null;
+            } else {
+                pendingPosition = 'nonStriker';
+                state.nonStriker = null;
+            }
+
+            retirePopup.classList.remove('active');
+            state._pendingRetirePosition = null;
+            updateLiveUI();
+
+            // Show batsman selection
+            const allNotOut = state.battingPlayers.filter(p => {
+                const s = state.batsmanStats[p];
+                return !s || (!s.out && !s.retiredHurt);
+            });
+            const otherEnd = (position === 'striker') ? state.nonStriker : state.striker;
+            const candidates = allNotOut.filter(p => p !== otherEnd);
+            if (candidates.length === 0) {
+                // No batsmen left, all out
+                if (state.currentInning === 1 && !state.isFirstInningComplete) {
+                    state.isMatchEnded = true;
+                    sound.playInningComplete();
+                    setTimeout(showInningComplete, 800);
+                } else if (state.currentInning === 2) {
+                    state.isMatchEnded = true;
+                    if (state.targetScore && state.runs < state.targetScore) {
+                        const winner = state.bowling;
+                        const diff = state.targetScore - state.runs - 1;
+                        state.winner = winner;
+                        state.winMargin = diff;
+                        state.winType = 'runs';
+                        saveInning2Data();
+                        sound.playMatchEnd();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
+                    } else if (state.targetScore && state.runs >= state.targetScore) {
+                        const winner = state.batting;
+                        const wicketsRemaining = state.totalWickets - state.wickets;
+                        state.winner = winner;
+                        state.winMargin = wicketsRemaining;
+                        state.winType = 'wickets';
+                        state.isMatchEnded = true;
+                        saveInning2Data();
+                        sound.playMatchEnd();
+                        setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
+                    }
+                }
+                return;
+            }
+            setTimeout(() => {
+                showSelectionPopup('nextBatsman', candidates.length > 0 ? candidates : state.battingPlayers,
+                    'Select Next Batsman', false);
+            }, 400);
+        });
+
+        // ─── Batsman click handler for Retire Hurt ───
+        function setupBatsmanClickHandlers() {
+            // Striker click
+            strikerRole.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!state.striker || !state.isMatchStarted) return;
+                showRetirePopup('striker');
+            });
+            strikerAvatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!state.striker || !state.isMatchStarted) return;
+                showRetirePopup('striker');
+            });
+            strikerItem.addEventListener('click', function(e) {
+                // Only trigger if click is on the item itself, not on children that already handled it
+                if (e.target === this || e.target === this.querySelector('.batsman-stats')) {
+                    if (!state.striker || !state.isMatchStarted) return;
+                    showRetirePopup('striker');
+                }
+            });
+
+            // Non-striker click
+            nonStrikerRole.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!state.nonStriker || !state.isMatchStarted) return;
+                showRetirePopup('nonStriker');
+            });
+            nonStrikerAvatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (!state.nonStriker || !state.isMatchStarted) return;
+                showRetirePopup('nonStriker');
+            });
+            nonStrikerItem.addEventListener('click', function(e) {
+                if (e.target === this || e.target === this.querySelector('.batsman-stats')) {
+                    if (!state.nonStriker || !state.isMatchStarted) return;
+                    showRetirePopup('nonStriker');
+                }
+            });
+        }
+
+        // ─── Update Live UI (with photos and stats) ───
         function updateLiveUI() {
             const totalExtras = state.extras.wd + state.extras.nb + state.extras.b + state.extras.lb + state.extras.p;
             document.getElementById('liveScore').textContent = `${state.runs}/${state.wickets}`;
@@ -3928,11 +4439,11 @@ Bilal</textarea>
                 document.getElementById('targetDisplay').textContent = '';
             }
 
-            // Update batsmen display with photo, name (instead of role), and stats
+            // Update batsmen display
             if (state.striker) {
                 const photo = getPlayerPhotoSync(state.striker) || '';
                 strikerAvatar.innerHTML = photo ? `<img src="${photo}" alt="${state.striker}" />` : '👤';
-                strikerRole.textContent = state.striker; // show name instead of "Striker"
+                strikerRole.textContent = state.striker;
                 const s = state.batsmanStats[state.striker] || { runs: 0, balls: 0 };
                 strikerStats.textContent = `${s.runs} (${s.balls})`;
                 strikerItem.style.display = 'block';
@@ -3943,7 +4454,7 @@ Bilal</textarea>
             if (state.nonStriker) {
                 const photo = getPlayerPhotoSync(state.nonStriker) || '';
                 nonStrikerAvatar.innerHTML = photo ? `<img src="${photo}" alt="${state.nonStriker}" />` : '👤';
-                nonStrikerRole.textContent = state.nonStriker; // show name instead of "Non-Striker"
+                nonStrikerRole.textContent = state.nonStriker;
                 const ns = state.batsmanStats[state.nonStriker] || { runs: 0, balls: 0 };
                 nonStrikerStats.textContent = `${ns.runs} (${ns.balls})`;
                 nonStrikerItem.style.display = 'block';
@@ -3964,6 +4475,7 @@ Bilal</textarea>
             if (state.wickets >= state.totalWickets) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
                     state.isMatchEnded = true;
@@ -3974,6 +4486,7 @@ Bilal</textarea>
                         state.winMargin = diff;
                         state.winType = 'runs';
                         saveInning2Data();
+                        sound.playMatchEnd();
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
                     } else if (state.targetScore && state.runs >= state.targetScore) {
                         const winner = state.batting;
@@ -3983,6 +4496,7 @@ Bilal</textarea>
                         state.winType = 'wickets';
                         state.isMatchEnded = true;
                         saveInning2Data();
+                        sound.playMatchEnd();
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
                     }
                 }
@@ -3994,6 +4508,7 @@ Bilal</textarea>
             if (state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
                     state.isMatchEnded = true;
@@ -4004,6 +4519,7 @@ Bilal</textarea>
                         state.winMargin = diff;
                         state.winType = 'runs';
                         saveInning2Data();
+                        sound.playMatchEnd();
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
                     } else if (state.targetScore && state.runs >= state.targetScore) {
                         const winner = state.batting;
@@ -4013,6 +4529,7 @@ Bilal</textarea>
                         state.winType = 'wickets';
                         state.isMatchEnded = true;
                         saveInning2Data();
+                        sound.playMatchEnd();
                         setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
                     }
                 }
@@ -4083,6 +4600,7 @@ Bilal</textarea>
             state.currentOverDeliveries = [];
             state.targetScore = state.inningData[1].runs + 1;
             state._overCompleteAfterWicket = false;
+            state._pendingRetirePosition = null;
             isWinnerPopupShown = false;
             state.inningData[2] = {
                 runs: 0,
@@ -4138,6 +4656,13 @@ Bilal</textarea>
         function addRuns(runs, isExtra = false, extraType = null) {
             if (state.isMatchEnded || state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state
                 .ballsPerOver) return;
+
+            // Play sound
+            if (runs >= 4 && !isExtra) sound.playRun(runs);
+            else if (runs > 0 && !isExtra) sound.playRun(runs);
+            else if (runs === 0 && !isExtra) sound.playRun(0);
+            if (isExtra) sound.playExtra();
+
             if (runs === 4 || runs === 6) celebrate(runs);
 
             const snapshot = captureStateSnapshot();
@@ -4170,6 +4695,7 @@ Bilal</textarea>
                             state.winType = 'wickets';
                             state.isMatchEnded = true;
                             saveInning2Data();
+                            sound.playMatchEnd();
                             showWinnerPopup(winner, wicketsRemaining, 'wickets');
                         }
                     }
@@ -4203,6 +4729,7 @@ Bilal</textarea>
                             state.winType = 'wickets';
                             state.isMatchEnded = true;
                             saveInning2Data();
+                            sound.playMatchEnd();
                             showWinnerPopup(winner, wicketsRemaining, 'wickets');
                         }
                     }
@@ -4227,6 +4754,7 @@ Bilal</textarea>
                     pushHistory(action, snapshot);
                     updateLiveUI();
                     if (state.overBalls >= state.ballsPerOver && !state.isMatchEnded) {
+                        sound.playOverComplete();
                         state.overBalls = 0;
                         const temp = state.striker;
                         state.striker = state.nonStriker;
@@ -4249,6 +4777,7 @@ Bilal</textarea>
                             state.winType = 'wickets';
                             state.isMatchEnded = true;
                             saveInning2Data();
+                            sound.playMatchEnd();
                             showWinnerPopup(winner, wicketsRemaining, 'wickets');
                         }
                     }
@@ -4289,10 +4818,12 @@ Bilal</textarea>
                     state.winType = 'wickets';
                     state.isMatchEnded = true;
                     saveInning2Data();
+                    sound.playMatchEnd();
                     showWinnerPopup(winner, wicketsRemaining, 'wickets');
                 }
             }
             if (state.overBalls >= state.ballsPerOver && !state.isMatchEnded) {
+                sound.playOverComplete();
                 state.overBalls = 0;
                 const temp = state.striker;
                 state.striker = state.nonStriker;
@@ -4313,67 +4844,8 @@ Bilal</textarea>
             if (state.isMatchEnded || state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state
                 .ballsPerOver) return;
 
-            if (runs === 0) {
-                const snapshot = captureStateSnapshot();
-                const action = { type: 'wicket', runs: 0 };
-                state.wickets += 1;
-                state.balls += 1;
-                state.overBalls += 1;
-                state.currentOverDeliveries.push('W');
-                if (state.striker && state.batsmanStats[state.striker]) {
-                    state.batsmanStats[state.striker].out = true;
-                    state.batsmanStats[state.striker].outDesc = 'b ' + state.currentBowler;
-                    state.batsmanStats[state.striker].balls += 1;
-                }
-                if (state.currentBowler && state.bowlerStats[state.currentBowler]) {
-                    state.bowlerStats[state.currentBowler].wickets += 1;
-                    state.bowlerStats[state.currentBowler].balls += 1;
-                }
-                pendingPosition = 'striker';
-                state.striker = null;
-                pushHistory(action, snapshot);
-                updateLiveUI();
-                if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
-                    if (state.currentInning === 1 && !state.isFirstInningComplete) {
-                        state.isMatchEnded = true;
-                        setTimeout(showInningComplete, 800);
-                    } else if (state.currentInning === 2) {
-                        state.isMatchEnded = true;
-                        if (state.targetScore && state.runs < state.targetScore) {
-                            const winner = state.bowling;
-                            const diff = state.targetScore - state.runs - 1;
-                            state.winner = winner;
-                            state.winMargin = diff;
-                            state.winType = 'runs';
-                            saveInning2Data();
-                            setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, diff, 'runs'); }, 500);
-                        } else if (state.targetScore && state.runs >= state.targetScore) {
-                            const winner = state.batting;
-                            const wicketsRemaining = state.totalWickets - state.wickets;
-                            state.winner = winner;
-                            state.winMargin = wicketsRemaining;
-                            state.winType = 'wickets';
-                            state.isMatchEnded = true;
-                            saveInning2Data();
-                            setTimeout(() => { if (!isWinnerPopupShown) showWinnerPopup(winner, wicketsRemaining, 'wickets'); }, 500);
-                        }
-                    }
-                    return;
-                }
-                const allNotOut = state.battingPlayers.filter(p => !state.batsmanStats[p] || !state.batsmanStats[p]
-                .out);
-                const candidates = allNotOut.filter(p => p !== state.nonStriker);
-                if (state.overBalls >= state.ballsPerOver) {
-                    state._overCompleteAfterWicket = true;
-                    pendingBowlerSelection = true;
-                }
-                setTimeout(() => {
-                    showSelectionPopup('nextBatsman', candidates.length > 0 ? candidates : state.battingPlayers,
-                        'Select Next Batsman', false);
-                }, 500);
-            } else {
-                showOutSelectionPopup(runs);
-            }
+            // Always show the "who is out?" popup, even for runs === 0
+            showOutSelectionPopup(runs);
         }
 
         // ─── Stop Match ───
@@ -4423,20 +4895,27 @@ Bilal</textarea>
             btn.addEventListener('click', () => {
                 if (!state.isMatchStarted) { alert('Please start the match first!'); return; }
                 const runs = parseInt(btn.dataset.run, 10);
-                if (!isNaN(runs)) addRuns(runs, false, null);
+                if (!isNaN(runs)) {
+                    // Resume audio context on user interaction
+                    sound.resume();
+                    addRuns(runs, false, null);
+                }
             });
         });
 
         document.getElementById('btnWidePopup').addEventListener('click', () => {
             if (!state.isMatchStarted) { alert('Please start the match first!'); return; }
+            sound.resume();
             showScoringPopup('wd');
         });
         document.getElementById('btnNbPopup').addEventListener('click', () => {
             if (!state.isMatchStarted) { alert('Please start the match first!'); return; }
+            sound.resume();
             showScoringPopup('nb');
         });
         document.getElementById('btnWicketPopup').addEventListener('click', () => {
             if (!state.isMatchStarted) { alert('Please start the match first!'); return; }
+            sound.resume();
             showScoringPopup('wicket');
         });
 
@@ -4545,7 +5024,9 @@ Bilal</textarea>
                     runs = 1 + (parseInt(parts[1]) || 0);
                     addRuns(runs, true, 'wd'); }
                 if (isWicketOn) {
-                    initiateWicket(0);
+                    // For wide with wicket, we need to handle wicket separately
+                    // We'll use the normal wicket flow with runs = 0
+                    setTimeout(() => initiateWicket(0), 100);
                 }
             } else if (popupType === 'nb') {
                 if (val === 'Nb') { runs = 1;
@@ -4553,7 +5034,7 @@ Bilal</textarea>
                     runs = 1 + (parseInt(parts[1]) || 0);
                     addRuns(runs, true, 'nb'); }
                 if (isWicketOn) {
-                    initiateWicket(0);
+                    setTimeout(() => initiateWicket(0), 100);
                 }
             } else if (popupType === 'wicket') {
                 if (val === 'W') { runs = 0; } else { const parts = val.split('+');
@@ -4599,11 +5080,17 @@ Bilal</textarea>
             Object.keys(data.batsmanStats || {}).forEach(name => {
                 const s = data.batsmanStats[name];
                 const sr = s.balls > 0 ? ((s.runs / s.balls) * 100).toFixed(1) : '0.0';
-                const outStatus = s.out ? `<span class="out">(out)</span>` :
-                `<span class="not-out">(not out)</span>`;
+                let statusBadge = '';
+                if (s.retiredHurt) {
+                    statusBadge = `<span class="retired-hurt">retired hurt</span>`;
+                } else if (s.out) {
+                    statusBadge = `<span class="out">out</span>`;
+                } else {
+                    statusBadge = `<span class="not-out">not out</span>`;
+                }
                 battingHtml += `
                 <div class="table-row">
-                  <span class="batsman-name">${name} ${outStatus}</span>
+                  <span class="batsman-name">${name} ${statusBadge}</span>
                   <span>${s.runs}</span>
                   <span>${s.balls}</span>
                   <span>${s.fours}</span>
@@ -4714,6 +5201,9 @@ Bilal</textarea>
         playerSearch.addEventListener('input', renderPlayerStats);
         playerSearch2.addEventListener('input', renderPlayerStats);
 
+        // ─── Setup batsman click handlers ───
+        setupBatsmanClickHandlers();
+
         // ─── Init ───
         await loadAllPhotos();
         try {
@@ -4732,9 +5222,13 @@ Bilal</textarea>
         renderPlayerStats();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App – Batsmen show name instead of role');
+        console.log('🏏 Cricket Scorer App – All features updated:');
+        console.log('✅ Wicket popup for ALL dismissals (including W)');
+        console.log('✅ Change Strike button');
+        console.log('✅ Retire Hurt (click batsman name/photo)');
+        console.log('✅ Improved Scorecard UI');
+        console.log('✅ Sound effects (Web Audio API)');
         console.log('🔐 Password for delete & photo: 28326');
-        console.log('✅ Striker = cyan underline, Non-Striker = gold underline');
     </script>
 </body>
 </html>
