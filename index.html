@@ -20,23 +20,27 @@
     </script>
 
     <style>
-        /* ─── CSS VARIABLES ─── */
+        /* ─── CSS VARIABLES — VIBRANT THEME ─── */
         :root {
-            --bg-primary: #0b0e1a;
-            --bg-secondary: #141b2b;
-            --bg-card: rgba(255, 255, 255, 0.04);
-            --border-light: rgba(0, 212, 255, 0.08);
-            --glass-bg: rgba(20, 27, 43, 0.75);
-            --text-primary: #e8f0fe;
-            --text-secondary: #8aa0c8;
+            --bg-primary: #080c18;
+            --bg-secondary: #111a2e;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --border-light: rgba(0, 212, 255, 0.10);
+            --glass-bg: rgba(13, 18, 34, 0.82);
+            --text-primary: #eef4ff;
+            --text-secondary: #8aa4d8;
             --accent-cyan: #00d4ff;
             --accent-gold: #ffd700;
             --accent-pink: #ff6b9d;
+            --accent-purple: #a855f7;
             --accent-green: #2ecc71;
-            --shadow-glow: 0 8px 32px rgba(0, 212, 255, 0.08);
+            --accent-orange: #f39c12;
+            --shadow-glow: 0 8px 32px rgba(0, 212, 255, 0.10);
             --radius-lg: 32px;
             --radius-md: 20px;
             --radius-sm: 14px;
+            --gradient-bg: radial-gradient(ellipse at 20% 10%, #1a1a3e 0%, #080c18 70%);
+            --gradient-header: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
         }
 
         * {
@@ -48,12 +52,12 @@
 
         body {
             background: var(--bg-primary);
+            background-image: var(--gradient-bg);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 12px;
-            background-image: radial-gradient(circle at 20% 30%, #1a2a4a 0%, #0b0e1a 80%);
             background-attachment: fixed;
         }
         body.popup-open {
@@ -75,7 +79,7 @@
             padding: 20px;
             transition: opacity 0.8s ease;
             background: var(--bg-primary);
-            background-image: radial-gradient(circle at 30% 40%, #1a2a4a 0%, #0b0e1a 80%);
+            background-image: radial-gradient(ellipse at 30% 30%, #1a1a4e 0%, #080c18 80%);
         }
         .splash-screen::before {
             content: '';
@@ -84,7 +88,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.2);
             z-index: 1;
         }
         .splash-screen.hidden {
@@ -100,7 +104,7 @@
             font-size: 100px;
             margin-bottom: 16px;
             animation: float 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 30px rgba(0, 212, 255, 0.3));
+            filter: drop-shadow(0 0 40px rgba(0, 212, 255, 0.25));
         }
         @keyframes float {
             0%,
@@ -114,7 +118,7 @@
         .splash-screen h1 {
             font-size: 52px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: none;
@@ -137,10 +141,10 @@
         }
         .splash-screen .loading-bar .fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold), var(--accent-cyan));
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-gold), var(--accent-pink), var(--accent-cyan));
             border-radius: 4px;
             width: 0%;
-            background-size: 200% 100%;
+            background-size: 300% 100%;
             animation: load 6s ease-in-out forwards, shimmer 1.5s infinite;
         }
         @keyframes load {
@@ -165,22 +169,33 @@
             max-width: 420px;
             width: 100%;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-radius: var(--radius-lg);
             padding: 24px 20px 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 80px rgba(0, 212, 255, 0.03);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(0, 212, 255, 0.04);
             color: var(--text-primary);
             transition: all 0.2s;
             position: relative;
             opacity: 0;
             animation: fadeIn 0.6s ease 6s forwards;
-            border: 1px solid var(--border-light);
+            border: 1px solid rgba(0, 212, 255, 0.06);
         }
         @keyframes fadeIn {
             to {
                 opacity: 1;
             }
+        }
+        .app::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-gold), transparent);
+            border-radius: 50%;
+            opacity: 0.4;
         }
 
         /* ─── COMMON PANELS ─── */
@@ -207,7 +222,7 @@
         .home-tabs {
             display: flex;
             gap: 4px;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.03);
             border-radius: 60px;
             padding: 4px;
             border: 1px solid var(--border-light);
@@ -218,17 +233,31 @@
             border: none;
             padding: 10px 0;
             border-radius: 40px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-secondary);
             cursor: pointer;
             transition: 0.25s;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.3px;
         }
         .home-tabs button.active {
-            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             color: #fff;
             box-shadow: 0 4px 20px rgba(0, 212, 255, 0.25);
+        }
+        .home-tabs button:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        /* ─── HOME TAB CONTENT ─── */
+        .tab-content-container {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .tab-content-container.active {
+            display: flex;
         }
 
         /* ─── NO MATCHES ─── */
@@ -236,13 +265,13 @@
             font-size: 20px;
             font-weight: 700;
             text-align: center;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
         }
         .no-matches .icon-cricket {
-            background: rgba(0, 212, 255, 0.05);
+            background: rgba(0, 212, 255, 0.06);
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -250,8 +279,8 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
-            border: 2px solid rgba(0, 212, 255, 0.15);
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.05);
+            border: 2px solid rgba(0, 212, 255, 0.12);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.04);
         }
         .no-matches .icon-cricket span {
             font-size: 44px;
@@ -274,10 +303,26 @@
             border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
             transition: 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+        .match-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .match-item:hover::after {
+            opacity: 1;
         }
         .match-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: var(--accent-cyan);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(0, 212, 255, 0.2);
             transform: translateY(-2px);
             box-shadow: var(--shadow-glow);
         }
@@ -289,7 +334,7 @@
         .match-item .match-teams {
             font-weight: 700;
             color: var(--text-primary);
-            font-size: 16px;
+            font-size: 15px;
             letter-spacing: 0.3px;
         }
         .match-item .match-score {
@@ -333,7 +378,7 @@
             backdrop-filter: blur(4px);
         }
         .match-item .match-actions button:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.10);
             color: #fff;
         }
         .match-item .match-actions .btn-continue {
@@ -357,6 +402,105 @@
         }
         .match-item .match-actions .btn-view:hover {
             background: rgba(255, 215, 0, 0.18);
+        }
+
+        /* ─── RANKINGS ─── */
+        .rankings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 440px;
+            overflow-y: auto;
+            padding: 2px 0 10px;
+        }
+        .rank-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            border-radius: var(--radius-md);
+            padding: 12px 14px;
+            border: 1px solid var(--border-light);
+            transition: 0.2s;
+            position: relative;
+        }
+        .rank-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 212, 255, 0.15);
+            transform: translateX(4px);
+        }
+        .rank-item .rank-num {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-secondary);
+            min-width: 32px;
+            text-align: center;
+        }
+        .rank-item .rank-num.top1 {
+            color: var(--accent-gold);
+            font-size: 22px;
+        }
+        .rank-item .rank-num.top2 {
+            color: #c0c0c0;
+            font-size: 20px;
+        }
+        .rank-item .rank-num.top3 {
+            color: #cd7f32;
+            font-size: 20px;
+        }
+        .rank-item .rank-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid rgba(0, 212, 255, 0.15);
+        }
+        .rank-item .rank-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .rank-item .rank-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .rank-item .rank-info .rank-name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+        .rank-item .rank-info .rank-team {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .rank-item .rank-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            flex-shrink: 0;
+        }
+        .rank-item .rank-stats span {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 2px 10px;
+            border-radius: 40px;
+        }
+        .rank-item .rank-stats .pts {
+            color: var(--accent-gold);
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .rank-item .rank-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            font-size: 16px;
         }
 
         /* ─── PLAYER STATS ─── */
@@ -393,10 +537,26 @@
             transition: 0.25s;
             border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
+            position: relative;
+        }
+        .player-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            right: 20%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+            opacity: 0;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        .player-card:hover::after {
+            opacity: 1;
         }
         .player-card:hover {
             border-color: var(--accent-cyan);
-            background: rgba(0, 212, 255, 0.04);
+            background: rgba(0, 212, 255, 0.05);
             transform: translateY(-4px);
             box-shadow: var(--shadow-glow);
         }
@@ -411,7 +571,12 @@
             justify-content: center;
             font-size: 28px;
             overflow: hidden;
-            border: 2px solid rgba(0, 212, 255, 0.3);
+            border: 2px solid rgba(0, 212, 255, 0.2);
+            transition: 0.3s;
+        }
+        .player-card:hover .avatar {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
         }
         .player-card .avatar img {
             width: 100%;
@@ -469,7 +634,7 @@
             font-size: 48px;
             overflow: hidden;
             border: 3px solid var(--accent-cyan);
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 40px rgba(0, 212, 255, 0.08);
         }
         .player-detail-view .profile-section .big-avatar img {
             width: 100%;
@@ -556,8 +721,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
             align-items: center;
             justify-content: center;
             z-index: 400;
@@ -580,7 +745,9 @@
             font-size: 22px;
             text-align: center;
             margin-bottom: 16px;
-            color: var(--accent-cyan);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .popup-card-password input {
             width: 100%;
@@ -623,7 +790,7 @@
             background: rgba(255, 255, 255, 0.08);
         }
         .popup-card-password .popup-actions .btn-confirm {
-            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             color: #fff;
         }
         .popup-card-password .popup-actions .btn-confirm:hover {
@@ -640,7 +807,7 @@
 
         /* ─── BUTTONS ─── */
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             border: none;
             color: #fff;
             font-weight: 700;
@@ -681,7 +848,7 @@
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            background: linear-gradient(135deg, var(--accent-green), #27ae60);
             border: none;
             color: #fff;
             font-weight: 700;
@@ -728,6 +895,23 @@
         .btn-gold:hover {
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 12px 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 12px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
+        }
+        .btn-purple:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
         }
 
         /* ─── NEW MATCH ─── */
@@ -785,7 +969,7 @@
         .input-group input:focus,
         .input-group textarea:focus {
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.03);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.04);
             background: rgba(255, 255, 255, 0.06);
         }
         .input-group textarea {
@@ -935,7 +1119,7 @@
         }
         .live-match .tabs button.active,
         .completed-match-view .tabs button.active {
-            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             color: #fff;
             box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
         }
@@ -971,7 +1155,7 @@
             transition: 0.2s;
         }
         .scorecard-mini-tabs button.active {
-            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             color: #fff;
         }
 
@@ -998,11 +1182,25 @@
             border: 1px solid var(--border-light);
             backdrop-filter: blur(8px);
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .score-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(0, 212, 255, 0.02), transparent 70%);
+            pointer-events: none;
         }
         .score-row {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
+            position: relative;
+            z-index: 1;
         }
         .score-big {
             font-size: 48px;
@@ -1011,7 +1209,7 @@
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 60px rgba(0, 212, 255, 0.1);
+            text-shadow: 0 0 60px rgba(0, 212, 255, 0.08);
         }
         .score-stats {
             display: flex;
@@ -1034,6 +1232,8 @@
             padding-top: 16px;
             flex-wrap: wrap;
             gap: 8px;
+            position: relative;
+            z-index: 1;
         }
         .overs-extras .overs {
             background: rgba(0, 0, 0, 0.2);
@@ -1064,7 +1264,7 @@
             color: var(--text-primary);
         }
 
-        /* ─── BATSMEN DISPLAY (UPDATED) ─── */
+        /* ─── BATSMEN DISPLAY ─── */
         .batsmen-header {
             display: flex;
             justify-content: space-between;
@@ -1093,6 +1293,7 @@
         .btn-swap-strike:hover {
             background: rgba(0, 212, 255, 0.18);
             transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
         }
 
         .current-batsmen {
@@ -1113,6 +1314,7 @@
             background: rgba(255, 255, 255, 0.02);
             transition: 0.2s;
             cursor: pointer;
+            position: relative;
         }
         .batsman-item:hover {
             background: rgba(0, 212, 255, 0.05);
@@ -1223,15 +1425,24 @@
             background: rgba(0, 212, 255, 0.03);
             color: var(--accent-cyan);
         }
+        .action-btn.special:hover {
+            background: rgba(0, 212, 255, 0.08);
+        }
         .action-btn.wide {
             background: rgba(255, 215, 0, 0.04);
             color: var(--accent-gold);
             border-color: rgba(255, 215, 0, 0.08);
         }
+        .action-btn.wide:hover {
+            background: rgba(255, 215, 0, 0.08);
+        }
         .action-btn.wicket {
             background: rgba(255, 70, 70, 0.05);
             color: #ff6b6b;
             border-color: rgba(255, 70, 70, 0.08);
+        }
+        .action-btn.wicket:hover {
+            background: rgba(255, 70, 70, 0.10);
         }
         .action-btn:hover {
             background: rgba(255, 255, 255, 0.06);
@@ -1270,7 +1481,7 @@
         .celebrate-overlay .text {
             font-size: 80px;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-shadow: 0 0 60px rgba(0, 212, 255, 0.3);
@@ -1352,7 +1563,7 @@
             border-radius: 20px;
         }
         .scorecard-table .table-row .batsman-name .not-out {
-            color: #2ecc71;
+            color: var(--accent-green);
             font-size: 10px;
             margin-left: 4px;
             background: rgba(46, 204, 113, 0.12);
@@ -1400,6 +1611,10 @@
             background: rgba(255, 255, 255, 0.01);
             letter-spacing: 0.5px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         .scorecard-table .section-title .badge-bat {
             background: rgba(0, 212, 255, 0.12);
@@ -1407,7 +1622,6 @@
             padding: 2px 12px;
             border-radius: 40px;
             font-size: 11px;
-            margin-left: 8px;
         }
         .scorecard-table .section-title .badge-bowl {
             background: rgba(255, 215, 0, 0.12);
@@ -1415,7 +1629,6 @@
             padding: 2px 12px;
             border-radius: 40px;
             font-size: 11px;
-            margin-left: 8px;
         }
 
         .scorecard-table .extras-summary {
@@ -1462,6 +1675,10 @@
             text-align: center;
             border: 1px solid var(--border-light);
             backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .stats-card:hover {
+            border-color: rgba(0, 212, 255, 0.2);
         }
         .stats-card .stat-number {
             font-size: 32px;
@@ -1553,8 +1770,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
             align-items: center;
             justify-content: center;
             z-index: 200;
@@ -1601,7 +1818,9 @@
             text-align: center;
             border-bottom: 1px solid var(--border-light);
             padding-bottom: 12px;
-            color: var(--accent-cyan);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .popup-card-out .out-options {
             display: grid;
@@ -1710,7 +1929,7 @@
             flex: 1;
         }
         .btn-add {
-            background: linear-gradient(135deg, var(--accent-cyan), #0090ff);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             border: none;
             color: #fff;
             font-weight: 700;
@@ -1866,6 +2085,36 @@
             border: 1px solid var(--border-light);
         }
 
+        /* ─── RANKINGS TAB ─── */
+        .rankings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .rankings-header h2 {
+            font-size: 16px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .rankings-header span {
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px 12px;
+            border-radius: 40px;
+        }
+        .rank-empty {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .rank-empty .big-icon {
+            font-size: 60px;
+            margin-bottom: 12px;
+        }
+
         /* ─── SCROLLBAR ─── */
         ::-webkit-scrollbar {
             width: 4px;
@@ -1874,7 +2123,7 @@
             background: rgba(255, 255, 255, 0.02);
         }
         ::-webkit-scrollbar-thumb {
-            background: var(--accent-cyan);
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
             border-radius: 4px;
         }
 
@@ -1977,6 +2226,17 @@
                 font-size: 12px;
                 padding: 6px 10px;
             }
+            .rank-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .rank-item .rank-stats {
+                flex-wrap: wrap;
+            }
+            .rank-item .rank-stats span {
+                font-size: 10px;
+                padding: 1px 8px;
+            }
         }
     </style>
 </head>
@@ -2002,8 +2262,11 @@
             <div class="home-tabs">
                 <button class="active" data-hometab="matches">📋 Matches</button>
                 <button data-hometab="players">👤 Players</button>
+                <button data-hometab="rankings">🏆 Rankings</button>
             </div>
-            <div id="homeMatchesTab">
+
+            <!-- Matches Tab -->
+            <div id="homeMatchesTab" class="tab-content-container active">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                     <h2 style="font-size:16px; color:var(--text-secondary);">Matches</h2>
                     <span style="font-size:12px; color:var(--text-secondary);" id="matchCount">0 matches</span>
@@ -2013,10 +2276,23 @@
                 </div>
                 <button class="btn-primary" id="btnNewMatch">+ New Match</button>
             </div>
-            <div id="homePlayersTab" style="display:none; flex-direction:column; gap:12px;">
+
+            <!-- Players Tab -->
+            <div id="homePlayersTab" class="tab-content-container">
                 <input class="search-bar" id="playerSearch" type="text" placeholder="🔍 Search players..." />
                 <div class="player-grid" id="playerGrid">
                     <div class="no-players"><div class="big-icon">🏏</div>No players found.<br />Play some matches to generate stats!</div>
+                </div>
+            </div>
+
+            <!-- Rankings Tab -->
+            <div id="homeRankingsTab" class="tab-content-container">
+                <div class="rankings-header">
+                    <h2>🏆 Top 10 Performers</h2>
+                    <span>All Time</span>
+                </div>
+                <div class="rankings-list" id="rankingsList">
+                    <div class="rank-empty"><div class="big-icon">🏆</div>No rankings yet.<br />Play more matches to see top performers!</div>
                 </div>
             </div>
         </div>
@@ -2493,13 +2769,11 @@ Bilal</textarea>
                     setTimeout(() => this.playTone(659, 0.1, 'sine', 0.25), 120);
                     setTimeout(() => this.playTone(784, 0.1, 'sine', 0.25), 240);
                 } else if (runs === 4) {
-                    // Celebratory ascending
                     this.playTone(523, 0.1, 'sine', 0.3);
                     setTimeout(() => this.playTone(659, 0.1, 'sine', 0.3), 100);
                     setTimeout(() => this.playTone(784, 0.15, 'sine', 0.35), 200);
                     setTimeout(() => this.playTone(1047, 0.25, 'sine', 0.4), 320);
                 } else if (runs === 6) {
-                    // Big celebration
                     this.playTone(523, 0.08, 'sine', 0.3);
                     setTimeout(() => this.playTone(659, 0.08, 'sine', 0.3), 80);
                     setTimeout(() => this.playTone(784, 0.08, 'sine', 0.35), 160);
@@ -2511,7 +2785,6 @@ Bilal</textarea>
             }
 
             playWicket() {
-                // Descending sad tone
                 this.playTone(800, 0.1, 'sawtooth', 0.2);
                 setTimeout(() => this.playTone(600, 0.1, 'sawtooth', 0.2), 100);
                 setTimeout(() => this.playTone(400, 0.15, 'sawtooth', 0.25), 200);
@@ -2537,7 +2810,6 @@ Bilal</textarea>
             }
 
             playMatchEnd() {
-                // Fanfare
                 this.playTone(523, 0.1, 'sine', 0.3);
                 setTimeout(() => this.playTone(659, 0.1, 'sine', 0.3), 100);
                 setTimeout(() => this.playTone(784, 0.1, 'sine', 0.35), 200);
@@ -2622,7 +2894,7 @@ Bilal</textarea>
             winMargin: null,
             winType: null,
             _overCompleteAfterWicket: false,
-            _pendingRetirePosition: null // 'striker' or 'non-striker'
+            _pendingRetirePosition: null
         };
 
         // ─── DOM REFS ───
@@ -2636,6 +2908,7 @@ Bilal</textarea>
         const homeTabs = document.querySelectorAll('.home-tabs button');
         const homeMatchesTab = document.getElementById('homeMatchesTab');
         const homePlayersTab = document.getElementById('homePlayersTab');
+        const homeRankingsTab = document.getElementById('homeRankingsTab');
 
         const matchesList = document.getElementById('matchesList');
         const matchCount = document.getElementById('matchCount');
@@ -2645,6 +2918,8 @@ Bilal</textarea>
         const playerGrid2 = document.getElementById('playerGrid2');
         const playerSearch = document.getElementById('playerSearch');
         const playerSearch2 = document.getElementById('playerSearch2');
+
+        const rankingsList = document.getElementById('rankingsList');
 
         const backFromPlayerStats = document.getElementById('backFromPlayerStats');
         const backFromPlayerDetail = document.getElementById('backFromPlayerDetail');
@@ -2951,7 +3226,7 @@ Bilal</textarea>
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // PLAYER STATS ENGINE
+        // PLAYER STATS & RANKINGS ENGINE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         function computePlayerStats(allMatches) {
             const players = {};
@@ -3062,8 +3337,190 @@ Bilal</textarea>
             return result;
         }
 
+        // ─── Rankings: compute top 10 performers ───
+        function computeRankings(allMatches) {
+            // For each player, aggregate stats across all completed matches
+            const playerData = {};
+
+            Object.keys(allMatches).forEach(matchId => {
+                const m = allMatches[matchId];
+                if (m.isMatchCompleted !== true) return;
+
+                const innings = [1, 2];
+                innings.forEach(inn => {
+                    const id = m.inningData && m.inningData[inn] ? m.inningData[inn] : null;
+                    if (!id) return;
+
+                    // Batting stats
+                    Object.keys(id.batsmanStats || {}).forEach(name => {
+                        if (!playerData[name]) {
+                            playerData[name] = {
+                                name: name,
+                                team: id.battingTeam || m.batting,
+                                runs: 0,
+                                balls: 0,
+                                fours: 0,
+                                sixes: 0,
+                                wickets: 0,
+                                bowlingRuns: 0,
+                                bowlingBalls: 0,
+                                matches: new Set(),
+                                outCount: 0,
+                                innings: 0
+                            };
+                        }
+                        const p = playerData[name];
+                        const bs = id.batsmanStats[name];
+                        p.runs += bs.runs || 0;
+                        p.balls += bs.balls || 0;
+                        p.fours += bs.fours || 0;
+                        p.sixes += bs.sixes || 0;
+                        if (bs.out) p.outCount += 1;
+                        p.innings += 1;
+                        p.matches.add(matchId);
+                        if (id.battingTeam) p.team = id.battingTeam;
+                    });
+
+                    // Bowling stats
+                    Object.keys(id.bowlerStats || {}).forEach(name => {
+                        if (!playerData[name]) {
+                            playerData[name] = {
+                                name: name,
+                                team: id.bowlingTeam || m.bowling,
+                                runs: 0,
+                                balls: 0,
+                                fours: 0,
+                                sixes: 0,
+                                wickets: 0,
+                                bowlingRuns: 0,
+                                bowlingBalls: 0,
+                                matches: new Set(),
+                                outCount: 0,
+                                innings: 0
+                            };
+                        }
+                        const p = playerData[name];
+                        const bw = id.bowlerStats[name];
+                        p.wickets += bw.wickets || 0;
+                        p.bowlingRuns += bw.runs || 0;
+                        p.bowlingBalls += bw.balls || 0;
+                        p.matches.add(matchId);
+                        if (id.bowlingTeam) p.team = id.bowlingTeam;
+                    });
+                });
+            });
+
+            // Convert to array and compute points
+            const players = Object.keys(playerData).map(name => {
+                const p = playerData[name];
+                // Points system: runs + wickets*20 + fours*0.3 + sixes*0.7 + bonuses
+                let points = p.runs + (p.wickets * 20) + (p.fours * 0.3) + (p.sixes * 0.7);
+                if (p.runs >= 50) points += 10;
+                if (p.runs >= 100) points += 25;
+                if (p.wickets >= 3) points += 10;
+                if (p.wickets >= 5) points += 20;
+                return {
+                    name: p.name,
+                    team: p.team || 'Unknown',
+                    matches: p.matches.size,
+                    runs: p.runs,
+                    wickets: p.wickets,
+                    fours: p.fours,
+                    sixes: p.sixes,
+                    balls: p.balls,
+                    bowlingRuns: p.bowlingRuns,
+                    bowlingBalls: p.bowlingBalls,
+                    points: Math.round(points * 10) / 10,
+                    avg: p.outCount > 0 ? (p.runs / p.outCount) : p.runs > 0 ? p.runs : 0
+                };
+            });
+
+            // Sort by points descending
+            players.sort((a, b) => b.points - a.points || b.matches - a.matches);
+            return players.slice(0, 10); // Top 10
+        }
+
+        // ─── Render Rankings ───
+        function renderRankings() {
+            const allMatches = loadMatchesFromLocalStorage();
+            // Also try to get from Firebase
+            loadAllMatches().then(all => {
+                const combined = { ...all };
+                // Merge with local
+                const local = loadMatchesFromLocalStorage();
+                Object.keys(local).forEach(k => { if (!combined[k]) combined[k] = local[k]; });
+                const rankings = computeRankings(combined);
+                if (rankings.length === 0) {
+                    rankingsList.innerHTML =
+                        `<div class="rank-empty"><div class="big-icon">🏆</div>No rankings yet.<br />Play more matches to see top performers!</div>`;
+                    return;
+                }
+                let html = '';
+                const medals = ['🥇', '🥈', '🥉'];
+                rankings.forEach((p, idx) => {
+                    const rank = idx + 1;
+                    const medal = rank <= 3 ? medals[idx] : `#${rank}`;
+                    const rankClass = rank === 1 ? 'top1' : rank === 2 ? 'top2' : rank === 3 ? 'top3' : '';
+                    const photo = getPlayerPhotoSync(p.name) || '';
+                    html += `
+                        <div class="rank-item">
+                            <div class="rank-num ${rankClass}">${medal}</div>
+                            <div class="rank-avatar">${photo ? `<img src="${photo}" alt="${p.name}" />` : '👤'}</div>
+                            <div class="rank-info">
+                                <div class="rank-name">${p.name}</div>
+                                <div class="rank-team">${p.team}</div>
+                            </div>
+                            <div class="rank-stats">
+                                <span>🏏 ${p.runs}</span>
+                                <span>🎯 ${p.wickets}</span>
+                                <span>📋 ${p.matches}</span>
+                                <span class="pts">⭐ ${p.points}</span>
+                            </div>
+                            ${rank <= 3 ? `<div class="rank-badge">${medal}</div>` : ''}
+                        </div>
+                    `;
+                });
+                rankingsList.innerHTML = html;
+            }).catch(() => {
+                // Fallback to local only
+                const local = loadMatchesFromLocalStorage();
+                const rankings = computeRankings(local);
+                if (rankings.length === 0) {
+                    rankingsList.innerHTML =
+                        `<div class="rank-empty"><div class="big-icon">🏆</div>No rankings yet.<br />Play more matches to see top performers!</div>`;
+                    return;
+                }
+                let html = '';
+                const medals = ['🥇', '🥈', '🥉'];
+                rankings.forEach((p, idx) => {
+                    const rank = idx + 1;
+                    const medal = rank <= 3 ? medals[idx] : `#${rank}`;
+                    const rankClass = rank === 1 ? 'top1' : rank === 2 ? 'top2' : rank === 3 ? 'top3' : '';
+                    const photo = getPlayerPhotoSync(p.name) || '';
+                    html += `
+                        <div class="rank-item">
+                            <div class="rank-num ${rankClass}">${medal}</div>
+                            <div class="rank-avatar">${photo ? `<img src="${photo}" alt="${p.name}" />` : '👤'}</div>
+                            <div class="rank-info">
+                                <div class="rank-name">${p.name}</div>
+                                <div class="rank-team">${p.team}</div>
+                            </div>
+                            <div class="rank-stats">
+                                <span>🏏 ${p.runs}</span>
+                                <span>🎯 ${p.wickets}</span>
+                                <span>📋 ${p.matches}</span>
+                                <span class="pts">⭐ ${p.points}</span>
+                            </div>
+                            ${rank <= 3 ? `<div class="rank-badge">${medal}</div>` : ''}
+                        </div>
+                    `;
+                });
+                rankingsList.innerHTML = html;
+            });
+        }
+
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // PROFILE PICTURE (Base64 in Realtime Database)
+        // PROFILE PICTURE
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         async function getPlayerPhoto(playerName) {
             try {
@@ -3145,6 +3602,7 @@ Bilal</textarea>
                         detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
                     }
                     renderPlayerStats();
+                    renderRankings();
                     retryPhotoBtn.style.display = 'none';
                     return true;
                 }
@@ -3160,6 +3618,7 @@ Bilal</textarea>
                         detailAvatar.innerHTML = `<img src="${dataUrl}" alt="${playerName}" />`;
                     }
                     renderPlayerStats();
+                    renderRankings();
                     retryPhotoBtn.style.display = 'inline-block';
                     pendingPhotoData = dataUrl;
                 } catch (localErr) {
@@ -3279,13 +3738,17 @@ Bilal</textarea>
                 homeTabs.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 const tab = this.dataset.hometab;
+                // Hide all tab contents
+                [homeMatchesTab, homePlayersTab, homeRankingsTab].forEach(el => el.classList.remove('active'));
                 if (tab === 'matches') {
-                    homeMatchesTab.style.display = 'block';
-                    homePlayersTab.style.display = 'none';
-                } else {
-                    homeMatchesTab.style.display = 'none';
-                    homePlayersTab.style.display = 'flex';
+                    homeMatchesTab.classList.add('active');
+                    renderMatchesList();
+                } else if (tab === 'players') {
+                    homePlayersTab.classList.add('active');
                     renderPlayerStats();
+                } else if (tab === 'rankings') {
+                    homeRankingsTab.classList.add('active');
+                    renderRankings();
                 }
             });
         });
@@ -3367,13 +3830,14 @@ Bilal</textarea>
                     if (ok) {
                         renderMatchesList();
                         renderPlayerStats();
+                        renderRankings();
                     }
                 });
             });
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        // VIEW COMPLETED MATCH (with Man of the Match)
+        // VIEW COMPLETED MATCH (with Man of the Match from winning team)
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         let viewedMatchData = null;
         let completedScorecardInning = 1;
@@ -3399,7 +3863,7 @@ Bilal</textarea>
             }
             document.getElementById('completedMatchResult').textContent = resultText;
 
-            // Compute Man of the Match
+            // Compute Man of the Match — ONLY from winning team
             const mom = computeManOfTheMatch(matchData);
             if (mom) {
                 const photo = getPlayerPhotoSync(mom.name) || '';
@@ -3434,24 +3898,44 @@ Bilal</textarea>
             renderCompletedStats(matchData);
         }
 
-        // ─── Man of the Match computation ───
+        // ─── Man of the Match computation — only from winning team ───
         function computeManOfTheMatch(matchData) {
-            if (!matchData.inningData) return null;
+            if (!matchData.inningData || !matchData.winner) return null;
+
+            const winningTeam = matchData.winner;
             const players = {};
+
             [1, 2].forEach(inn => {
                 const inning = matchData.inningData[inn];
                 if (!inning) return;
                 const battingPlayers = inning.battingPlayers || [];
                 const bowlingPlayers = inning.bowlingPlayers || [];
-                const all = new Set([...battingPlayers, ...bowlingPlayers]);
+
+                // Only include players from the winning team
+                const all = new Set();
+                if (inning.battingTeam === winningTeam) {
+                    battingPlayers.forEach(p => all.add(p));
+                }
+                if (inning.bowlingTeam === winningTeam) {
+                    bowlingPlayers.forEach(p => all.add(p));
+                }
+
                 all.forEach(name => {
                     if (!players[name]) {
-                        players[name] = { name, team: '', runs: 0, balls: 0, fours: 0, sixes: 0, wickets: 0,
-                            bowlingRuns: 0, bowlingBalls: 0, score: 0 };
+                        players[name] = {
+                            name,
+                            team: winningTeam,
+                            runs: 0,
+                            balls: 0,
+                            fours: 0,
+                            sixes: 0,
+                            wickets: 0,
+                            bowlingRuns: 0,
+                            bowlingBalls: 0,
+                            score: 0
+                        };
                     }
                     const p = players[name];
-                    if (inning.battingTeam && battingPlayers.includes(name)) p.team = inning.battingTeam;
-                    if (inning.bowlingTeam && bowlingPlayers.includes(name)) p.team = inning.bowlingTeam;
                     if (inning.batsmanStats && inning.batsmanStats[name]) {
                         const bs = inning.batsmanStats[name];
                         p.runs += bs.runs || 0;
@@ -3473,7 +3957,9 @@ Bilal</textarea>
                 const p = players[name];
                 p.score = p.runs + (p.wickets * 20) + (p.fours * 0.3) + (p.sixes * 0.7);
                 if (p.runs >= 50) p.score += 10;
+                if (p.runs >= 100) p.score += 25;
                 if (p.wickets >= 3) p.score += 10;
+                if (p.wickets >= 5) p.score += 20;
                 if (!best || p.score > best.score) {
                     best = p;
                 }
@@ -3616,8 +4102,8 @@ Bilal</textarea>
             showScreen('noMatch');
             homeTabs.forEach(b => b.classList.remove('active'));
             document.querySelector('.home-tabs button[data-hometab="matches"]')?.classList.add('active');
-            homeMatchesTab.style.display = 'block';
-            homePlayersTab.style.display = 'none';
+            [homeMatchesTab, homePlayersTab, homeRankingsTab].forEach(el => el.classList.remove('active'));
+            homeMatchesTab.classList.add('active');
         });
 
         backFromPlayerDetail.addEventListener('click', () => {
@@ -4027,7 +4513,6 @@ Bilal</textarea>
                 pendingBatsmanSelection = false;
                 updateLiveUI();
 
-                // If this was a retire hurt replacement, we need to handle over completion
                 if (state._overCompleteAfterWicket) {
                     state._overCompleteAfterWicket = false;
                     const temp = state.striker;
@@ -4065,7 +4550,7 @@ Bilal</textarea>
         let pendingWicketRuns = 0;
         let pendingWicketSnapshot = null;
         let pendingWicketAction = null;
-        let pendingWicketPosition = null; // 'striker' or 'non-striker'
+        let pendingWicketPosition = null;
 
         function showOutSelectionPopup(runs) {
             pendingWicketRuns = runs;
@@ -4134,7 +4619,6 @@ Bilal</textarea>
                 state.bowlerStats[state.currentBowler].balls += 1;
             }
 
-            // Play wicket sound
             sound.playWicket();
 
             if (outPosition === 'striker') {
@@ -4148,7 +4632,6 @@ Bilal</textarea>
             pushHistory(action, snapshot);
             updateLiveUI();
 
-            // Check if all out or overs complete
             if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
@@ -4193,7 +4676,6 @@ Bilal</textarea>
             const otherEnd = (outPosition === 'striker') ? state.nonStriker : state.striker;
             const candidates = allNotOut.filter(p => p !== otherEnd);
             if (candidates.length === 0) {
-                // No batsmen left, all out
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
                     sound.playInningComplete();
@@ -4305,7 +4787,6 @@ Bilal</textarea>
             if (!playerName) { retirePopup.classList.remove('active');
                 state._pendingRetirePosition = null; return; }
 
-            // Mark as retired hurt
             if (state.batsmanStats[playerName]) {
                 state.batsmanStats[playerName].retiredHurt = true;
                 state.batsmanStats[playerName].out = false;
@@ -4315,10 +4796,8 @@ Bilal</textarea>
                     retiredHurt: true };
             }
 
-            // Play sound
             sound.playRetire();
 
-            // Remove from position
             if (position === 'striker') {
                 pendingPosition = 'striker';
                 state.striker = null;
@@ -4331,7 +4810,6 @@ Bilal</textarea>
             state._pendingRetirePosition = null;
             updateLiveUI();
 
-            // Show batsman selection
             const allNotOut = state.battingPlayers.filter(p => {
                 const s = state.batsmanStats[p];
                 return !s || (!s.out && !s.retiredHurt);
@@ -4339,7 +4817,6 @@ Bilal</textarea>
             const otherEnd = (position === 'striker') ? state.nonStriker : state.striker;
             const candidates = allNotOut.filter(p => p !== otherEnd);
             if (candidates.length === 0) {
-                // No batsmen left, all out
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
                     sound.playInningComplete();
@@ -4377,7 +4854,6 @@ Bilal</textarea>
 
         // ─── Batsman click handler for Retire Hurt ───
         function setupBatsmanClickHandlers() {
-            // Striker click
             strikerRole.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (!state.striker || !state.isMatchStarted) return;
@@ -4389,14 +4865,12 @@ Bilal</textarea>
                 showRetirePopup('striker');
             });
             strikerItem.addEventListener('click', function(e) {
-                // Only trigger if click is on the item itself, not on children that already handled it
                 if (e.target === this || e.target === this.querySelector('.batsman-stats')) {
                     if (!state.striker || !state.isMatchStarted) return;
                     showRetirePopup('striker');
                 }
             });
 
-            // Non-striker click
             nonStrikerRole.addEventListener('click', function(e) {
                 e.stopPropagation();
                 if (!state.nonStriker || !state.isMatchStarted) return;
@@ -4415,7 +4889,7 @@ Bilal</textarea>
             });
         }
 
-        // ─── Update Live UI (with photos and stats) ───
+        // ─── Update Live UI ───
         function updateLiveUI() {
             const totalExtras = state.extras.wd + state.extras.nb + state.extras.b + state.extras.lb + state.extras.p;
             document.getElementById('liveScore').textContent = `${state.runs}/${state.wickets}`;
@@ -4439,7 +4913,6 @@ Bilal</textarea>
                 document.getElementById('targetDisplay').textContent = '';
             }
 
-            // Update batsmen display
             if (state.striker) {
                 const photo = getPlayerPhotoSync(state.striker) || '';
                 strikerAvatar.innerHTML = photo ? `<img src="${photo}" alt="${state.striker}" />` : '👤';
@@ -4471,7 +4944,6 @@ Bilal</textarea>
                 document.getElementById('currentBowler').textContent = '-';
             }
 
-            // Check for inning completion
             if (state.wickets >= state.totalWickets) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
@@ -4657,7 +5129,6 @@ Bilal</textarea>
             if (state.isMatchEnded || state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state
                 .ballsPerOver) return;
 
-            // Play sound
             if (runs >= 4 && !isExtra) sound.playRun(runs);
             else if (runs > 0 && !isExtra) sound.playRun(runs);
             else if (runs === 0 && !isExtra) sound.playRun(0);
@@ -4785,7 +5256,6 @@ Bilal</textarea>
                 }
             }
 
-            // Normal delivery
             state.runs += runs;
             state.balls += 1;
             state.overBalls += 1;
@@ -4843,8 +5313,6 @@ Bilal</textarea>
         function initiateWicket(runs) {
             if (state.isMatchEnded || state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state
                 .ballsPerOver) return;
-
-            // Always show the "who is out?" popup, even for runs === 0
             showOutSelectionPopup(runs);
         }
 
@@ -4896,7 +5364,6 @@ Bilal</textarea>
                 if (!state.isMatchStarted) { alert('Please start the match first!'); return; }
                 const runs = parseInt(btn.dataset.run, 10);
                 if (!isNaN(runs)) {
-                    // Resume audio context on user interaction
                     sound.resume();
                     addRuns(runs, false, null);
                 }
@@ -4936,6 +5403,7 @@ Bilal</textarea>
             resetStateForNewMatch();
             renderMatchesList();
             renderPlayerStats();
+            renderRankings();
         });
 
         async function completeAndSaveMatch() {
@@ -5024,8 +5492,6 @@ Bilal</textarea>
                     runs = 1 + (parseInt(parts[1]) || 0);
                     addRuns(runs, true, 'wd'); }
                 if (isWicketOn) {
-                    // For wide with wicket, we need to handle wicket separately
-                    // We'll use the normal wicket flow with runs = 0
                     setTimeout(() => initiateWicket(0), 100);
                 }
             } else if (popupType === 'nb') {
@@ -5220,14 +5686,13 @@ Bilal</textarea>
         showScreen('noMatch');
         renderMatchesList();
         renderPlayerStats();
+        renderRankings();
         resetStateForNewMatch();
 
-        console.log('🏏 Cricket Scorer App – All features updated:');
-        console.log('✅ Wicket popup for ALL dismissals (including W)');
-        console.log('✅ Change Strike button');
-        console.log('✅ Retire Hurt (click batsman name/photo)');
-        console.log('✅ Improved Scorecard UI');
-        console.log('✅ Sound effects (Web Audio API)');
+        console.log('🏏 Cricket Scorer App – Updated with:');
+        console.log('✅ Man of the Match — only from winning team');
+        console.log('✅ Rankings tab — top 10 performers with points');
+        console.log('✅ Vibrant new color scheme');
         console.log('🔐 Password for delete & photo: 28326');
     </script>
 </body>
