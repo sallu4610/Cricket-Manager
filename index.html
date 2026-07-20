@@ -20,36 +20,35 @@
     </script>
 
     <style>
-        /* ─── CSS VARIABLES — DARK/LIGHT THEME ─── */
+        /* ─── CSS VARIABLES — MIDNIGHT AMETHYST THEME ─── */
         :root {
-            /* Dark theme (default) */
-            --bg-primary: #080c18;
-            --bg-secondary: #111a2e;
-            --bg-card: rgba(255, 255, 255, 0.05);
-            --border-light: rgba(0, 212, 255, 0.10);
-            --glass-bg: rgba(13, 18, 34, 0.82);
-            --text-primary: #eef4ff;
-            --text-secondary: #8aa4d8;
-            --accent-cyan: #00d4ff;
-            --accent-gold: #ffd700;
-            --accent-pink: #ff6b9d;
-            --accent-purple: #a855f7;
-            --accent-green: #2ecc71;
-            --accent-orange: #f39c12;
-            --shadow-glow: 0 8px 32px rgba(0, 212, 255, 0.10);
+            --bg-primary: #0d0b1a;
+            --bg-secondary: #181530;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --border-light: rgba(255, 255, 255, 0.06);
+            --glass-bg: rgba(13, 11, 26, 0.85);
+            --text-primary: #f0eef8;
+            --text-secondary: #a9a1c7;
+            --accent-cyan: #38bdf8;
+            --accent-gold: #fbbf24;
+            --accent-pink: #f472b6;
+            --accent-purple: #a78bfa;
+            --accent-green: #34d399;
+            --accent-orange: #fb923c;
+            --shadow-glow: 0 8px 32px rgba(167, 139, 250, 0.15);
             --radius-lg: 32px;
             --radius-md: 20px;
             --radius-sm: 14px;
-            --gradient-bg: radial-gradient(ellipse at 20% 10%, #1a1a3e 0%, #080c18 70%);
-            --gradient-header: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            --gradient-bg: radial-gradient(ellipse at 50% 0%, #2a1f5e 0%, #0d0b1a 70%);
+            --gradient-header: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
             --input-bg: rgba(255, 255, 255, 0.04);
             --popup-bg: rgba(0, 0, 0, 0.85);
             --card-hover: rgba(255, 255, 255, 0.07);
             --scrollbar-track: rgba(255, 255, 255, 0.02);
-            --scrollbar-thumb: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+            --scrollbar-thumb: linear-gradient(180deg, var(--accent-purple), var(--accent-cyan));
             --toggle-bg: rgba(255, 255, 255, 0.05);
             --toss-bg: rgba(255, 255, 255, 0.02);
-            --stat-card-bg: rgba(255, 255, 255, 0.02);
+            --stat-card-bg: rgba(255, 255, 255, 0.03);
             --rank-item-bg: rgba(255, 255, 255, 0.03);
             --match-item-bg: rgba(255, 255, 255, 0.04);
             --btn-secondary-bg: rgba(255, 255, 255, 0.04);
@@ -60,24 +59,24 @@
             --section-title-bg: rgba(255, 255, 255, 0.01);
             --total-row-bg: rgba(0, 0, 0, 0.15);
             --extra-tag-bg: rgba(255, 255, 255, 0.03);
-            --badge-bat-bg: rgba(0, 212, 255, 0.12);
-            --badge-bowl-bg: rgba(255, 215, 0, 0.12);
-            --mom-bg: linear-gradient(135deg, rgba(255, 215, 0, 0.06), rgba(0, 212, 255, 0.06));
-            --mom-border: rgba(255, 215, 0, 0.15);
+            --badge-bat-bg: rgba(56, 189, 248, 0.12);
+            --badge-bowl-bg: rgba(251, 191, 36, 0.12);
+            --mom-bg: linear-gradient(135deg, rgba(251, 191, 36, 0.06), rgba(56, 189, 248, 0.06));
+            --mom-border: rgba(251, 191, 36, 0.15);
             --toss-opt-bg: rgba(255, 255, 255, 0.03);
-            --toss-opt-hover: rgba(0, 212, 255, 0.05);
-            --toss-opt-selected: rgba(0, 212, 255, 0.08);
+            --toss-opt-hover: rgba(56, 189, 248, 0.05);
+            --toss-opt-selected: rgba(56, 189, 248, 0.08);
             --action-btn-bg: rgba(255, 255, 255, 0.03);
             --action-btn-border: var(--border-light);
             --action-btn-hover: rgba(255, 255, 255, 0.06);
-            --action-btn-special: rgba(0, 212, 255, 0.03);
-            --action-btn-special-hover: rgba(0, 212, 255, 0.08);
-            --action-btn-wide: rgba(255, 215, 0, 0.04);
-            --action-btn-wide-hover: rgba(255, 215, 0, 0.08);
-            --action-btn-wicket: rgba(255, 70, 70, 0.05);
-            --action-btn-wicket-hover: rgba(255, 70, 70, 0.10);
+            --action-btn-special: rgba(56, 189, 248, 0.03);
+            --action-btn-special-hover: rgba(56, 189, 248, 0.08);
+            --action-btn-wide: rgba(251, 191, 36, 0.04);
+            --action-btn-wide-hover: rgba(251, 191, 36, 0.08);
+            --action-btn-wicket: rgba(244, 114, 182, 0.05);
+            --action-btn-wicket-hover: rgba(244, 114, 182, 0.10);
             --batsman-bg: rgba(255, 255, 255, 0.02);
-            --batsman-hover: rgba(0, 212, 255, 0.05);
+            --batsman-hover: rgba(56, 189, 248, 0.05);
             --striker-border: var(--accent-cyan);
             --non-striker-border: var(--accent-gold);
             --bowler-bg: rgba(255, 255, 255, 0.02);
@@ -98,7 +97,7 @@
             --home-tabs-bg: rgba(255, 255, 255, 0.03);
             --home-tabs-border: var(--border-light);
             --home-tabs-btn-color: var(--text-secondary);
-            --home-tabs-btn-active: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            --home-tabs-btn-active: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
             --rank-num-color: var(--text-secondary);
             --rank-item-hover: rgba(255, 255, 255, 0.06);
             --rank-item-border: var(--border-light);
@@ -106,7 +105,7 @@
             --rank-badge-color: var(--accent-gold);
             --player-card-bg: rgba(255, 255, 255, 0.04);
             --player-card-border: var(--border-light);
-            --player-card-hover: rgba(0, 212, 255, 0.05);
+            --player-card-hover: rgba(56, 189, 248, 0.05);
             --player-card-shadow: var(--shadow-glow);
             --search-bar-bg: rgba(255, 255, 255, 0.04);
             --search-bar-border: var(--border-light);
@@ -124,61 +123,61 @@
             --password-input-border: var(--border-light);
             --password-input-focus: var(--accent-cyan);
             --celebrate-text-grad: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold), var(--accent-pink));
-            --confetti-color-1: #00d4ff;
-            --confetti-color-2: #ffd700;
-            --confetti-color-3: #ff6b9d;
-            --confetti-color-4: #a855f7;
-            --confetti-color-5: #2ecc71;
-            --confetti-color-6: #f39c12;
-            --btn-primary-bg: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            --btn-primary-shadow: 0 6px 20px rgba(0, 212, 255, 0.15);
-            --btn-primary-hover-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            --confetti-color-1: #38bdf8;
+            --confetti-color-2: #fbbf24;
+            --confetti-color-3: #f472b6;
+            --confetti-color-4: #a78bfa;
+            --confetti-color-5: #34d399;
+            --confetti-color-6: #fb923c;
+            --btn-primary-bg: linear-gradient(135deg, var(--accent-purple), var(--accent-cyan));
+            --btn-primary-shadow: 0 6px 20px rgba(167, 139, 250, 0.20);
+            --btn-primary-hover-shadow: 0 10px 30px rgba(167, 139, 250, 0.30);
             --btn-secondary-color: var(--text-secondary);
             --btn-secondary-hover: rgba(255, 255, 255, 0.08);
-            --btn-success-bg: linear-gradient(135deg, var(--accent-green), #27ae60);
-            --btn-success-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
-            --btn-success-hover-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
-            --btn-danger-bg: linear-gradient(135deg, #e74c3c, #c0392b);
-            --btn-danger-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
-            --btn-danger-hover-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
-            --btn-gold-bg: linear-gradient(135deg, var(--accent-gold), #f5a623);
-            --btn-gold-shadow: 0 6px 30px rgba(255, 215, 0, 0.2);
-            --btn-gold-hover-shadow: 0 12px 40px rgba(255, 215, 0, 0.4);
+            --btn-success-bg: linear-gradient(135deg, var(--accent-green), #059669);
+            --btn-success-shadow: 0 4px 15px rgba(52, 211, 153, 0.2);
+            --btn-success-hover-shadow: 0 8px 25px rgba(52, 211, 153, 0.3);
+            --btn-danger-bg: linear-gradient(135deg, #f87171, #dc2626);
+            --btn-danger-shadow: 0 4px 15px rgba(248, 113, 113, 0.2);
+            --btn-danger-hover-shadow: 0 8px 25px rgba(248, 113, 113, 0.3);
+            --btn-gold-bg: linear-gradient(135deg, var(--accent-gold), #f59e0b);
+            --btn-gold-shadow: 0 6px 30px rgba(251, 191, 36, 0.2);
+            --btn-gold-hover-shadow: 0 12px 40px rgba(251, 191, 36, 0.4);
             --btn-purple-bg: linear-gradient(135deg, var(--accent-purple), #7c3aed);
-            --btn-purple-shadow: 0 4px 15px rgba(168, 85, 247, 0.2);
-            --btn-purple-hover-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
+            --btn-purple-shadow: 0 4px 15px rgba(167, 139, 250, 0.2);
+            --btn-purple-hover-shadow: 0 8px 25px rgba(167, 139, 250, 0.3);
             --btn-add-bg: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            --btn-add-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
-            --btn-swap-bg: rgba(0, 212, 255, 0.08);
-            --btn-swap-border: rgba(0, 212, 255, 0.15);
-            --btn-swap-hover: rgba(0, 212, 255, 0.18);
-            --btn-swap-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+            --btn-add-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+            --btn-swap-bg: rgba(56, 189, 248, 0.08);
+            --btn-swap-border: rgba(56, 189, 248, 0.15);
+            --btn-swap-hover: rgba(56, 189, 248, 0.18);
+            --btn-swap-shadow: 0 0 20px rgba(56, 189, 248, 0.1);
             --theme-transition: 0.3s ease;
         }
 
         /* ─── LIGHT THEME ─── */
         [data-theme="light"] {
-            --bg-primary: #f0f4fa;
-            --bg-secondary: #e4e8f0;
-            --bg-card: rgba(255, 255, 255, 0.7);
+            --bg-primary: #f4f2fb;
+            --bg-secondary: #e8e4f0;
+            --bg-card: rgba(255, 255, 255, 0.6);
             --border-light: rgba(0, 0, 0, 0.08);
             --glass-bg: rgba(255, 255, 255, 0.85);
-            --text-primary: #0b0e1a;
-            --text-secondary: #4a5a7a;
-            --accent-cyan: #0088cc;
-            --accent-gold: #c99000;
-            --accent-pink: #cc5577;
+            --text-primary: #1a1625;
+            --text-secondary: #5a5270;
+            --accent-cyan: #0e9bdb;
+            --accent-gold: #d49a00;
+            --accent-pink: #d45a8a;
             --accent-purple: #7c3aed;
-            --accent-green: #1a8a4a;
-            --accent-orange: #cc7a00;
+            --accent-green: #0f8f5e;
+            --accent-orange: #d47a00;
             --shadow-glow: 0 8px 32px rgba(0, 0, 0, 0.06);
-            --gradient-bg: radial-gradient(ellipse at 20% 10%, #dce4f0 0%, #f0f4fa 70%);
-            --gradient-header: linear-gradient(135deg, #0088cc, #7c3aed);
+            --gradient-bg: radial-gradient(ellipse at 50% 0%, #d5cee8 0%, #f4f2fb 70%);
+            --gradient-header: linear-gradient(135deg, #7c3aed, #0e9bdb);
             --input-bg: rgba(0, 0, 0, 0.04);
             --popup-bg: rgba(0, 0, 0, 0.6);
             --card-hover: rgba(0, 0, 0, 0.04);
             --scrollbar-track: rgba(0, 0, 0, 0.04);
-            --scrollbar-thumb: linear-gradient(180deg, #0088cc, #7c3aed);
+            --scrollbar-thumb: linear-gradient(180deg, #7c3aed, #0e9bdb);
             --toggle-bg: rgba(0, 0, 0, 0.08);
             --toss-bg: rgba(0, 0, 0, 0.03);
             --stat-card-bg: rgba(255, 255, 255, 0.5);
@@ -192,99 +191,99 @@
             --section-title-bg: rgba(0, 0, 0, 0.02);
             --total-row-bg: rgba(0, 0, 0, 0.06);
             --extra-tag-bg: rgba(0, 0, 0, 0.04);
-            --badge-bat-bg: rgba(0, 136, 204, 0.12);
-            --badge-bowl-bg: rgba(201, 144, 0, 0.12);
-            --mom-bg: linear-gradient(135deg, rgba(201, 144, 0, 0.08), rgba(0, 136, 204, 0.08));
-            --mom-border: rgba(201, 144, 0, 0.2);
+            --badge-bat-bg: rgba(14, 155, 219, 0.12);
+            --badge-bowl-bg: rgba(212, 154, 0, 0.12);
+            --mom-bg: linear-gradient(135deg, rgba(212, 154, 0, 0.08), rgba(14, 155, 219, 0.08));
+            --mom-border: rgba(212, 154, 0, 0.2);
             --toss-opt-bg: rgba(0, 0, 0, 0.03);
-            --toss-opt-hover: rgba(0, 136, 204, 0.05);
-            --toss-opt-selected: rgba(0, 136, 204, 0.08);
+            --toss-opt-hover: rgba(14, 155, 219, 0.05);
+            --toss-opt-selected: rgba(14, 155, 219, 0.08);
             --action-btn-bg: rgba(0, 0, 0, 0.03);
             --action-btn-border: rgba(0, 0, 0, 0.08);
             --action-btn-hover: rgba(0, 0, 0, 0.06);
-            --action-btn-special: rgba(0, 136, 204, 0.03);
-            --action-btn-special-hover: rgba(0, 136, 204, 0.08);
-            --action-btn-wide: rgba(201, 144, 0, 0.04);
-            --action-btn-wide-hover: rgba(201, 144, 0, 0.08);
-            --action-btn-wicket: rgba(204, 51, 51, 0.05);
-            --action-btn-wicket-hover: rgba(204, 51, 51, 0.10);
+            --action-btn-special: rgba(14, 155, 219, 0.03);
+            --action-btn-special-hover: rgba(14, 155, 219, 0.08);
+            --action-btn-wide: rgba(212, 154, 0, 0.04);
+            --action-btn-wide-hover: rgba(212, 154, 0, 0.08);
+            --action-btn-wicket: rgba(212, 90, 138, 0.05);
+            --action-btn-wicket-hover: rgba(212, 90, 138, 0.10);
             --batsman-bg: rgba(0, 0, 0, 0.02);
-            --batsman-hover: rgba(0, 136, 204, 0.05);
-            --striker-border: #0088cc;
-            --non-striker-border: #c99000;
+            --batsman-hover: rgba(14, 155, 219, 0.05);
+            --striker-border: #0e9bdb;
+            --non-striker-border: #d49a00;
             --bowler-bg: rgba(0, 0, 0, 0.02);
             --top-bar-bg: rgba(0, 0, 0, 0.02);
-            --score-big: linear-gradient(135deg, #0088cc, #c99000);
-            --score-stats-color: #4a5a7a;
+            --score-big: linear-gradient(135deg, #0e9bdb, #d49a00);
+            --score-stats-color: #5a5270;
             --overs-extras-bg: rgba(0, 0, 0, 0.06);
             --overs-extras-border: rgba(0, 0, 0, 0.08);
             --extras-box-bg: rgba(0, 0, 0, 0.06);
             --extras-box-border: rgba(0, 0, 0, 0.08);
             --settings-grid-bg: rgba(0, 0, 0, 0.02);
             --settings-grid-border: rgba(0, 0, 0, 0.08);
-            --settings-item-color: #4a5a7a;
+            --settings-item-color: #5a5270;
             --toss-section-bg: rgba(0, 0, 0, 0.02);
             --toss-section-border: rgba(0, 0, 0, 0.08);
             --toss-result-bg: rgba(0, 0, 0, 0.06);
             --toss-result-border: rgba(0, 0, 0, 0.08);
             --home-tabs-bg: rgba(0, 0, 0, 0.03);
             --home-tabs-border: rgba(0, 0, 0, 0.08);
-            --home-tabs-btn-color: #4a5a7a;
-            --home-tabs-btn-active: linear-gradient(135deg, #0088cc, #7c3aed);
-            --rank-num-color: #4a5a7a;
+            --home-tabs-btn-color: #5a5270;
+            --home-tabs-btn-active: linear-gradient(135deg, #7c3aed, #0e9bdb);
+            --rank-num-color: #5a5270;
             --rank-item-hover: rgba(0, 0, 0, 0.04);
             --rank-item-border: rgba(0, 0, 0, 0.08);
             --rank-stats-bg: rgba(0, 0, 0, 0.04);
-            --rank-badge-color: #c99000;
+            --rank-badge-color: #d49a00;
             --player-card-bg: rgba(255, 255, 255, 0.6);
             --player-card-border: rgba(0, 0, 0, 0.08);
-            --player-card-hover: rgba(0, 136, 204, 0.05);
+            --player-card-hover: rgba(14, 155, 219, 0.05);
             --player-card-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
             --search-bar-bg: rgba(255, 255, 255, 0.6);
             --search-bar-border: rgba(0, 0, 0, 0.08);
-            --search-bar-focus: #0088cc;
+            --search-bar-focus: #0e9bdb;
             --popup-card-bg: rgba(255, 255, 255, 0.95);
             --popup-card-border: rgba(0, 0, 0, 0.08);
             --popup-card-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
-            --popup-title-grad: linear-gradient(135deg, #0088cc, #7c3aed);
+            --popup-title-grad: linear-gradient(135deg, #0e9bdb, #7c3aed);
             --out-options-bg: rgba(0, 0, 0, 0.03);
             --out-options-border: transparent;
-            --out-options-selected: #0088cc;
+            --out-options-selected: #0e9bdb;
             --password-popup-bg: rgba(255, 255, 255, 0.95);
             --password-popup-border: rgba(0, 0, 0, 0.08);
             --password-input-bg: rgba(0, 0, 0, 0.04);
             --password-input-border: rgba(0, 0, 0, 0.08);
-            --password-input-focus: #0088cc;
-            --celebrate-text-grad: linear-gradient(135deg, #0088cc, #c99000, #cc5577);
-            --confetti-color-1: #0088cc;
-            --confetti-color-2: #c99000;
-            --confetti-color-3: #cc5577;
+            --password-input-focus: #0e9bdb;
+            --celebrate-text-grad: linear-gradient(135deg, #0e9bdb, #d49a00, #d45a8a);
+            --confetti-color-1: #0e9bdb;
+            --confetti-color-2: #d49a00;
+            --confetti-color-3: #d45a8a;
             --confetti-color-4: #7c3aed;
-            --confetti-color-5: #1a8a4a;
-            --confetti-color-6: #cc7a00;
-            --btn-primary-bg: linear-gradient(135deg, #0088cc, #7c3aed);
-            --btn-primary-shadow: 0 6px 20px rgba(0, 136, 204, 0.15);
-            --btn-primary-hover-shadow: 0 10px 30px rgba(0, 136, 204, 0.3);
-            --btn-secondary-color: #4a5a7a;
+            --confetti-color-5: #0f8f5e;
+            --confetti-color-6: #d47a00;
+            --btn-primary-bg: linear-gradient(135deg, #7c3aed, #0e9bdb);
+            --btn-primary-shadow: 0 6px 20px rgba(124, 58, 237, 0.15);
+            --btn-primary-hover-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+            --btn-secondary-color: #5a5270;
             --btn-secondary-hover: rgba(0, 0, 0, 0.06);
-            --btn-success-bg: linear-gradient(135deg, #1a8a4a, #0e6b36);
-            --btn-success-shadow: 0 4px 15px rgba(26, 138, 74, 0.2);
-            --btn-success-hover-shadow: 0 8px 25px rgba(26, 138, 74, 0.3);
-            --btn-danger-bg: linear-gradient(135deg, #cc3333, #992222);
-            --btn-danger-shadow: 0 4px 15px rgba(204, 51, 51, 0.2);
-            --btn-danger-hover-shadow: 0 8px 25px rgba(204, 51, 51, 0.3);
-            --btn-gold-bg: linear-gradient(135deg, #c99000, #b07a00);
-            --btn-gold-shadow: 0 6px 30px rgba(201, 144, 0, 0.2);
-            --btn-gold-hover-shadow: 0 12px 40px rgba(201, 144, 0, 0.4);
+            --btn-success-bg: linear-gradient(135deg, #0f8f5e, #0a6b46);
+            --btn-success-shadow: 0 4px 15px rgba(15, 143, 94, 0.2);
+            --btn-success-hover-shadow: 0 8px 25px rgba(15, 143, 94, 0.3);
+            --btn-danger-bg: linear-gradient(135deg, #dc2626, #991b1b);
+            --btn-danger-shadow: 0 4px 15px rgba(220, 38, 38, 0.2);
+            --btn-danger-hover-shadow: 0 8px 25px rgba(220, 38, 38, 0.3);
+            --btn-gold-bg: linear-gradient(135deg, #d49a00, #b07a00);
+            --btn-gold-shadow: 0 6px 30px rgba(212, 154, 0, 0.2);
+            --btn-gold-hover-shadow: 0 12px 40px rgba(212, 154, 0, 0.4);
             --btn-purple-bg: linear-gradient(135deg, #7c3aed, #5b21b6);
             --btn-purple-shadow: 0 4px 15px rgba(124, 58, 237, 0.2);
             --btn-purple-hover-shadow: 0 8px 25px rgba(124, 58, 237, 0.3);
-            --btn-add-bg: linear-gradient(135deg, #0088cc, #7c3aed);
-            --btn-add-shadow: 0 4px 15px rgba(0, 136, 204, 0.2);
-            --btn-swap-bg: rgba(0, 136, 204, 0.08);
-            --btn-swap-border: rgba(0, 136, 204, 0.15);
-            --btn-swap-hover: rgba(0, 136, 204, 0.18);
-            --btn-swap-shadow: 0 0 20px rgba(0, 136, 204, 0.1);
+            --btn-add-bg: linear-gradient(135deg, #0e9bdb, #7c3aed);
+            --btn-add-shadow: 0 4px 15px rgba(14, 155, 219, 0.2);
+            --btn-swap-bg: rgba(14, 155, 219, 0.08);
+            --btn-swap-border: rgba(14, 155, 219, 0.15);
+            --btn-swap-hover: rgba(14, 155, 219, 0.18);
+            --btn-swap-shadow: 0 0 20px rgba(14, 155, 219, 0.1);
             --theme-transition: 0.3s ease;
         }
 
@@ -341,7 +340,7 @@
             font-size: 100px;
             margin-bottom: 16px;
             animation: float 2s ease-in-out infinite;
-            filter: drop-shadow(0 0 40px rgba(0, 212, 255, 0.25));
+            filter: drop-shadow(0 0 40px rgba(167, 139, 250, 0.25));
         }
         @keyframes float {
             0%,
@@ -410,7 +409,7 @@
             -webkit-backdrop-filter: blur(24px);
             border-radius: var(--radius-lg);
             padding: 24px 20px 30px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(0, 212, 255, 0.04);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 80px rgba(167, 139, 250, 0.04);
             color: var(--text-primary);
             transition: all 0.2s;
             position: relative;
@@ -459,7 +458,7 @@
         .theme-toggle:hover {
             transform: scale(1.08);
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.08);
         }
 
         /* ─── COMMON PANELS ─── */
@@ -507,7 +506,7 @@
         .home-tabs button.active {
             background: var(--home-tabs-btn-active);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.25);
+            box-shadow: 0 4px 20px rgba(167, 139, 250, 0.25);
         }
         .home-tabs button:hover:not(.active) {
             color: var(--text-primary);
@@ -535,7 +534,7 @@
             letter-spacing: 1px;
         }
         .no-matches .icon-cricket {
-            background: rgba(0, 212, 255, 0.06);
+            background: rgba(167, 139, 250, 0.06);
             width: 80px;
             height: 80px;
             border-radius: 50%;
@@ -543,8 +542,8 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 16px;
-            border: 2px solid rgba(0, 212, 255, 0.12);
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.04);
+            border: 2px solid rgba(167, 139, 250, 0.12);
+            box-shadow: 0 0 40px rgba(167, 139, 250, 0.04);
         }
         .no-matches .icon-cricket span {
             font-size: 44px;
@@ -586,7 +585,7 @@
         }
         .match-item:hover {
             background: var(--card-hover);
-            border-color: rgba(0, 212, 255, 0.2);
+            border-color: rgba(167, 139, 250, 0.2);
             transform: translateY(-2px);
             box-shadow: var(--shadow-glow);
         }
@@ -654,18 +653,18 @@
             box-shadow: var(--btn-primary-hover-shadow);
         }
         .match-item .match-actions .btn-delete {
-            background: rgba(255, 70, 70, 0.12);
-            color: #ff6b6b;
+            background: rgba(244, 114, 182, 0.12);
+            color: #f472b6;
         }
         .match-item .match-actions .btn-delete:hover {
-            background: rgba(255, 70, 70, 0.25);
+            background: rgba(244, 114, 182, 0.25);
         }
         .match-item .match-actions .btn-view {
-            background: rgba(255, 215, 0, 0.08);
+            background: rgba(251, 191, 36, 0.08);
             color: var(--accent-gold);
         }
         .match-item .match-actions .btn-view:hover {
-            background: rgba(255, 215, 0, 0.18);
+            background: rgba(251, 191, 36, 0.18);
         }
 
         /* ─── RANKINGS ─── */
@@ -690,7 +689,7 @@
         }
         .rank-item:hover {
             background: var(--rank-item-hover);
-            border-color: rgba(0, 212, 255, 0.15);
+            border-color: rgba(167, 139, 250, 0.15);
             transform: translateX(4px);
         }
         .rank-item .rank-num {
@@ -723,7 +722,7 @@
             font-size: 20px;
             overflow: hidden;
             flex-shrink: 0;
-            border: 2px solid rgba(0, 212, 255, 0.15);
+            border: 2px solid rgba(167, 139, 250, 0.15);
         }
         .rank-item .rank-avatar img {
             width: 100%;
@@ -783,7 +782,7 @@
         }
         .player-stats-view .search-bar:focus {
             border-color: var(--search-bar-focus);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.05);
         }
         .player-stats-view .player-grid {
             display: grid;
@@ -836,12 +835,12 @@
             justify-content: center;
             font-size: 28px;
             overflow: hidden;
-            border: 2px solid rgba(0, 212, 255, 0.2);
+            border: 2px solid rgba(167, 139, 250, 0.2);
             transition: 0.3s;
         }
         .player-card:hover .avatar {
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 30px rgba(167, 139, 250, 0.1);
         }
         .player-card .avatar img {
             width: 100%;
@@ -899,7 +898,7 @@
             font-size: 48px;
             overflow: hidden;
             border: 3px solid var(--accent-cyan);
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.08);
+            box-shadow: 0 0 40px rgba(167, 139, 250, 0.08);
         }
         .player-detail-view .profile-section .big-avatar img {
             width: 100%;
@@ -933,7 +932,7 @@
         .player-detail-view .profile-section .retry-btn {
             background: var(--accent-gold);
             border: none;
-            color: #0b0e1a;
+            color: #0d0b1a;
             padding: 4px 14px;
             border-radius: 40px;
             font-size: 11px;
@@ -1030,7 +1029,7 @@
         }
         .popup-card-password input:focus {
             border-color: var(--password-input-focus);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.05);
         }
         .popup-card-password .popup-actions {
             display: flex;
@@ -1063,7 +1062,7 @@
             transform: scale(1.02);
         }
         .popup-card-password .error-msg {
-            color: #ff6b6b;
+            color: #f87171;
             font-size: 13px;
             text-align: center;
             min-height: 20px;
@@ -1149,7 +1148,7 @@
         .btn-gold {
             background: var(--btn-gold-bg);
             border: none;
-            color: #0b0e1a;
+            color: #0d0b1a;
             font-weight: 700;
             font-size: 18px;
             padding: 16px 32px;
@@ -1235,7 +1234,7 @@
         .input-group input:focus,
         .input-group textarea:focus {
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.04);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.04);
             background: rgba(255, 255, 255, 0.06);
         }
         .input-group textarea {
@@ -1358,7 +1357,7 @@
         .toss-decision button.selected {
             border-color: var(--accent-cyan);
             background: var(--toss-opt-selected);
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 30px rgba(167, 139, 250, 0.05);
         }
 
         /* ─── LIVE MATCH ─── */
@@ -1388,7 +1387,7 @@
         .completed-match-view .tabs button.active {
             background: var(--home-tabs-btn-active);
             color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(167, 139, 250, 0.2);
         }
         .live-match .tab-content,
         .completed-match-view .tab-content {
@@ -1398,6 +1397,40 @@
         }
         .live-match .tab-content.active,
         .completed-match-view .tab-content.active {
+            display: flex;
+        }
+
+        /* ─── STATS MINI TABS ─── */
+        .stats-mini-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--home-tabs-bg);
+            border-radius: 40px;
+            padding: 4px;
+            border: 1px solid var(--home-tabs-border);
+        }
+        .stats-mini-tabs button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 8px 0;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--home-tabs-btn-color);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .stats-mini-tabs button.active {
+            background: var(--home-tabs-btn-active);
+            color: #fff;
+        }
+        .stats-tab-content {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .stats-tab-content.active {
             display: flex;
         }
 
@@ -1459,7 +1492,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(ellipse at 30% 20%, rgba(0, 212, 255, 0.02), transparent 70%);
+            background: radial-gradient(ellipse at 30% 20%, rgba(167, 139, 250, 0.02), transparent 70%);
             pointer-events: none;
         }
         .score-row {
@@ -1476,7 +1509,7 @@
             background: var(--score-big);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 60px rgba(0, 212, 255, 0.08);
+            text-shadow: 0 0 60px rgba(167, 139, 250, 0.08);
         }
         .score-stats {
             display: flex;
@@ -1641,12 +1674,12 @@
             justify-content: center;
             font-size: 24px;
             overflow: hidden;
-            border: 2px solid rgba(0, 212, 255, 0.15);
+            border: 2px solid rgba(167, 139, 250, 0.15);
             transition: 0.2s;
         }
         .batsman-item:hover .batsman-avatar {
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.1);
         }
         .batsman-avatar img {
             width: 100%;
@@ -1724,7 +1757,7 @@
         }
         .action-btn:active {
             transform: scale(0.92);
-            background: rgba(0, 212, 255, 0.04);
+            background: rgba(167, 139, 250, 0.04);
         }
         .action-btn.special {
             background: var(--action-btn-special);
@@ -1736,15 +1769,15 @@
         .action-btn.wide {
             background: var(--action-btn-wide);
             color: var(--accent-gold);
-            border-color: rgba(255, 215, 0, 0.08);
+            border-color: rgba(251, 191, 36, 0.08);
         }
         .action-btn.wide:hover {
             background: var(--action-btn-wide-hover);
         }
         .action-btn.wicket {
             background: var(--action-btn-wicket);
-            color: #ff6b6b;
-            border-color: rgba(255, 70, 70, 0.08);
+            color: #f472b6;
+            border-color: rgba(244, 114, 182, 0.08);
         }
         .action-btn.wicket:hover {
             background: var(--action-btn-wicket-hover);
@@ -1768,7 +1801,7 @@
             min-width: 60px;
         }
         .bottom-actions .btn-dl {
-            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            background: linear-gradient(135deg, #a78bfa, #7c3aed);
             border: none;
             color: #fff;
             font-weight: 700;
@@ -1780,11 +1813,11 @@
             flex: 1;
             text-align: center;
             min-width: 60px;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 4px 15px rgba(167, 139, 250, 0.2);
         }
         .bottom-actions .btn-dl:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 8px 25px rgba(167, 139, 250, 0.3);
         }
 
         /* ─── CELEBRATION / CONFETTI ─── */
@@ -1836,7 +1869,7 @@
             background: var(--celebrate-text-grad);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 60px rgba(0, 212, 255, 0.3);
+            text-shadow: 0 0 60px rgba(167, 139, 250, 0.3);
             animation: textPulse 0.9s ease-out forwards;
         }
         @keyframes celebratePop {
@@ -1871,7 +1904,7 @@
             }
         }
 
-        /* ─── SCORECARD TABLES — IMPROVED UI ─── */
+        /* ─── SCORECARD TABLES ─── */
         .scorecard-table {
             background: var(--stat-card-bg);
             border-radius: var(--radius-md);
@@ -1907,10 +1940,10 @@
             font-weight: 600;
         }
         .scorecard-table .table-row .batsman-name .out {
-            color: #ff6b6b;
+            color: #f472b6;
             font-size: 10px;
             margin-left: 4px;
-            background: rgba(255, 70, 70, 0.12);
+            background: rgba(244, 114, 182, 0.12);
             padding: 1px 8px;
             border-radius: 20px;
         }
@@ -1918,7 +1951,7 @@
             color: var(--accent-green);
             font-size: 10px;
             margin-left: 4px;
-            background: rgba(46, 204, 113, 0.12);
+            background: rgba(52, 211, 153, 0.12);
             padding: 1px 8px;
             border-radius: 20px;
         }
@@ -1926,7 +1959,7 @@
             color: var(--accent-gold);
             font-size: 10px;
             margin-left: 4px;
-            background: rgba(255, 215, 0, 0.12);
+            background: rgba(251, 191, 36, 0.12);
             padding: 1px 8px;
             border-radius: 20px;
         }
@@ -2030,7 +2063,7 @@
             transition: 0.2s;
         }
         .stats-card:hover {
-            border-color: rgba(0, 212, 255, 0.2);
+            border-color: rgba(167, 139, 250, 0.2);
         }
         .stats-card .stat-number {
             font-size: 32px;
@@ -2043,6 +2076,61 @@
             margin-top: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+
+        /* ─── PARTNERSHIPS UI ─── */
+        .partnerships-group {
+            background: var(--stat-card-bg);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-light);
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+        .partnerships-group h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 6px;
+        }
+        .partnership-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .partnership-item:last-child {
+            border-bottom: none;
+        }
+        .partnership-batsmen {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        .partnership-batsmen span {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+        .partnership-total {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+        .partnership-total .not-out {
+            color: var(--accent-green);
+            font-size: 14px;
+            margin-left: 4px;
+        }
+        .partnership-empty {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            padding: 16px 0;
         }
 
         /* ─── MAN OF THE MATCH ─── */
@@ -2101,7 +2189,7 @@
         }
         .man-of-match .mom-badge {
             background: var(--accent-gold);
-            color: #0b0e1a;
+            color: #0d0b1a;
             font-weight: 700;
             font-size: 12px;
             padding: 4px 12px;
@@ -2252,7 +2340,7 @@
         }
         .popup-card-selection .player-list button.non-striker-selected {
             border-color: var(--non-striker-border);
-            background: rgba(255, 215, 0, 0.08);
+            background: rgba(251, 191, 36, 0.08);
         }
         .popup-card-selection .sub-input {
             margin: 12px 0;
@@ -2343,7 +2431,7 @@
             border: 1px solid var(--border-light);
         }
         .toggle-switch.active {
-            background: rgba(231, 76, 60, 0.3);
+            background: rgba(244, 114, 182, 0.3);
         }
         .toggle-switch .toggle-knob {
             position: absolute;
@@ -2357,7 +2445,7 @@
         }
         .toggle-switch.active .toggle-knob {
             left: 25px;
-            background: #ff6b6b;
+            background: #f472b6;
         }
         .toggle-status {
             font-size: 14px;
@@ -2365,7 +2453,7 @@
             color: var(--text-secondary);
         }
         .toggle-status.active {
-            color: #ff6b6b;
+            color: #f472b6;
         }
 
         .popup-options {
@@ -2390,8 +2478,8 @@
             background: var(--toss-opt-hover);
         }
         .popup-options .opt-btn.wicket-opt {
-            color: #ff6b6b;
-            border-color: rgba(255, 70, 70, 0.08);
+            color: #f472b6;
+            border-color: rgba(244, 114, 182, 0.08);
         }
         .popup-options .opt-btn.selected {
             border: 2px solid var(--accent-cyan);
@@ -2640,6 +2728,12 @@
                 font-size: 12px;
                 padding: 8px 12px;
                 min-width: 50px;
+            }
+            .partnership-batsmen {
+                font-size: 12px;
+            }
+            .partnership-total {
+                font-size: 14px;
             }
         }
     </style>
@@ -2892,14 +2986,21 @@ Bilal</textarea>
                 </div>
             </div>
             <div id="tabStats" class="tab-content">
-                <div class="stats-grid">
-                    <div class="stats-card"><div class="stat-number" id="statRuns">0</div><div class="stat-label">Runs</div></div>
-                    <div class="stats-card"><div class="stat-number" id="statWickets">0</div><div class="stat-label">Wickets</div></div>
-                    <div class="stats-card"><div class="stat-number" id="statFours">0</div><div class="stat-label">Fours</div></div>
-                    <div class="stats-card"><div class="stat-number" id="statSixes">0</div><div class="stat-label">Sixes</div></div>
-                    <div class="stats-card"><div class="stat-number" id="statExtras">0</div><div class="stat-label">Extras</div></div>
-                    <div class="stats-card"><div class="stat-number" id="statRunRate">0.0</div><div class="stat-label">Run Rate</div></div>
+                <div class="stats-mini-tabs">
+                    <button class="active" data-stats-tab="overall">📊 Stats</button>
+                    <button data-stats-tab="partnerships">🤝 Partnerships</button>
                 </div>
+                <div id="overallStats" class="stats-tab-content active">
+                    <div class="stats-grid">
+                        <div class="stats-card"><div class="stat-number" id="statRuns">0</div><div class="stat-label">Runs</div></div>
+                        <div class="stats-card"><div class="stat-number" id="statWickets">0</div><div class="stat-label">Wickets</div></div>
+                        <div class="stats-card"><div class="stat-number" id="statFours">0</div><div class="stat-label">Fours</div></div>
+                        <div class="stats-card"><div class="stat-number" id="statSixes">0</div><div class="stat-label">Sixes</div></div>
+                        <div class="stats-card"><div class="stat-number" id="statExtras">0</div><div class="stat-label">Extras</div></div>
+                        <div class="stats-card"><div class="stat-number" id="statRunRate">0.0</div><div class="stat-label">Run Rate</div></div>
+                    </div>
+                </div>
+                <div id="partnershipsStats" class="stats-tab-content"></div>
             </div>
         </div>
 
@@ -2947,14 +3048,21 @@ Bilal</textarea>
                 </div>
             </div>
             <div id="tabCompletedStats" class="tab-content">
-                <div class="stats-grid">
-                    <div class="stats-card"><div class="stat-number" id="completedStatRuns">0</div><div class="stat-label">Runs</div></div>
-                    <div class="stats-card"><div class="stat-number" id="completedStatWickets">0</div><div class="stat-label">Wickets</div></div>
-                    <div class="stats-card"><div class="stat-number" id="completedStatFours">0</div><div class="stat-label">Fours</div></div>
-                    <div class="stats-card"><div class="stat-number" id="completedStatSixes">0</div><div class="stat-label">Sixes</div></div>
-                    <div class="stats-card"><div class="stat-number" id="completedStatExtras">0</div><div class="stat-label">Extras</div></div>
-                    <div class="stats-card"><div class="stat-number" id="completedStatRunRate">0.0</div><div class="stat-label">Run Rate</div></div>
+                <div class="stats-mini-tabs">
+                    <button class="active" data-completed-stats-tab="overall">📊 Stats</button>
+                    <button data-completed-stats-tab="partnerships">🤝 Partnerships</button>
                 </div>
+                <div id="completedOverallStats" class="stats-tab-content active">
+                    <div class="stats-grid">
+                        <div class="stats-card"><div class="stat-number" id="completedStatRuns">0</div><div class="stat-label">Runs</div></div>
+                        <div class="stats-card"><div class="stat-number" id="completedStatWickets">0</div><div class="stat-label">Wickets</div></div>
+                        <div class="stats-card"><div class="stat-number" id="completedStatFours">0</div><div class="stat-label">Fours</div></div>
+                        <div class="stats-card"><div class="stat-number" id="completedStatSixes">0</div><div class="stat-label">Sixes</div></div>
+                        <div class="stats-card"><div class="stat-number" id="completedStatExtras">0</div><div class="stat-label">Extras</div></div>
+                        <div class="stats-card"><div class="stat-number" id="completedStatRunRate">0.0</div><div class="stat-label">Run Rate</div></div>
+                    </div>
+                </div>
+                <div id="completedPartnershipsStats" class="stats-tab-content"></div>
             </div>
         </div>
 
@@ -3277,14 +3385,12 @@ Bilal</textarea>
             for (const entry of local) {
                 result[entry.id] = entry.data;
             }
-            // Merge with Firebase if online
             if (isOnline) {
                 try {
                     const snap = await get(ref(database, 'matches'));
                     const fbData = snap.val() || {};
                     for (const key of Object.keys(fbData)) {
                         result[key] = fbData[key];
-                        // Update local cache
                         const existing = await dbGet(STORE_MATCHES, key);
                         if (!existing || existing._updated < (fbData[key].updatedAt || 0)) {
                             await dbPut(STORE_MATCHES, {
@@ -3486,17 +3592,17 @@ Bilal</textarea>
                 this.particles = [];
                 const colors = [
                     getComputedStyle(document.documentElement).getPropertyValue('--confetti-color-1').trim() ||
-                    '#00d4ff',
+                    '#38bdf8',
                     getComputedStyle(document.documentElement).getPropertyValue('--confetti-color-2').trim() ||
-                    '#ffd700',
+                    '#fbbf24',
                     getComputedStyle(document.documentElement).getPropertyValue('--confetti-color-3').trim() ||
-                    '#ff6b9d',
+                    '#f472b6',
                     getComputedStyle(document.documentElement).getPropertyValue('--confetti-color-4').trim() ||
-                    '#a855f7',
+                    '#a78bfa',
                     getComputedStyle(document.documentElement).getPropertyValue('--confetti-color-5').trim() ||
-                    '#2ecc71',
+                    '#34d399',
                     getComputedStyle(document.documentElement).getPropertyValue('--confetti-color-6').trim() ||
-                    '#f39c12'
+                    '#fb923c'
                 ];
                 for (let i = 0; i < count; i++) {
                     this.particles.push({
@@ -3639,10 +3745,10 @@ Bilal</textarea>
             inningData: {
                 1: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0, sixes: 0,
                     batsmanStats: {}, bowlerStats: {}, battingPlayers: [], bowlingPlayers: [], battingTeam: '',
-                    bowlingTeam: '' },
+                    bowlingTeam: '', partnerships: [] },
                 2: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0, sixes: 0,
                     batsmanStats: {}, bowlerStats: {}, battingPlayers: [], bowlingPlayers: [], battingTeam: '',
-                    bowlingTeam: '' }
+                    bowlingTeam: '', partnerships: [] }
             },
             targetScore: null,
             matchName: '',
@@ -3981,9 +4087,10 @@ Bilal</textarea>
             state.currentOverDeliveries = data.currentOverDeliveries || [];
             state.inningData = data.inningData || { 1: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0,
                         lb: 0, p: 0 }, fours: 0, sixes: 0, batsmanStats: {}, bowlerStats: {}, battingPlayers: [],
-                        bowlingPlayers: [], battingTeam: '', bowlingTeam: '' }, 2: { runs: 0, wickets: 0, balls: 0,
-                        extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0, sixes: 0, batsmanStats: {},
-                        bowlerStats: {}, battingPlayers: [], bowlingPlayers: [], battingTeam: '', bowlingTeam: '' } };
+                        bowlingPlayers: [], battingTeam: '', bowlingTeam: '', partnerships: [] },
+                    2: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0,
+                        sixes: 0, batsmanStats: {}, bowlerStats: {}, battingPlayers: [], bowlingPlayers: [],
+                        battingTeam: '', bowlingTeam: '', partnerships: [] } };
             state.targetScore = data.targetScore || null;
             state.matchName = data.matchName || `${state.batting} vs ${state.bowling}`;
             state.createdAt = data.createdAt || Date.now();
@@ -3997,6 +4104,9 @@ Bilal</textarea>
             state._pendingRetirePosition = null;
             state.partnership = data.partnership || { runs: 0, balls: 0, fours: 0, sixes: 0, striker: null,
                 nonStriker: null, reset: true };
+            // Ensure partnerships array exists
+            if (!state.inningData[1].partnerships) state.inningData[1].partnerships = [];
+            if (!state.inningData[2].partnerships) state.inningData[2].partnerships = [];
         }
 
         // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4763,6 +4873,52 @@ Bilal</textarea>
             const rr = (matchData.balls || 0) > 0 ? (((matchData.runs || 0) / (matchData.balls || 0)) * 6).toFixed(1) :
             '0.0';
             document.getElementById('completedStatRunRate').textContent = rr;
+            renderCompletedPartnerships(matchData);
+        }
+
+        function renderCompletedPartnerships(matchData) {
+            const container = document.getElementById('completedPartnershipsStats');
+            if (!container) return;
+            const inn1 = matchData.inningData?.[1] || { partnerships: [] };
+            const inn2 = matchData.inningData?.[2] || { partnerships: [] };
+            let html = '';
+
+            const renderGroup = (inningData, title) => {
+                const partnerships = inningData.partnerships || [];
+                if (partnerships.length === 0) {
+                    html += `
+                        <div class="partnerships-group">
+                            <h4>${title}</h4>
+                            <div class="partnership-empty">No partnerships recorded</div>
+                        </div>
+                    `;
+                    return;
+                }
+                html += `
+                    <div class="partnerships-group">
+                        <h4>${title}</h4>
+                `;
+                partnerships.forEach(p => {
+                    const notOut = p.isNotOut ? ' *' : '';
+                    html += `
+                        <div class="partnership-item">
+                            <div class="partnership-batsmen">
+                                <span>${p.batsmen[0]}</span> ${p.batsmen[0]} ${p.runs || 0} (${p.balls || 0})
+                                <span>${p.batsmen[1]}</span> ${p.batsmen[1]} ${p.runs || 0} (${p.balls || 0})
+                            </div>
+                            <div class="partnership-total">
+                                ${p.runs || 0} (${p.balls || 0})<span class="not-out">${notOut}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            };
+
+            renderGroup(inn1, `🏏 FIRST INNINGS — ${matchData.batting || 'Team 1'}`);
+            renderGroup(inn2, `🏏 SECOND INNINGS — ${matchData.bowling || 'Team 2'}`);
+
+            container.innerHTML = html;
         }
 
         document.getElementById('completedScorecardMiniTabs').addEventListener('click', function(e) {
@@ -4785,6 +4941,20 @@ Bilal</textarea>
                 document.getElementById('tabCompletedStats').classList.toggle('active', tab === 'completed-stats');
                 if (tab === 'completed-scorecard' && viewedMatchData) renderCompletedScorecard(viewedMatchData);
                 if (tab === 'completed-stats' && viewedMatchData) renderCompletedStats(viewedMatchData);
+            });
+        });
+
+        // ─── Completed Stats Mini Tabs ───
+        document.querySelectorAll('#tabCompletedStats .stats-mini-tabs button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#tabCompletedStats .stats-mini-tabs button').forEach(b => b
+                    .classList.remove('active'));
+                this.classList.add('active');
+                const tab = this.dataset.completedStatsTab;
+                document.getElementById('completedOverallStats').classList.toggle('active', tab === 'overall');
+                document.getElementById('completedPartnershipsStats').classList.toggle('active', tab ===
+                    'partnerships');
+                if (tab === 'partnerships' && viewedMatchData) renderCompletedPartnerships(viewedMatchData);
             });
         });
 
@@ -4841,6 +5011,8 @@ Bilal</textarea>
             state.inningData[1].bowlingTeam = state.bowling;
             state.inningData[1].battingPlayers = [...state.battingPlayers];
             state.inningData[1].bowlingPlayers = [...state.bowlingPlayers];
+            state.inningData[1].partnerships = [];
+            state.inningData[2].partnerships = [];
             state.ballsPerOver = parseInt(ballsPerOverInput.value) || 6;
             state.totalOvers = parseInt(totalOversInput.value) || 10;
             state.totalWickets = parseInt(totalWicketsInput.value) || 10;
@@ -4908,10 +5080,10 @@ Bilal</textarea>
             state.inningData = {
                 1: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0, sixes: 0,
                     batsmanStats: {}, bowlerStats: {}, battingPlayers: [], bowlingPlayers: [], battingTeam: '',
-                    bowlingTeam: '' },
+                    bowlingTeam: '', partnerships: [] },
                 2: { runs: 0, wickets: 0, balls: 0, extras: { wd: 0, nb: 0, b: 0, lb: 0, p: 0 }, fours: 0, sixes: 0,
                     batsmanStats: {}, bowlerStats: {}, battingPlayers: [], bowlingPlayers: [], battingTeam: '',
-                    bowlingTeam: '' }
+                    bowlingTeam: '', partnerships: [] }
             };
             state.targetScore = null;
             state.matchName = '';
@@ -5171,6 +5343,39 @@ Bilal</textarea>
             document.body.classList.remove('popup-open');
         }
 
+        // ─── PARTNERSHIP HELPERS ───
+        function finalizeCurrentPartnership(isNotOut = false) {
+            const p = state.partnership;
+            if (!p.reset && p.striker && p.nonStriker && p.runs > 0) {
+                const inning = state.currentInning;
+                if (!state.inningData[inning].partnerships) {
+                    state.inningData[inning].partnerships = [];
+                }
+                state.inningData[inning].partnerships.push({
+                    batsmen: [p.striker, p.nonStriker],
+                    runs: p.runs,
+                    balls: p.balls,
+                    fours: p.fours,
+                    sixes: p.sixes,
+                    isNotOut: isNotOut
+                });
+            }
+            // Reset the current partnership
+            p.runs = 0;
+            p.balls = 0;
+            p.fours = 0;
+            p.sixes = 0;
+            p.striker = null;
+            p.nonStriker = null;
+            p.reset = true;
+        }
+
+        function syncPartnershipBatsmen() {
+            state.partnership.striker = state.striker;
+            state.partnership.nonStriker = state.nonStriker;
+        }
+
+        // ─── selectionConfirm ───
         selectionConfirm.addEventListener('click', () => {
             if (selectionType === 'openers') {
                 if (!selectedStriker || !selectedNonStriker) { alert('Please select both striker and non-striker'); return; }
@@ -5199,34 +5404,31 @@ Bilal</textarea>
             } else if (selectionType === 'nextBatsman') {
                 if (selectedPlayers.length === 0) { alert('Please select a batsman'); return; }
                 const newBatsman = selectedPlayers[0];
+
+                // Reset partnership counters and mark as active
+                const resetPartnership = () => {
+                    state.partnership.runs = 0;
+                    state.partnership.balls = 0;
+                    state.partnership.fours = 0;
+                    state.partnership.sixes = 0;
+                    state.partnership.reset = false;
+                };
+
                 if (!state.striker) {
                     state.striker = newBatsman;
                     state.partnership.striker = newBatsman;
+                    resetPartnership();
                 } else if (!state.nonStriker) {
                     state.nonStriker = newBatsman;
                     state.partnership.nonStriker = newBatsman;
-                    state.partnership.runs = 0;
-                    state.partnership.balls = 0;
-                    state.partnership.fours = 0;
-                    state.partnership.sixes = 0;
-                    state.partnership.reset = false;
+                    resetPartnership();
                 } else {
-                    if (pendingPosition === 'striker') {
-                        state.striker = newBatsman;
-                        state.partnership.striker = newBatsman;
-                    } else if (pendingPosition === 'nonStriker') {
-                        state.nonStriker = newBatsman;
-                        state.partnership.nonStriker = newBatsman;
-                    } else {
-                        state.striker = newBatsman;
-                        state.partnership.striker = newBatsman;
-                    }
-                    state.partnership.runs = 0;
-                    state.partnership.balls = 0;
-                    state.partnership.fours = 0;
-                    state.partnership.sixes = 0;
-                    state.partnership.reset = false;
+                    // Fallback: assign to striker (should not happen normally)
+                    state.striker = newBatsman;
+                    state.partnership.striker = newBatsman;
+                    resetPartnership();
                 }
+
                 if (!state.batsmanStats[newBatsman]) state.batsmanStats[newBatsman] = { runs: 0, balls: 0, fours: 0,
                     sixes: 0, out: false, outDesc: '', retiredHurt: false };
                 closeSelectionPopup();
@@ -5238,8 +5440,7 @@ Bilal</textarea>
                     const temp = state.striker;
                     state.striker = state.nonStriker;
                     state.nonStriker = temp;
-                    state.partnership.striker = state.striker;
-                    state.partnership.nonStriker = state.nonStriker;
+                    syncPartnershipBatsmen();
                     state.overBalls = 0;
                     const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
                     setTimeout(() => {
@@ -5321,6 +5522,10 @@ Bilal</textarea>
             restoreSnapshot(snapshot);
 
             const outBatsman = (outPosition === 'striker') ? state.striker : state.nonStriker;
+
+            // Finalize the partnership that just ended
+            finalizeCurrentPartnership(false);
+
             state.wickets += 1;
             state.balls += 1;
             state.overBalls += 1;
@@ -5352,11 +5557,7 @@ Bilal</textarea>
                 state.nonStriker = null;
                 state.partnership.nonStriker = null;
             }
-            state.partnership.runs = 0;
-            state.partnership.balls = 0;
-            state.partnership.fours = 0;
-            state.partnership.sixes = 0;
-            state.partnership.reset = true;
+            // Partnership already reset by finalizeCurrentPartnership
 
             pushHistory(action, snapshot);
             updateLiveUI();
@@ -5364,6 +5565,7 @@ Bilal</textarea>
             if (state.wickets >= state.totalWickets || state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    finalizeCurrentPartnership(true);
                     sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
@@ -5409,6 +5611,7 @@ Bilal</textarea>
             if (candidates.length === 0) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    finalizeCurrentPartnership(true);
                     sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
@@ -5494,8 +5697,7 @@ Bilal</textarea>
             const temp = state.striker;
             state.striker = state.nonStriker;
             state.nonStriker = temp;
-            state.partnership.striker = state.striker;
-            state.partnership.nonStriker = state.nonStriker;
+            syncPartnershipBatsmen();
             sound.playTone(800, 0.08, 'sine', 0.15);
             updateLiveUI();
         }
@@ -5519,6 +5721,9 @@ Bilal</textarea>
         retireConfirm.addEventListener('click', () => {
             const position = state._pendingRetirePosition;
             if (!position) { retirePopup.classList.remove('active'); return; }
+
+            // Finalize the current partnership before retiring
+            finalizeCurrentPartnership(false);
 
             const playerName = position === 'striker' ? state.striker : state.nonStriker;
             if (!playerName) { retirePopup.classList.remove('active');
@@ -5544,11 +5749,7 @@ Bilal</textarea>
                 state.nonStriker = null;
                 state.partnership.nonStriker = null;
             }
-            state.partnership.runs = 0;
-            state.partnership.balls = 0;
-            state.partnership.fours = 0;
-            state.partnership.sixes = 0;
-            state.partnership.reset = true;
+            // Partnership already reset
 
             retirePopup.classList.remove('active');
             state._pendingRetirePosition = null;
@@ -5563,6 +5764,7 @@ Bilal</textarea>
             if (candidates.length === 0) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    finalizeCurrentPartnership(true);
                     sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
@@ -5708,6 +5910,7 @@ Bilal</textarea>
             if (state.wickets >= state.totalWickets) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    finalizeCurrentPartnership(true);
                     sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
@@ -5743,6 +5946,7 @@ Bilal</textarea>
             if (state.balls >= state.totalOvers * state.ballsPerOver) {
                 if (state.currentInning === 1 && !state.isFirstInningComplete) {
                     state.isMatchEnded = true;
+                    finalizeCurrentPartnership(true);
                     sound.playInningComplete();
                     setTimeout(showInningComplete, 800);
                 } else if (state.currentInning === 2) {
@@ -5796,7 +6000,8 @@ Bilal</textarea>
                 battingPlayers: [...state.battingPlayers],
                 bowlingPlayers: [...state.bowlingPlayers],
                 battingTeam: state.batting,
-                bowlingTeam: state.bowling
+                bowlingTeam: state.bowling,
+                partnerships: state.inningData[1].partnerships || []
             };
             state.targetScore = totalRuns + 1;
             inningSummary.textContent = `Inning ${state.currentInning} Completed`;
@@ -5839,6 +6044,7 @@ Bilal</textarea>
             state._overCompleteAfterWicket = false;
             state._pendingRetirePosition = null;
             state.partnership = { runs: 0, balls: 0, fours: 0, sixes: 0, striker: null, nonStriker: null, reset: true };
+            state.inningData[2].partnerships = [];
             isWinnerPopupShown = false;
             state.inningData[2] = {
                 runs: 0,
@@ -5852,7 +6058,8 @@ Bilal</textarea>
                 battingPlayers: [...state.battingPlayers],
                 bowlingPlayers: [...state.bowlingPlayers],
                 battingTeam: state.batting,
-                bowlingTeam: state.bowling
+                bowlingTeam: state.bowling,
+                partnerships: []
             };
             updateLiveUI();
             setTimeout(() => {
@@ -5886,7 +6093,8 @@ Bilal</textarea>
                 battingPlayers: [...state.battingPlayers],
                 bowlingPlayers: [...state.bowlingPlayers],
                 battingTeam: state.batting,
-                bowlingTeam: state.bowling
+                bowlingTeam: state.bowling,
+                partnerships: state.inningData[2].partnerships || []
             };
         }
 
@@ -5908,8 +6116,7 @@ Bilal</textarea>
                     const temp = state.striker;
                     state.striker = state.nonStriker;
                     state.nonStriker = temp;
-                    state.partnership.striker = state.striker;
-                    state.partnership.nonStriker = state.nonStriker;
+                    syncPartnershipBatsmen();
                 }
             }
 
@@ -6010,8 +6217,7 @@ Bilal</textarea>
                         const temp = state.striker;
                         state.striker = state.nonStriker;
                         state.nonStriker = temp;
-                        state.partnership.striker = state.striker;
-                        state.partnership.nonStriker = state.nonStriker;
+                        syncPartnershipBatsmen();
                         if (!state.isMatchEnded) {
                             const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
                             setTimeout(() => {
@@ -6060,8 +6266,7 @@ Bilal</textarea>
                 const temp = state.striker;
                 state.striker = state.nonStriker;
                 state.nonStriker = temp;
-                state.partnership.striker = state.striker;
-                state.partnership.nonStriker = state.nonStriker;
+                syncPartnershipBatsmen();
             }
             pushHistory(action, snapshot);
             updateLiveUI();
@@ -6085,8 +6290,7 @@ Bilal</textarea>
                 const temp = state.striker;
                 state.striker = state.nonStriker;
                 state.nonStriker = temp;
-                state.partnership.striker = state.striker;
-                state.partnership.nonStriker = state.nonStriker;
+                syncPartnershipBatsmen();
                 if (!state.isMatchEnded) {
                     const available = state.bowlingPlayers.filter(p => p !== state.currentBowler);
                     setTimeout(() => {
@@ -6417,6 +6621,83 @@ Bilal</textarea>
             });
         });
 
+        // ─── Live Stats Mini Tabs ───
+        document.querySelectorAll('#tabStats .stats-mini-tabs button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#tabStats .stats-mini-tabs button').forEach(b => b.classList.remove(
+                    'active'));
+                this.classList.add('active');
+                const tab = this.dataset.statsTab;
+                document.getElementById('overallStats').classList.toggle('active', tab === 'overall');
+                document.getElementById('partnershipsStats').classList.toggle('active', tab === 'partnerships');
+                if (tab === 'partnerships') renderLivePartnerships();
+            });
+        });
+
+        function renderLivePartnerships() {
+            const container = document.getElementById('partnershipsStats');
+            if (!container) return;
+            let html = '';
+            const inn1 = state.inningData[1] || { partnerships: [] };
+            const inn2 = state.inningData[2] || { partnerships: [] };
+
+            const renderGroup = (inningData, title) => {
+                const partnerships = inningData.partnerships || [];
+                if (partnerships.length === 0) {
+                    html += `
+                        <div class="partnerships-group">
+                            <h4>${title}</h4>
+                            <div class="partnership-empty">No partnerships recorded</div>
+                        </div>
+                    `;
+                    return;
+                }
+                html += `
+                    <div class="partnerships-group">
+                        <h4>${title}</h4>
+                `;
+                partnerships.forEach(p => {
+                    const notOut = p.isNotOut ? ' *' : '';
+                    html += `
+                        <div class="partnership-item">
+                            <div class="partnership-batsmen">
+                                <span>${p.batsmen[0]}</span> ${p.batsmen[0]} ${p.runs || 0} (${p.balls || 0})
+                                <span>${p.batsmen[1]}</span> ${p.batsmen[1]} ${p.runs || 0} (${p.balls || 0})
+                            </div>
+                            <div class="partnership-total">
+                                ${p.runs || 0} (${p.balls || 0})<span class="not-out">${notOut}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            };
+
+            // Add current partnership if active
+            const currentP = state.partnership;
+            if (!currentP.reset && currentP.striker && currentP.nonStriker && currentP.runs > 0) {
+                html += `
+                    <div class="partnerships-group" style="border-color: var(--accent-cyan);">
+                        <h4>🤝 CURRENT PARTNERSHIP</h4>
+                        <div class="partnership-item">
+                            <div class="partnership-batsmen">
+                                <span>${currentP.striker}</span> ${currentP.striker} ${currentP.runs} (${currentP.balls})
+                                <span>${currentP.nonStriker}</span> ${currentP.nonStriker} ${currentP.runs} (${currentP.balls})
+                            </div>
+                            <div class="partnership-total">
+                                ${currentP.runs} (${currentP.balls}) <span class="not-out">*</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderGroup(inn1, `🏏 FIRST INNINGS — ${state.inningData[1].battingTeam || state.batting}`);
+            renderGroup(inn2, `🏏 SECOND INNINGS — ${state.inningData[2].battingTeam || state.bowling}`);
+
+            container.innerHTML = html;
+        }
+
         function updateScorecard() {
             const inning = parseInt(document.querySelector('#scorecardMiniTabs .active')?.dataset.inning || 1);
             let data, battingTeam, bowlingTeam;
@@ -6496,6 +6777,8 @@ Bilal</textarea>
             document.getElementById('statExtras').textContent = totalExtras;
             const rr = state.balls > 0 ? ((state.runs / state.balls) * 6).toFixed(1) : '0.0';
             document.getElementById('statRunRate').textContent = rr;
+            // Update partnerships
+            if (document.getElementById('partnershipsStats')) renderLivePartnerships();
         }
 
         document.getElementById('scorecardMiniTabs').addEventListener('click', function(e) {
@@ -6581,7 +6864,8 @@ Bilal</textarea>
         resetStateForNewMatch();
 
         console.log('🏏 Cricket Scorer App – All features loaded:');
-        console.log('✅ Partnership tracking');
+        console.log('✅ Partnership tracking (fixed)');
+        console.log('✅ Partnerships tab in Stats (live & completed)');
         console.log('✅ Duckworth-Lewis method (password: 28326)');
         console.log('✅ Dark/Light mode toggle');
         console.log('✅ Confetti celebrations on match win');
